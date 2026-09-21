@@ -259,8 +259,8 @@ function EventAnswer() {
   return <AnswerFrame title="Why moving edges trigger events" takeaway={<>An event occurs when <b>|ΔL| ≈ |∇L · v|Δt ≥ C</b>. A strong edge can still stay silent when motion is tangent to it, because the motion is then perpendicular to the brightness gradient.</>}>
     <div className="answer-layout">
       <div className="interactive-figure event-figure">
-        <div className="figure-heading"><span>DRAG THE MOTION VECTOR</span><b>Rotate motion relative to the edge gradient</b></div>
-        <svg viewBox="0 0 720 300" aria-label="Interactive event camera diagram. Drag the motion vector to change its direction and magnitude." onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); move(event); }} onPointerMove={move} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)}>
+        <div className="figure-heading"><span>DRAG IMAGE VELOCITY v</span><b>Rotate image motion relative to the edge gradient</b></div>
+        <svg viewBox="0 0 720 300" aria-label="Interactive event camera diagram. Drag the two-dimensional image velocity to change its direction and magnitude." onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); move(event); }} onPointerMove={move} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)}>
           <rect className="event-dark" x="45" y="35" width="315" height="230" />
           <rect className="event-light" x="360" y="35" width="315" height="230" />
           <line className="event-edge" x1="360" y1="35" x2="360" y2="265" />
@@ -276,9 +276,26 @@ function EventAnswer() {
       </div>
       <div className="answer-steps">
         <Step number={1} title="Start from the event threshold"><div className="answer-equation">|L(x,y,t+Δt) − L(x,y,t)| = |ΔL| ≥ C,<br />where L = log I.</div></Step>
-        <Step number={2} title="Differentiate constant brightness"><div className="answer-equation">dL/dt = ∇L · v + L<sub>t</sub> = 0<br />⇒ L<sub>t</sub> = −∇L · v</div></Step>
+        <Step number={2} title="Follow one moving image point, then apply the chain rule">
+          <div className="derivation-detail">
+            <p><b>Define the image motion.</b> A scene point projects to <span className="inline-math">x(t) = [x(t), y(t)]ᵀ</span>. Its two-dimensional image velocity (optical flow) is</p>
+            <div className="answer-equation">v = dx/dt = [dx/dt, dy/dt]ᵀ = [u, v]ᵀ.</div>
+            <p><b>Describe the image.</b> Let <span className="inline-math">L(x,y,t) = log I(x,y,t)</span>. At an edge, <span className="inline-math">|∇L|</span> is large, and ∇L points toward the fastest spatial increase in brightness—normally perpendicular to the edge.</p>
+            <p><b>Apply brightness constancy to that moving point.</b> Over a short interval, assume its appearance stays constant:</p>
+            <div className="answer-equation">L(x(t), y(t), t) = constant.<br /><em>This does not say that the brightness at a fixed sensor pixel is constant.</em></div>
+            <p><b>Expand the total derivative.</b> Because x and y also depend on time, the multivariable chain rule gives</p>
+            <div className="answer-equation derivation-equation">
+              0 = dL/dt<br />
+              = (∂L/∂x)(dx/dt) + (∂L/∂y)(dy/dt) + ∂L/∂t<br />
+              = L<sub>x</sub>u + L<sub>y</sub>v + L<sub>t</sub><br />
+              = ∇Lᵀv + L<sub>t</sub>
+              <strong>⇒ L<sub>t</sub> = −∇Lᵀv</strong>
+            </div>
+            <p><b>Read the result at a fixed pixel.</b> <span className="inline-math">L<sub>t</sub></span> is the temporal brightness change measured at one stationary sensor pixel. Image motion sweeps the spatial gradient across that pixel and converts spatial variation into temporal variation.</p>
+          </div>
+        </Step>
         <Step number={3} title="Approximate the change at one pixel"><div className="answer-equation">ΔL ≈ L<sub>t</sub>Δt = −∇L · v Δt<br />current: ΔL = −{gradient.toFixed(2)}·{motion.x.toFixed(1)}·{deltaT} = <b>{deltaL.toFixed(3)}</b></div></Step>
-        <Step number={4} title="Interpret the dot product"><p>Uniform regions have ∇L = 0. Motion tangent to an edge is perpendicular to ∇L, so the dot product is zero. Motion across the edge aligns with ∇L and maximizes |ΔL|. The sign of ΔL determines event polarity.</p></Step>
+        <Step number={4} title="Interpret the dot product"><p>Uniform regions have ∇L = 0, so motion produces almost no brightness change. At an edge, motion tangent to the edge is perpendicular to ∇L, so ∇Lᵀv = 0. Motion across the edge has a large component along ∇L and maximizes |ΔL|. Its sign determines ON or OFF polarity.</p></Step>
       </div>
     </div>
   </AnswerFrame>;

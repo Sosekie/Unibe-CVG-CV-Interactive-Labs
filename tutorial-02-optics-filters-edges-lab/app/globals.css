@@ -735,6 +735,13 @@ body {
 .answer-step > div > strong { color: #314d66; font-size: 12px; }
 .answer-step p { margin: 5px 0 0; color: #5d7387; font-size: 11px; line-height: 1.55; }
 .answer-equation { margin-top: 7px; padding: 9px 10px; overflow-x: auto; color: #294b65; background: rgba(222,238,249,.58); font: 12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.derivation-detail { display: grid; gap: 8px; margin-top: 8px; }
+.derivation-detail p { margin: 0; }
+.derivation-detail p b { color: #35536b; }
+.inline-math { color: #294b65; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+.derivation-detail .answer-equation { margin-top: 0; }
+.derivation-equation strong { display: block; margin-top: 5px; color: #176f96; font-size: 13px; }
+.derivation-equation em { color: #6b7f90; font: italic 11px/1.5 var(--font-geist-sans),sans-serif; }
 .answer-takeaway { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start; margin-top: 13px; padding: 12px 14px; border-left: 3px solid #d78334; background: rgba(255,241,222,.7); }
 .answer-takeaway p { margin: 0; color: #5e5c58; font-size: 12px; line-height: 1.55; }
 .pixel-editor { display: grid; grid-template-columns: repeat(7,minmax(50px,1fr)); gap: 5px; }
