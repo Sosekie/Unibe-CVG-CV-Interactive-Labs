@@ -1,0 +1,11 @@
+**/node_modules/
+**/.next/
+**/.vinext/
+**/dist/
+**/.wrangler/
+**/.sites-runtime/
+**/coverage/
+**/.env*
+**/tsconfig.tsbuildinfo
+.DS_Store
+npm-debug.log*

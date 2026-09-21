@@ -1,0 +1,1 @@
+export const DISCUSSION_CONVENTION = "Throughout these questions, O is the camera centre and f > 0. We use a virtual image plane, with the principal point as the origin and image axes parallel to the camera X and Y axes, with y upward. Unless stated otherwise, scene points lie in front of the camera (Z > 0), and all numerical illustrations use f = 1.";

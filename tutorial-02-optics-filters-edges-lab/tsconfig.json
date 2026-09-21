@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "@cloudflare/workers-types", "vinext/types"],
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules", "components/ui/chart.tsx", "components/ui/carousel.tsx", "components/ui/input-group.tsx", "components/ui/breadcrumb.tsx", "components/ui/spinner.tsx", "components/ui/input-otp.tsx", "components/ui/button-group.tsx", "components/ui/pagination.tsx", "components/ui/label.tsx", "components/ui/item.tsx", "components/ui/field.tsx", "hooks/use-mobile.ts"]
+}

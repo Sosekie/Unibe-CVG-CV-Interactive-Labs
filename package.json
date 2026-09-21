@@ -1,0 +1,13 @@
+{
+  "name": "unibe-cvg-cv-interactive-labs",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci",
+    "dev:01": "npm --prefix tutorial-01-pinhole-camera-lab run dev",
+    "dev:02": "npm --prefix tutorial-02-optics-filters-edges-lab run dev"
+  }
+}
