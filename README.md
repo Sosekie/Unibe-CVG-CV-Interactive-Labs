@@ -13,6 +13,15 @@ Local, self-contained copies of the interactive websites used in the University 
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | Pinhole camera, projection, field of view, interactive questions |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Thin lenses, ray transfer, filtering, gradients and events |
 
+### Course PDFs
+
+| Tutorial | Exercise sheet | Solution |
+| --- | --- | --- |
+| Tutorial 01 | [Tutorial PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Solution PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
+| Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+
+The solution PDFs are intended for use after the tutorial discussion.
+
 ### Requirements
 
 - [Node.js](https://nodejs.org/) 22.13 or newer
@@ -45,6 +54,15 @@ No ChatGPT account is required. The visualizations, questions and released answe
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | Lochkamera, Projektion, Sichtfeld, interaktive Fragen |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Dünne Linsen, Strahltransfer, Filterung, Gradienten und Events |
 
+### Kursunterlagen als PDF
+
+| Tutorial | Aufgabenblatt | Lösung |
+| --- | --- | --- |
+| Tutorial 01 | [Tutorial-PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Lösungs-PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
+| Tutorial 02 | [Tutorial-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Lösungs-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+
+Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
+
 ### Voraussetzungen
 
 - [Node.js](https://nodejs.org/) ab Version 22.13
@@ -76,6 +94,15 @@ Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffen
 | --- | --- | --- |
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | 针孔相机、投影、视场角和互动题目 |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | 薄透镜、光线传递、滤波、梯度和事件相机 |
+
+### 课程 PDF
+
+| Tutorial | 题目 | 解答 |
+| --- | --- | --- |
+| Tutorial 01 | [Tutorial PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Solution PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
+| Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+
+解答 PDF 建议在课堂讨论结束后查看。
 
 ### 环境要求
 
