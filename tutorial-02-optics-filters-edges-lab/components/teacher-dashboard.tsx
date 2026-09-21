@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { InteractiveAnswer } from '@/components/interactive-answer';
 
 const refreshInterval = 5000;
-const groups = ['All', 'Camera Models', 'Filters', 'Edges'] as const;
+const groups = ['All', 'Camera Models', 'Filters', 'Event Cameras'] as const;
 
 type TeacherQuestion = {
   id: string;

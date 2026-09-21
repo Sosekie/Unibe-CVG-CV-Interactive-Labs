@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CV Tutorial 02 — Optics, Filters & Edges Lab',
-  description: 'Interactive Computer Vision Tutorial 02 lab from the University of Bern Computer Vision Group.',
+  title: 'CV Tutorial 02 — Camera Models, Filters & Event Cameras',
+  description: 'Interactive Computer Vision Tutorial 02 lab for camera models, filtering, and event-based cameras.',
   icons: { icon: '/favicon.svg', shortcut: '/favicon.ico' },
 };
 

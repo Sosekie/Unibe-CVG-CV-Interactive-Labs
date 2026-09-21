@@ -19,7 +19,7 @@ export const tutorialQuestions = [
     answer: 'For either sensor dimension, FoV = 2 arctan(d/(2f)) = 2 arctan(4 cm/(2·5 cm)) ≈ 43.6°. The sensor is square, so the nominal horizontal and vertical FoVs match.',
   },
   {
-    id: 't02-camera-events', groupName: 'Edges', difficulty: 'Medium', sortOrder: 7,
+    id: 't02-camera-events', groupName: 'Event Cameras', difficulty: 'Medium', sortOrder: 7,
     prompt: 'Using constant brightness, explain why event cameras primarily trigger on moving edges.',
     answer: 'Let L = log I. Constant brightness gives Lt = −∇Lᵀv, so over a small interval ΔL ≈ −∇LᵀvΔt. A pixel emits an event when |ΔL| reaches C, with sign(ΔL) giving polarity. Uniform regions have ∇L = 0, and motion tangent to an edge has ∇Lᵀv ≈ 0; motion across an edge maximizes the response.',
   },

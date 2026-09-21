@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -191,7 +192,7 @@ export default function Home() {
         </div>
         <div className="topbar-meta">
           <a className="institution-lockup" href="https://www.cvg.unibe.ch/" target="_blank" rel="noreferrer" aria-label="Computer Vision Group, University of Bern">
-            <strong>UNIBE</strong>
+            <Image unoptimized src="https://www.unibe.ch/assets/media/image/logo_unibern@2x.png" alt="University of Bern" width={360} height={276} />
             <span>Computer Vision Group</span>
           </a>
           <div className="model-note"><span className="note-dot" />Ideal perspective model</div>
@@ -326,7 +327,17 @@ export default function Home() {
         </section>
       </div>
       <QuestionsSection />
-      <footer className="lab-footer"><span>Interactive course visualizer</span><span>All distances are in millimetres unless marked otherwise.</span></footer>
+      <footer className="lab-footer">
+        <span>Interactive course visualizer</span>
+        <a
+          href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          If this site is unavailable, find all materials and local setup instructions on GitHub.
+        </a>
+        <span>All distances are in millimetres unless marked otherwise.</span>
+      </footer>
     </main>
   );
 }

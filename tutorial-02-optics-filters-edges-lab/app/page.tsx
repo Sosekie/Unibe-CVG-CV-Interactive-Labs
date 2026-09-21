@@ -12,7 +12,7 @@ const modules = [
   { id: 'focus', number: '01', label: 'Focus & FoV', detail: 'Camera 1–3' },
   { id: 'rays', number: '02', label: 'Ray Transfer', detail: 'Camera 4–5' },
   { id: 'filtering', number: '03', label: 'Filtering', detail: 'Filters 1–5' },
-  { id: 'events', number: '04', label: 'Gradients & Events', detail: 'Camera 6 · Edges' },
+  { id: 'events', number: '04', label: 'Event Cameras', detail: 'Pixels · asynchronous events' },
 ] as const;
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
       <SiteHeader />
       <section className="intro-strip" aria-label="About Tutorial 02">
         <p>Choose one lab and change the parameters to test each concept.</p>
-        <p><strong>Model note:</strong> the optics module uses a physical thin lens; it is separate from Tutorial 01&apos;s ideal pinhole camera.</p>
+        <p><strong>Course scope:</strong> Camera models · Filtering · Event-based cameras</p>
       </section>
 
       <section className="module-shell">
@@ -44,7 +44,17 @@ export default function Home() {
         {active === 'events' ? <GradientsEventsLab /> : null}
       </section>
       <QuestionsSection />
-      <footer className="lab-footer"><span>CV Tutorial 02 · Interactive course visualizer</span><span>University of Bern · Computer Vision Group</span></footer>
+      <footer className="lab-footer">
+        <span>CV Tutorial 02 · Interactive course visualizer</span>
+        <a
+          href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          If this site is unavailable, find all materials and local setup instructions on GitHub.
+        </a>
+        <span>University of Bern · Computer Vision Group</span>
+      </footer>
     </main>
   );
 }

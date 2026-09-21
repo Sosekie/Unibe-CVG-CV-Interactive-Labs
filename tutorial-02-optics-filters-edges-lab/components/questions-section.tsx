@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { InteractiveAnswer } from '@/components/interactive-answer';
 
-const groups = ['Camera Models', 'Filters', 'Edges'] as const;
+const groups = ['Camera Models', 'Filters', 'Event Cameras'] as const;
 const refreshInterval = 5000;
 
 type StudentQuestion = {
