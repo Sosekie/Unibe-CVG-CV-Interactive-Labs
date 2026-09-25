@@ -20,7 +20,7 @@ export function InterestPointsLab() {
   return (
     <section className="lab-module" aria-labelledby="interest-title">
       <div className="module-heading">
-        <div><p className="section-kicker">INTEREST POINTS · QUESTIONS 1–3</p><h2 id="interest-title">Harris &amp; Hessian playground</h2><p>Use the exact 6×6 Tutorial 03 pattern. Reflection padding is applied to the derivatives and the 3×3 second-moment window.</p></div>
+        <div><p className="section-kicker">INTEREST POINTS · QUESTIONS 1–3</p><h2 id="interest-title">Harris &amp; Hessian playground</h2><p>Use the exact 6×6 Tutorial 03 pattern. Image y points upward: Iᵧ(r,c) = I(r−1,c) − I(r+1,c). Reflection padding is used at image boundaries. The Hessian uses direct second differences, as on the sheet.</p></div>
         <div className="model-callout"><strong>Observe</strong><span>Scaling image intensity by α scales the Harris response by α⁴.</span></div>
       </div>
       <div className="lab-layout">
@@ -28,7 +28,7 @@ export function InterestPointsLab() {
           <div className="control-block"><div className="control-label"><span>Intensity / contrast</span><output>{contrast.toFixed(2)}</output></div><Slider aria-label="Image intensity" value={[contrast]} min={.25} max={1.5} step={.05} onValueChange={(value) => setContrast(Array.isArray(value) ? value[0] : value)} /></div>
           <div className="control-block"><div className="control-label"><span>Harris constant k</span><output>{k.toFixed(3)}</output></div><Slider aria-label="Harris constant k" value={[k]} min={.04} max={.08} step={.005} onValueChange={(value) => setK(Array.isArray(value) ? value[0] : value)} /></div>
           <fieldset className="point-choice"><legend>Evaluate tutorial point</legend>{Object.entries(points).map(([id, item]) => <button type="button" key={id} className={point === id ? 'active' : ''} onClick={() => setPoint(id as keyof typeof points)}><b>{id === 'star' ? '(*)' : '(**)'}</b><span>{item.label.replace(/^\(\*+\) /, '')}</span></button>)}</fieldset>
-          <div className="classification"><span>Local structure</span><strong>{metrics.classification}</strong><small>λ₁ = {format(metrics.eigenvalues[0])} · λ₂ = {format(metrics.eigenvalues[1])}</small></div>
+          <div className="classification"><span>Harris classification</span><strong>{metrics.classification}</strong><small>λ₁ = {format(metrics.eigenvalues[0])} · λ₂ = {format(metrics.eigenvalues[1])}</small></div>
         </aside>
         <div className="visual-panel glass-panel">
           <div className="diagram-toolbar"><span>TUTORIAL IMAGE I</span><span>selected {point === 'star' ? '(*)' : '(**)'}</span></div>

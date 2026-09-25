@@ -5,7 +5,6 @@ import { EdgesLab } from '@/components/edges-lab';
 import { InterestPointsLab } from '@/components/interest-points-lab';
 import { FittingLab } from '@/components/fitting-lab';
 import { RegistrationLab } from '@/components/registration-lab';
-import { PredictionStep } from '@/components/prediction-step';
 import { QuestionsSection } from '@/components/questions-section';
 import { SiteHeader } from '@/components/site-header';
 
@@ -23,7 +22,7 @@ export default function Home() {
     <main className="lab-shell">
       <SiteHeader />
       <section className="intro-strip" aria-label="About Tutorial 03">
-        <p>Choose one lab, predict the result, and use the controls to test the underlying model.</p>
+        <p>Choose one lab and use the controls to explore the underlying model.</p>
         <p><strong>Course scope:</strong> Edges · Interest Points · Fitting · Registration</p>
       </section>
 
@@ -39,14 +38,23 @@ export default function Home() {
             </button>
           ))}
         </div>
-        <PredictionStep key={active} moduleId={active} />
         {active === 'edges' ? <EdgesLab /> : null}
         {active === 'interest' ? <InterestPointsLab /> : null}
         {active === 'fitting' ? <FittingLab /> : null}
         {active === 'registration' ? <RegistrationLab /> : null}
       </section>
       <QuestionsSection />
-      <footer className="lab-footer"><span>CV Tutorial 03 · Interactive course visualizer</span><span>University of Bern · Computer Vision Group</span></footer>
+      <footer className="lab-footer">
+        <span>CV Tutorial 03 · Interactive course visualizer</span>
+        <a
+          href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          If this site is unavailable, find all materials and local setup instructions on GitHub.
+        </a>
+        <span>University of Bern · Computer Vision Group</span>
+      </footer>
     </main>
   );
 }

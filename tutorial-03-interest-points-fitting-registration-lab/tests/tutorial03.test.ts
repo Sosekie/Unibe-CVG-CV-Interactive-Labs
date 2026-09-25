@@ -12,6 +12,8 @@ import { edgeDetectionInterval, gaussianStepProfile } from "../lib/edges";
 import {
   estimateAffine,
   estimateHomography,
+  quadrilateralIssue,
+  reprojectionError,
   transformPoint,
   type Matrix3,
 } from "../lib/registration";
@@ -43,8 +45,11 @@ void test("Harris scores reproduce the tutorial values and intensity scaling", (
   closeTo(star.harris, 0.145679012345679);
   closeTo(doubleStar.harris, -0.0222222222222222);
   closeTo(halfContrast.harris, star.harris / 16);
-  closeTo(star.hessian, 0);
+  closeTo(star.tensor[0][1], -1 / 9);
+  closeTo(star.hessian, 15 / 16);
   closeTo(doubleStar.hessian, 0);
+  assert.equal(star.classification, "corner");
+  assert.equal(doubleStar.classification, "edge");
 });
 
 void test("ordinary least squares returns y = 3x - 7 for the tutorial preset", () => {
@@ -143,4 +148,20 @@ void test("affine estimation rejects three collinear source points", () => {
   ];
 
   assert.equal(estimateAffine(source, target), null);
+});
+
+void test("homography rejects collinear targets and identifies a folded grid", () => {
+  const source: Point2[] = [
+    { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 },
+  ];
+  const collinear = [
+    { x: 0, y: 0 }, { x: 0.5, y: 0.5 }, { x: 1, y: 1 }, { x: 0, y: 1 },
+  ];
+  const folded = [
+    { x: 0, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 0 }, { x: 0, y: 1 },
+  ];
+  assert.equal(quadrilateralIssue(collinear), "collinear");
+  assert.equal(estimateHomography(source, collinear), null);
+  assert.equal(quadrilateralIssue(folded), "folded");
+  assert.equal(reprojectionError(null, source, collinear), Number.POSITIVE_INFINITY);
 });

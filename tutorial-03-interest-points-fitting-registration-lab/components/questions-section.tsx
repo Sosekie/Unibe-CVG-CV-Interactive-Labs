@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { InteractiveAnswer } from '@/components/interactive-answer';
 
 const groups = ['Edges', 'Interest Points', 'Fitting', 'Registration'] as const;
 const refreshInterval = 5000;
@@ -46,6 +47,7 @@ export function QuestionsSection() {
     return () => { active = false; window.clearInterval(interval); document.removeEventListener('visibilitychange', refreshWhenVisible); };
   }, [browserVoterId]);
   const filtered = useMemo(() => questions.filter((question) => question.groupName === activeGroup), [questions, activeGroup]);
+  const releasedCount = questions.filter((question) => question.answerPublished).length;
   const submitVote = async (questionId: string) => {
     if (!browserVoterId) return;
     setSubmitting(questionId); setError('');
@@ -59,12 +61,15 @@ export function QuestionsSection() {
   };
   return (
     <section className="question-section" id="questions" aria-labelledby="questions-title">
-      <div className="question-header"><div><p className="section-kicker">02 / THINK &amp; DISCUSS</p><h2 id="questions-title">Which point should we unpack?</h2><p>Nine selected questions cover the core tutorial. Try the matching lab first, then vote for what still feels unclear.</p></div><div className="question-instruction"><span>1</span> vote per browser per question · totals and released answers refresh automatically</div></div>
+      <div className="question-header"><div><p className="section-kicker">02 / THINK &amp; DISCUSS</p><h2 id="questions-title">Which point should we unpack?</h2><p>Eight selected questions cover the core tutorial. Try the matching lab first, then vote for what still feels unclear.</p></div><div className="question-instruction"><span>1</span> vote per browser per question · totals and released answers refresh automatically</div></div>
       <div className="question-groups" role="tablist" aria-label="Question group">{groups.map((group) => <button key={group} role="tab" aria-selected={activeGroup === group} className={activeGroup === group ? 'active' : ''} onClick={() => setActiveGroup(group)}><strong>{group}</strong><span>{questions.filter((question) => question.groupName === group).length}</span></button>)}</div>
       {error ? <p className="question-error" role="alert">{error}</p> : null}
+      <output className={releasedCount ? 'answer-release-announcement published' : 'answer-release-announcement'} aria-live="polite" aria-atomic="true">
+        {releasedCount ? `${releasedCount === questions.length ? 'All answers are' : `${releasedCount} of ${questions.length} answers are`} now available in the topic tabs below.` : questions.length ? 'Answers will appear here when your instructor releases them. No refresh needed.' : ''}
+      </output>
       <div className="question-grid">
         {!questions.length && !error ? <p className="loading-question">Loading the Tutorial 03 question bank…</p> : null}
-        {filtered.map((question, index) => <article className="question-card" key={question.id}><div className="question-card-topline"><span>Q{String(index + 1).padStart(2, '0')}</span><span>{question.difficulty} · {question.votes} {question.votes === 1 ? 'vote' : 'votes'}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + (index + 1) + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={question.hasVoted || submitting === question.id} onClick={() => submitVote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.answerPublished ? 'answer-status published' : 'answer-status'}>{question.answerPublished ? 'Answer released' : 'Think first'}</span></div>{question.answerPublished && question.answer ? <div className="released-answer"><span>ANSWER</span><p>{question.answer}</p></div> : null}</article>)}
+        {filtered.map((question, index) => <article className={question.answerPublished ? 'question-card question-card-released' : 'question-card'} key={question.id}><div className="question-card-topline"><span>Q{String(index + 1).padStart(2, '0')}</span><span>{question.difficulty} · {question.votes} {question.votes === 1 ? 'vote' : 'votes'}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + (index + 1) + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={question.hasVoted || submitting === question.id} onClick={() => submitVote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.answerPublished ? 'answer-status published' : 'answer-status'}>{question.answerPublished ? 'Answer released' : 'Think first'}</span></div>{question.answerPublished && question.answer ? <InteractiveAnswer questionId={question.id} fallback={question.answer} /> : null}</article>)}
       </div>
     </section>
   );

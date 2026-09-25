@@ -6,47 +6,42 @@ export const tutorialQuestions = [
   {
     id: 't03-edges-scale', groupName: 'Edges', difficulty: 'Easy', sortOrder: 1,
     prompt: 'For an ideal intensity step smoothed by a Gaussian, how does increasing σ change the derivative response?',
-    answer: 'The derivative is a Gaussian centered at the true step. Its peak is ΔI/(√(2π)σ), so increasing σ lowers the peak and widens the response while keeping its center at the edge. This is the localization-versus-noise trade-off of scale.',
+    answer: 'For a step of contrast ΔI, the derivative after Gaussian smoothing is ΔI·Gσ(x). Its peak ΔI/(√(2π)σ) falls as 1/σ while its width grows with σ; the peak stays centred on the ideal edge.',
   },
   {
     id: 't03-edges-threshold', groupName: 'Edges', difficulty: 'Medium', sortOrder: 2,
     prompt: 'Why can a fixed gradient threshold miss a low-contrast or strongly smoothed edge?',
-    answer: 'An edge is reported only where |Iₓ| exceeds the threshold. Lower contrast reduces the whole response, and stronger smoothing lowers its peak in proportion to 1/σ. If the peak falls below the threshold, the edge disappears even though the underlying intensity step is still present.',
+    answer: 'For a Gaussian-smoothed step, the maximum gradient is ΔI/(√(2π)σ). A fixed threshold T misses the edge when that peak is at or below T. Reducing contrast or increasing σ can cause this without removing the intensity step.',
   },
   {
     id: 't03-interest-harris', groupName: 'Interest Points', difficulty: 'Medium', sortOrder: 3,
     prompt: 'For the Tutorial 03 images, what are the Harris scores at (*) and (**), and why does halving image intensity divide every score by 16?',
-    answer: 'For I¹ with k=0.05, R(*)≈0.146 and R(**)≈−0.0222. For I²=0.5I¹, R(*)≈0.0091 and R(**)≈−0.00139. Gradients scale by α, the second-moment matrix by α², and both det(A) and tr(A)² by α⁴; α=0.5 therefore gives a factor of 1/16.',
+    answer: 'Using the sheet’s central differences, 3×3 average and k=0.05, M(*)=[[4,−1],[−1,4]]/9 and M(**)=[[6,0],[0,0]]/9. Their scores are 59/405≈0.14568 and −1/45≈−0.02222. When I²=0.5I¹, M scales by 1/4 and R by 1/16, giving 59/6480 and −1/720.',
   },
   {
     id: 't03-interest-descriptor', groupName: 'Interest Points', difficulty: 'Easy', sortOrder: 4,
     prompt: 'What is the difference between an interest-point detector and a feature descriptor?',
-    answer: 'A detector chooses repeatable, distinctive image locations and often their scale/orientation. A descriptor converts the neighborhood around a detected point into a vector that can be compared or matched across images. The descriptor does not detect the point itself.',
+    answer: 'A detector chooses repeatable image locations, optionally with scale or orientation. A descriptor encodes the neighborhood of each selected location for comparison across images. Normalising scale and orientation helps the same physical feature match after zoom or rotation.',
   },
   {
     id: 't03-fitting-line', groupName: 'Fitting', difficulty: 'Easy', sortOrder: 5,
     prompt: 'What least-squares line passes through (0,−7), (2,−1), and (4,5)?',
-    answer: 'The normal equations are [[20,6],[6,3]][c₁,c₀]ᵀ=[18,−3]ᵀ. Solving gives c₁=3 and c₀=−7, hence y=3x−7. These three samples happen to be exactly collinear.',
+    answer: 'The normal equations for the three samples are [[20,6],[6,3]][c₁,c₀]ᵀ=[18,−3]ᵀ. Thus c₁=3 and c₀=−7, giving y=3x−7. All three samples lie on this line, so the sum of squared vertical residuals is zero.',
   },
   {
     id: 't03-fitting-prewitt', groupName: 'Fitting', difficulty: 'Medium', sortOrder: 6,
     prompt: 'Why do the two Prewitt masks recover the slopes of the least-squares plane fitted to a 3×3 intensity neighborhood?',
-    answer: 'Centering x,y at the middle pixel makes the normal-equation matrix diagonal: diag(6,6,9). Thus a=(1/6)Σxz, b=(1/6)Σyz, and c=(1/9)Σz. The coefficient patterns multiplying z are precisely the normalized horizontal and vertical Prewitt masks, up to the chosen image-axis sign convention.',
+    answer: 'With local u rightward and v upward, the 3×3 plane-fit normal matrix is diag(6,6,9). Thus a=Σuz/6 and b=Σvz/6. In displayed row order, correlation uses Kx=[−1 0 1;−1 0 1;−1 0 1]/6 and Ky=[1 1 1;0 0 0;−1 −1 −1]/6. Convolution flips the signs unless adjusted.',
   },
   {
-    id: 't03-fitting-tls', groupName: 'Fitting', difficulty: 'Medium', sortOrder: 7,
-    prompt: 'How is the total-least-squares line obtained from the centered point matrix?',
-    answer: 'Center the points to form U=[xᵢ−x̄, yᵢ−ȳ]. The unit normal [a,b]ᵀ is the eigenvector of UᵀU with the smallest eigenvalue, and d=a x̄+bȳ. For the tutorial points one valid sign choice is [a,b]=[−3/√10,1/√10] and d=−7/√10.',
-  },
-  {
-    id: 't03-registration-affine', groupName: 'Registration', difficulty: 'Easy', sortOrder: 8,
+    id: 't03-registration-affine', groupName: 'Registration', difficulty: 'Easy', sortOrder: 7,
     prompt: 'What is the minimum number of point correspondences needed for a 2D affine transformation?',
-    answer: 'An affine map has six unknown parameters and each point pair provides two equations, so three pairs are the minimum. The three source points must be non-collinear (and the correspondence configuration non-degenerate); three merely distinct collinear points do not determine a unique affine map.',
+    answer: 'A 2D affine map has six parameters and each point pair supplies two equations. Three pairs are the minimum, and the three source points must be non-collinear for a unique exact affine map. With more noisy pairs, solve the overdetermined system by least squares.',
   },
   {
-    id: 't03-registration-homography', groupName: 'Registration', difficulty: 'Medium', sortOrder: 9,
+    id: 't03-registration-homography', groupName: 'Registration', difficulty: 'Medium', sortOrder: 8,
     prompt: 'How is a homography estimated with DLT, and what is the minimum number of correspondences?',
-    answer: 'Eliminating the per-point scale yields two homogeneous equations per pair and a system Ah=0. Solve under ‖h‖=1 using the right singular vector of A with the smallest singular value. A homography has eight degrees of freedom up to any nonzero scale, so at least four correspondences in general position are required.',
+    answer: 'Eliminating each point’s unknown scale gives two homogeneous equations per pair, stacked as Ah=0. With noisy pairs, normalise coordinates and take A’s right singular vector with the smallest singular value under ‖h‖=1. A homography has eight degrees of freedom up to scale, so four pairs in general position are the minimum.',
   },
 ] as const;
 
@@ -54,11 +49,8 @@ export const tutorialQuestionIds = tutorialQuestions.map((question) => question.
 
 export async function ensureTutorialQuestions() {
   await ensureDatabaseSchema();
-  const standaloneMode = process.env.CV_LAB_STANDALONE === '1';
   const db = getDb();
-  await db.insert(questions).values(
-    tutorialQuestions.map((question) => ({ ...question, answerPublished: standaloneMode })),
-  ).onConflictDoNothing();
+  await db.insert(questions).values(tutorialQuestions.map((question) => ({ ...question }))).onConflictDoNothing();
   for (const question of tutorialQuestions) {
     await db.update(questions).set({ groupName: question.groupName, difficulty: question.difficulty, prompt: question.prompt, answer: question.answer, sortOrder: question.sortOrder }).where(eq(questions.id, question.id));
   }

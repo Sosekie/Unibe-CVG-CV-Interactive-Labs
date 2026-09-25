@@ -17,7 +17,7 @@ function sample(image: number[][], row: number, column: number) {
 export function gradients(image: number[][]) {
   return image.map((row, r) => row.map((_, c) => ({
     x: sample(image, r, c + 1) - sample(image, r, c - 1),
-    y: sample(image, r + 1, c) - sample(image, r - 1, c),
+    y: sample(image, r - 1, c) - sample(image, r + 1, c),
   })));
 }
 
@@ -42,14 +42,14 @@ export function interestPointMetrics(contrast: number, row: number, column: numb
   const eigenvalues: [number, number] = [(trace + discriminant) / 2, (trace - discriminant) / 2];
   const harris = determinant - k * trace ** 2;
 
-  const gx = (r: number, c: number) => first[reflect(r, 6)][reflect(c, 6)].x;
-  const gy = (r: number, c: number) => first[reflect(r, 6)][reflect(c, 6)].y;
-  const ixx = gx(row, column + 1) - gx(row, column - 1);
-  const iyy = gy(row + 1, column) - gy(row - 1, column);
-  const ixy = gy(row, column + 1) - gy(row, column - 1);
+  const ixx = sample(image, row, column + 1) - 2 * sample(image, row, column) + sample(image, row, column - 1);
+  const iyy = sample(image, row - 1, column) - 2 * sample(image, row, column) + sample(image, row + 1, column);
+  const ixy = (
+    sample(image, row - 1, column + 1) - sample(image, row - 1, column - 1)
+    - sample(image, row + 1, column + 1) + sample(image, row + 1, column - 1)
+  ) / 4;
   const hessian = ixx * iyy - ixy ** 2;
-  const ratio = eigenvalues[0] > 1e-12 ? eigenvalues[1] / eigenvalues[0] : 0;
-  const classification = eigenvalues[0] < 1e-10 ? 'flat' : ratio > .18 ? 'corner' : 'edge';
+  const classification = trace < 1e-10 ? 'flat' : harris > 1e-12 ? 'corner' : harris < -1e-12 ? 'edge' : 'flat';
 
   return { image, tensor, determinant, trace, eigenvalues, harris, hessian, classification };
 }
