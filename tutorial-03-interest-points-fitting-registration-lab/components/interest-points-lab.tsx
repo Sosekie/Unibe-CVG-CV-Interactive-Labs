@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { interestPointMetrics } from '@/lib/interest-points';
+import { HarrisVisualization, intensityColor } from '@/components/harris-visualization';
 
 const points = {
   star: { row: 3, column: 3, label: '(*) corner candidate' },
@@ -35,9 +36,10 @@ export function InterestPointsLab() {
           <div className="matrix-grid" aria-label="Tutorial 6 by 6 intensity image">
             {metrics.image.flatMap((row, r) => row.map((value, c) => {
               const isSelected = r === selected.row && c === selected.column;
-              return <div key={`${r}-${c}`} className={isSelected ? 'selected' : value ? 'filled' : ''}><span>{value.toFixed(contrast % 1 ? 2 : 0)}</span>{isSelected ? <b>{point === 'star' ? '*' : '**'}</b> : null}</div>;
+              return <div key={`${r}-${c}`} className={`${isSelected ? 'selected ' : ''}${Math.abs(r - selected.row) <= 1 && Math.abs(c - selected.column) <= 1 ? 'window' : ''}`} style={{ backgroundColor: intensityColor(value), color: value > .85 ? '#fff' : '#344b65' }}><span>{value.toFixed(contrast % 1 ? 2 : 0)}</span>{isSelected ? <b>{point === 'star' ? '*' : '**'}</b> : null}</div>;
             }))}
           </div>
+          <HarrisVisualization contrast={contrast} k={k} row={selected.row} column={selected.column} />
           <div className="metric-grid">
             <article><span>Second moment A</span><strong>[{format(metrics.tensor[0][0])} {format(metrics.tensor[0][1])}; {format(metrics.tensor[1][0])} {format(metrics.tensor[1][1])}]</strong></article>
             <article><span>det(A) / tr(A)</span><strong>{format(metrics.determinant)} / {format(metrics.trace)}</strong></article>

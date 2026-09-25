@@ -6,7 +6,9 @@ import { estimateAffine, estimateHomography, quadrilateralIssue, reprojectionErr
 import type { Point2 } from '@/lib/fitting';
 
 const source: Point2[] = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }];
-const initialTarget: Point2[] = [{ x: .10, y: .16 }, { x: .88, y: .08 }, { x: .78, y: .86 }, { x: .19, y: .94 }];
+// A convex trapezoid makes affine parallelogram closure visibly fail while
+// remaining a well-conditioned, finite target for the homography grid.
+const initialTarget: Point2[] = [{ x: .28, y: .14 }, { x: .70, y: .14 }, { x: .94, y: .88 }, { x: .08, y: .88 }];
 
 const clamp = (value: number) => Math.max(.02, Math.min(.98, value));
 const sourceScreen = (point: Point2) => ({ x: 55 + point.x * 220, y: 55 + point.y * 230 });
@@ -84,6 +86,13 @@ export function RegistrationLab() {
             <rect x="55" y="55" width="220" height="230" className="source-plane" /><text x="55" y="38" className="svg-label">source plane</text><text x="390" y="38" className="svg-label">target plane</text>
             {Array.from({ length: 5 }, (_, index) => <g key={index}><line className="source-grid" x1={55 + index * 55} x2={55 + index * 55} y1="55" y2="285" /><line className="source-grid" x1="55" x2="275" y1={55 + index * 57.5} y2={55 + index * 57.5} /></g>)}
             {warpedLines.map((points, index) => <polyline key={index} className="warped-grid" points={points} />)}
+            {model === 'affine' && count === 4 && validMatrix ? source.map((point, index) => {
+              const fitted = transformPoint(validMatrix, point);
+              if (!fitted) return null;
+              const from = targetScreen(fitted);
+              const to = targetScreen(target[index]);
+              return <g key={`fit-error-${index}`}><line className="registration-fit-error" x1={from.x} y1={from.y} x2={to.x} y2={to.y} /><circle className="registration-fitted-point" cx={from.x} cy={from.y} r="5" /></g>;
+            }) : null}
             {source.map((point, index) => {
               const start = sourceScreen(point);
               const end = targetScreen(target[index]);
@@ -91,6 +100,7 @@ export function RegistrationLab() {
               return <g key={index}><line className={active ? 'correspondence active' : 'correspondence'} x1={start.x} y1={start.y} x2={end.x} y2={end.y} /><circle className={active ? 'source-point active' : 'source-point'} cx={start.x} cy={start.y} r="7" /><text className="point-index" x={start.x - 3} y={start.y + 3}>{index + 1}</text><g className="target-drag-area" onPointerDown={(event) => { event.preventDefault(); setActiveHandle(index); event.currentTarget.ownerSVGElement?.setPointerCapture(event.pointerId); }}><circle className="target-hit" cx={end.x} cy={end.y} r="50" /><circle className={`${active ? 'target-handle active' : 'target-handle'} desktop-handle`} cx={end.x} cy={end.y} r="9" /><circle className={`${active ? 'target-handle active' : 'target-handle'} mobile-handle`} cx={end.x} cy={end.y} r="17" /></g><text className="point-index target-index" x={end.x - 3} y={end.y + 3}>{index + 1}</text></g>;
             })}
           </svg>
+          <p className="registration-visual-note">{model === 'affine' && count === 4 ? 'Dashed orange segments connect each affine prediction to its observed target. A homography can match all four corners exactly.' : 'Compare the mapped grid with the orange target handles; four pairs reveal the projective bend.'}</p>
           <div className="matrix-readout"><span>{model === 'affine' ? 'Affine matrix A' : 'Homography H (h₃₃ = 1 gauge)'}</span><code>{validMatrix ? formatMatrix(validMatrix) : targetIssue === 'folded' ? 'Grid hidden: target outline folds or crosses infinity.' : 'No nonsingular solution shown for this configuration.'}</code></div>
         </div>
       </div>

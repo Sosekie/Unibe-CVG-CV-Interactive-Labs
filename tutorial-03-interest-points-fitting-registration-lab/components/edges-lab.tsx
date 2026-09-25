@@ -6,9 +6,10 @@ import { edgeDetectionInterval, gaussianStepProfile } from '@/lib/edges';
 
 const xScale = (x: number) => 46 + x * 7.08;
 const intensityY = (value: number) => 165 - value * 105;
-// Keep one scale across slider changes; clip peaks beyond it rather than rescaling.
-const gradientAxisMax = .12;
-const gradientY = (value: number) => 322 - value / gradientAxisMax * 112;
+// One linear scale covers every allowed contrast and sigma, so peak heights
+// remain directly comparable without clipping or automatic rescaling.
+const gradientAxisMax = .9 / Math.sqrt(2 * Math.PI);
+const gradientY = (value: number) => 466 - value / gradientAxisMax * 245;
 
 function pathFor(points: Array<{ x: number; y: number }>) {
   return points.map((point, index) => `${index ? 'L' : 'M'}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(' ');
@@ -24,6 +25,9 @@ export function EdgesLab() {
   const intensityPath = pathFor(samples.map((sample) => ({ x: xScale(sample.x), y: intensityY(sample.intensity) })));
   const gradientPath = pathFor(samples.map((sample) => ({ x: xScale(sample.x), y: gradientY(sample.gradient) })));
   const thresholdY = gradientY(threshold);
+  const halfWidth = sigma * Math.sqrt(2 * Math.log(2));
+  const halfPeakY = gradientY(detection.peak / 2);
+  const fwhm = 2 * halfWidth;
 
   return (
     <section className="lab-module" aria-labelledby="edges-title">
@@ -40,21 +44,25 @@ export function EdgesLab() {
           <div className={detection.interval ? 'classification' : 'classification warning'}><span>Detection</span><strong>{detection.interval ? 'edge found' : 'no edge'}</strong><small>peak |Iₓ| = {detection.peak.toFixed(4)}</small></div>
         </aside>
         <div className="visual-panel glass-panel">
-          <div className="diagram-toolbar"><span>SMOOTHED STEP AND DERIVATIVE</span><span>fixed |Iₓ| scale 0–0.12{detection.peak > gradientAxisMax ? ' · peak clipped' : ''}</span></div>
-          <svg className="edge-diagram" viewBox="0 0 800 360" role="img" aria-label={`Smoothed intensity step above its gradient magnitude and threshold, on a fixed gradient scale from 0 to 0.12${detection.peak > gradientAxisMax ? '; peak exceeds the plot range' : ''}`}>
-            <defs><clipPath id="edgeGradientClip"><rect x="46" y="210" width="708" height="116" /></clipPath></defs>
+          <div className="diagram-toolbar"><span>SMOOTHED STEP AND DERIVATIVE</span><span>fixed linear |Iₓ| scale 0–{gradientAxisMax.toFixed(2)}</span></div>
+          <svg className="edge-diagram" viewBox="0 0 800 500" role="img" aria-label={`Smoothed intensity step, gradient, threshold, and full width at half maximum ${fwhm.toFixed(1)} pixels, on a fixed linear gradient scale`}>
+            <defs><clipPath id="edgeGradientClip"><rect x="46" y="218" width="708" height="252" /></clipPath></defs>
             <line className="edge-axis" x1="46" y1="170" x2="754" y2="170" />
-            <line className="edge-axis" x1="46" y1="326" x2="754" y2="326" />
-            <line className="edge-position" x1={xScale(edgePosition)} y1="42" x2={xScale(edgePosition)} y2="326" />
+            <line className="edge-axis" x1="46" y1="470" x2="754" y2="470" />
+            <line className="edge-position" x1={xScale(edgePosition)} y1="42" x2={xScale(edgePosition)} y2="470" />
             <path className="intensity-profile" d={intensityPath} />
             <path className="gradient-profile" d={gradientPath} clipPath="url(#edgeGradientClip)" />
             <line className="threshold-line" x1="46" y1={thresholdY} x2="754" y2={thresholdY} />
-            {detection.interval ? <rect className="detected-region" x={xScale(detection.interval[0])} y="205" width={xScale(detection.interval[1]) - xScale(detection.interval[0])} height="121" /> : null}
+            {detection.interval ? <rect className="detected-region" x={xScale(detection.interval[0])} y="218" width={xScale(detection.interval[1]) - xScale(detection.interval[0])} height="252" /> : null}
+            <line className="edge-fwhm" x1={xScale(edgePosition - halfWidth)} x2={xScale(edgePosition + halfWidth)} y1={halfPeakY} y2={halfPeakY} />
+            <line className="edge-fwhm-cap" x1={xScale(edgePosition - halfWidth)} x2={xScale(edgePosition - halfWidth)} y1={halfPeakY - 5} y2={halfPeakY + 5} />
+            <line className="edge-fwhm-cap" x1={xScale(edgePosition + halfWidth)} x2={xScale(edgePosition + halfWidth)} y1={halfPeakY - 5} y2={halfPeakY + 5} />
             <text className="edge-label" x="58" y="55">smoothed intensity Iσ</text>
-            <text className="edge-label" x="58" y="215">gradient magnitude |Iₓ|</text>
-            <text className="edge-label warm" x="648" y={Math.max(204, thresholdY - 7)}>threshold</text>
+            <text className="edge-label" x="58" y="229">gradient magnitude |Iₓ|</text>
+            <text className="edge-label warm" x="648" y={thresholdY - 7}>threshold</text>
             <text className="edge-label" x={Math.min(700, xScale(edgePosition) + 8)} y="190">true edge</text>
           </svg>
+          <p className="edge-width-note">Half-peak width: <strong>{fwhm.toFixed(1)} px = 2√(2 ln 2)σ</strong>. This width grows with σ; the interval above a fixed threshold can change differently because the peak also falls.</p>
           <div className="metric-grid">
             <article><span>True position</span><strong>{edgePosition.toFixed(1)} px</strong></article>
             <article><span>Gradient peak</span><strong>{detection.peak.toFixed(4)}</strong></article>

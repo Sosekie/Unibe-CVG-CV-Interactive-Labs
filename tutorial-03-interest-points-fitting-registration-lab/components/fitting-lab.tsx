@@ -5,14 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { ordinaryLeastSquares, prewittPlane, rotatePoints, totalLeastSquares, type Point2 } from '@/lib/fitting';
+import { PrewittPlaneDiagram } from '@/components/prewitt-plane-diagram';
 
 const tutorialPoints: Point2[] = [{ x: 0, y: -7 }, { x: 2, y: -1 }, { x: 4, y: 5 }];
 // Deliberately spread measurements in both coordinates so the two objectives
 // produce visibly different lines. The worksheet's exact points stay intact.
 const measuredPoints: Point2[] = [
-  { x: -6, y: -2 }, { x: -5, y: -6 }, { x: -3, y: 3 }, { x: -2, y: -4 },
-  { x: 0, y: 5 }, { x: 2, y: -3 }, { x: 4, y: 6 }, { x: 6, y: 2 },
+  { x: -4, y: -4 }, { x: -3, y: -2.5 }, { x: -2, y: -6 }, { x: -1, y: .5 },
+  { x: 0, y: 2.5 }, { x: 1, y: -1 }, { x: 2, y: 2 }, { x: 4, y: 4.5 },
 ];
+const measuredDirection = totalLeastSquares(measuredPoints).direction;
+const measuredVerticalAngle = 90 - Math.atan2(measuredDirection.y, measuredDirection.x) * 180 / Math.PI;
 const initialPatch = [2, 4, 6, 1, 3, 5, 0, 2, 4];
 const verticalTutorialAngle = Math.atan(1 / 3) * 180 / Math.PI;
 const chartScale = 20;
@@ -44,12 +47,12 @@ export function FittingLab() {
       </div>
       <div className="lab-layout">
         <aside className="control-panel glass-panel">
-          <fieldset className="segmented-choice"><legend>Dataset</legend><button type="button" className={dataset === 'tutorial' ? 'active' : ''} onClick={() => setDataset('tutorial')}>Worksheet (exact)</button><button type="button" className={dataset === 'measured' ? 'active' : ''} onClick={() => setDataset('measured')}>Measured (2D noise)</button></fieldset>
+          <fieldset className="segmented-choice"><legend>Dataset</legend><button type="button" className={dataset === 'tutorial' ? 'active' : ''} onClick={() => { setDataset('tutorial'); setRotation(0); }}>Worksheet (exact)</button><button type="button" className={dataset === 'measured' ? 'active' : ''} onClick={() => { setDataset('measured'); setRotation(0); }}>Measured (2D noise)</button></fieldset>
           <fieldset className="segmented-choice"><legend>Residual model</legend><button type="button" className={method === 'ols' ? 'active' : ''} onClick={() => setMethod('ols')}>Vertical LS</button><button type="button" className={method === 'tls' ? 'active' : ''} onClick={() => setMethod('tls')}>Total LS</button></fieldset>
           <div className="control-block"><div className="control-label"><span>Rotate data</span><output>{rotation.toFixed(2)}°</output></div><Slider aria-label="Rotate point set" value={[rotation]} min={0} max={90} step={0.1} onValueChange={(value) => setRotation(Array.isArray(value) ? value[0] : value)} /></div>
           <Button variant="outline" onClick={() => { setDataset('tutorial'); setRotation(0); }}>Tutorial numerical preset</Button>
           <Button variant="outline" onClick={() => { setDataset('tutorial'); setRotation(verticalTutorialAngle); }}>Rotate tutorial line vertical</Button>
-          <Button variant="outline" onClick={() => { setDataset('measured'); setRotation(45); }}>Show rotated contrast</Button>
+          <Button variant="outline" onClick={() => { setDataset('measured'); setRotation(measuredVerticalAngle); }}>Show rotated contrast</Button>
           <div className="classification"><span className="fit-formula-label">{method === 'ols' ? 'y = mx + b' : 'ax + by = d'}</span><strong>{method === 'ols' ? Number.isFinite(ols.slope) ? 'm=' + ols.slope.toFixed(3) : 'vertical' : 'a=' + tls.a.toFixed(3)}</strong><small>{method === 'ols' ? Number.isFinite(ols.intercept) ? 'b = ' + ols.intercept.toFixed(3) + ' · SSE = ' + ols.error.toFixed(3) : 'normal equations are singular' : 'b = ' + tls.b.toFixed(3) + ' · d = ' + tls.d.toFixed(3) + ' · SSE⊥ = ' + tls.error.toFixed(3)}</small></div>
         </aside>
         <div className="visual-panel glass-panel">
@@ -80,6 +83,7 @@ export function FittingLab() {
         <div className="prewitt-lab">
           <div className="patch-inputs">{patch.map((value, index) => <Input key={index} aria-label={'Patch value ' + (index + 1)} type="number" value={value} onChange={(event) => setPatch((current) => current.map((item, itemIndex) => itemIndex === index ? Number(event.target.value) || 0 : item))} />)}</div>
           <div className="prewitt-result"><span>Best plane z = ax + by + c</span><strong>a = {plane.a.toFixed(3)} · b = {plane.b.toFixed(3)} · c = {plane.c.toFixed(3)}</strong><p>a = (1/6)Σxz and b = (1/6)Σyz. These are the normalized Prewitt responses under the tutorial coordinate convention.</p></div>
+          <PrewittPlaneDiagram a={plane.a} b={plane.b} c={plane.c} />
           <div className="prewitt-masks"><code>Mₓ = [-1 0 1; -1 0 1; -1 0 1]</code><code>Mᵧ = [1 1 1; 0 0 0; -1 -1 -1]</code></div>
         </div>
       </details>

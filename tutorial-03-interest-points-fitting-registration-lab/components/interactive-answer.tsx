@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { HarrisVisualization, intensityColor } from '@/components/harris-visualization';
+import { PrewittPlaneDiagram } from '@/components/prewitt-plane-diagram';
 
 type AnswerProps = { questionId: string; fallback: string };
 
@@ -107,8 +109,9 @@ function HarrisAnswer() {
   return <AnswerFrame title="Harris: corner, edge and contrast scaling" takeaway={<>At k = 0.05, the solution gives <b>R(*) = 59/405 ≈ 0.14568</b> and <b>R(**) = −1/45 ≈ −0.02222</b>. Halving intensity divides both scores by 16.</>}>
     <div className="answer-layout"><Figure instruction="CHOOSE A POINT AND CHANGE CONTRAST" subtitle="The highlighted 3×3 neighborhood supplies the gradient products">
       <div className="answer-pixel-grid" role="img" aria-label="Six by six binary image with selected Harris location">
-        {interestImage.flatMap((imageRow, r) => imageRow.map((value, c) => <div key={`${r}-${c}`} className={`${value ? 'bright' : ''} ${r === row && c === col ? 'selected' : ''} ${Math.abs(r - row) <= 1 && Math.abs(c - col) <= 1 ? 'window' : ''}`}><span>{fmt(value * alpha, alpha === 1 ? 0 : 2)}</span>{r === row && c === col ? <b>{location === 'corner' ? '*' : '**'}</b> : null}</div>))}
+        {interestImage.flatMap((imageRow, r) => imageRow.map((value, c) => <div key={`${r}-${c}`} className={`${r === row && c === col ? 'selected' : ''} ${Math.abs(r - row) <= 1 && Math.abs(c - col) <= 1 ? 'window' : ''}`} style={{ backgroundColor: intensityColor(value * alpha), color: value * alpha > .85 ? '#fff' : '#344b65' }}><span>{fmt(value * alpha, alpha === 1 ? 0 : 2)}</span>{r === row && c === col ? <b>{location === 'corner' ? '*' : '**'}</b> : null}</div>))}
       </div>
+      <HarrisVisualization contrast={alpha} k={k} row={row} column={col} />
       <div className="answer-choice"><button className={location === 'corner' ? 'active' : ''} onClick={() => setLocation('corner')}>Corner (*)</button><button className={location === 'edge' ? 'active' : ''} onClick={() => setLocation('edge')}>Edge (**)</button></div>
       <Range label="Intensity factor α" value={alpha} min={0.25} max={1} step={0.05} onChange={setAlpha} />
       <Range label="Harris k" value={k} min={0.03} max={0.08} step={0.005} onChange={setK} />
@@ -186,6 +189,7 @@ function PrewittAnswer() {
   return <AnswerFrame title="Prewitt as a local least-squares plane" takeaway={<>With local v increasing <b>upward</b>, the masks below are applied by <b>correlation</b>. A 180° rotation of either antisymmetric mask reverses its sign, so convolution with the same mask reverses the response.</>}>
     <div className="answer-layout"><Figure instruction="EDIT THE 3×3 INTENSITY PATCH" subtitle="The two slope estimates update with every pixel value">
       <div className="answer-patch-editor">{patch.map((value, index) => <label key={index}><span className="sr-only">Pixel row {Math.floor(index / 3) + 1}, column {index % 3 + 1}</span><input type="number" min={-9} max={9} step={1} value={value} onChange={(event) => update(index, Number(event.target.value))} /></label>)}</div>
+      <PrewittPlaneDiagram a={a} b={b} c={c} />
       <div className="answer-choice">{Object.entries(prewittPresets).map(([name, values]) => <button key={name} onClick={() => setPatch([...values])}>{name}</button>)}</div>
       <div className="answer-slope-bars"><div><span>Horizontal slope a</span><i style={{ transform: `scaleX(${clamp(Math.abs(a) / 3, 0.02, 1)})`, background: a < 0 ? '#d78334' : '#2a94c2' }} /><b>{fmt(a, 2)}</b></div><div><span>Vertical slope b</span><i style={{ transform: `scaleX(${clamp(Math.abs(b) / 3, 0.02, 1)})`, background: b < 0 ? '#d78334' : '#2a94c2' }} /><b>{fmt(b, 2)}</b></div></div>
     </Figure><div className="answer-steps">
