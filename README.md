@@ -12,6 +12,7 @@ Local, self-contained copies of the interactive websites used in the University 
 | --- | --- | --- |
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | Pinhole camera, projection, field of view, interactive questions |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Thin lenses, ray transfer, filtering, gradients and events |
+| Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Edges, interest points, fitting and registration |
 
 ### Course PDFs
 
@@ -43,6 +44,12 @@ Open the local address printed in the terminal, normally `http://localhost:3000`
 npm run dev:02
 ```
 
+Start Tutorial 03 with:
+
+```bash
+npm run dev:03
+```
+
 No ChatGPT account is required. The visualizations, questions and released answers work locally. Votes are stored only in the local development database and are not synchronized with the classroom website. The development server is intentionally available only on your own computer.
 
 ## Deutsch
@@ -53,6 +60,7 @@ No ChatGPT account is required. The visualizations, questions and released answe
 | --- | --- | --- |
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | Lochkamera, Projektion, Sichtfeld, interaktive Fragen |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Dünne Linsen, Strahltransfer, Filterung, Gradienten und Events |
+| Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Kanten, Interest Points, Fitting und Registrierung |
 
 ### Kursunterlagen als PDF
 
@@ -84,6 +92,12 @@ Die im Terminal angezeigte lokale Adresse öffnen, normalerweise `http://localho
 npm run dev:02
 ```
 
+Tutorial 03 startest du mit:
+
+```bash
+npm run dev:03
+```
+
 Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffentlichte Antworten funktionieren lokal. Abstimmungen werden nur in der lokalen Entwicklungsdatenbank gespeichert und nicht mit der Kurswebseite synchronisiert. Der Entwicklungsserver ist absichtlich nur auf dem eigenen Computer erreichbar.
 
 ## 中文
@@ -94,6 +108,7 @@ Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffen
 | --- | --- | --- |
 | Tutorial 01 | `tutorial-01-pinhole-camera-lab` | 针孔相机、投影、视场角和互动题目 |
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | 薄透镜、光线传递、滤波、梯度和事件相机 |
+| Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | 边缘、兴趣点、拟合和图像配准 |
 
 ### 课程 PDF
 
@@ -123,6 +138,12 @@ npm run dev:01
 
 ```bash
 npm run dev:02
+```
+
+运行 Tutorial 03：
+
+```bash
+npm run dev:03
 ```
 
 本地使用不需要 ChatGPT 账号。可视化、题目和已公布答案均可使用；投票只保存在本机开发数据库中，不会与课堂网站同步。开发服务器仅允许本机访问。

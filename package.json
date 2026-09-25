@@ -6,8 +6,9 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci",
+    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci && npm --prefix tutorial-03-interest-points-fitting-registration-lab ci",
     "dev:01": "npm --prefix tutorial-01-pinhole-camera-lab run dev",
-    "dev:02": "npm --prefix tutorial-02-optics-filters-edges-lab run dev"
+    "dev:02": "npm --prefix tutorial-02-optics-filters-edges-lab run dev",
+    "dev:03": "npm --prefix tutorial-03-interest-points-fitting-registration-lab run dev"
   }
 }
