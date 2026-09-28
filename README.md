@@ -24,6 +24,7 @@ For Zahra, Luca and future authors: the [tutorial authoring guide](docs/tutorial
 | --- | --- | --- |
 | Tutorial 01 | [Tutorial PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Solution PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
 | Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+| Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | Not published yet |
 
 The solution PDFs are intended for use after the tutorial discussion.
 
@@ -78,6 +79,7 @@ Der [Leitfaden für Tutorial-Autorinnen und -Autoren](docs/tutorial-authoring/RE
 | --- | --- | --- |
 | Tutorial 01 | [Tutorial-PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Lösungs-PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
 | Tutorial 02 | [Tutorial-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Lösungs-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+| Tutorial 03 | [Tutorial-PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | Noch nicht veröffentlicht |
 
 Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
 
@@ -132,6 +134,7 @@ Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffen
 | --- | --- | --- |
 | Tutorial 01 | [Tutorial PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01.pdf) | [Solution PDF](tutorial-01-pinhole-camera-lab/materials/tutorial_01_solution.pdf) |
 | Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
+| Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | 暂未公布 |
 
 解答 PDF 建议在课堂讨论结束后查看。
 
