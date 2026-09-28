@@ -157,6 +157,14 @@ Inspect git status and the intended diff. Commit only approved changes; preserve
 unrelated work and withhold private notes, credentials and unreleased material.
 Do not synchronize runtime databases, votes, local dependencies or caches.
 
+For this project, "sync to GitHub" always includes both CV_Tutorial and
+Unibe-CVG-CV-Interactive-Labs within the approved scope. CV_Tutorial must be
+synchronized every time, including required release folders, PDFs and editable
+sources. Apply the project synchronization skill in AGENTS.md. Verify both
+remote branch refs and the requested artifacts before reporting completion.
+If a repository has no changes, verify it unchanged rather than making an
+empty commit. Report any incomplete repository sync explicitly.
+
 If publishing is authorized and tools/access are available, publish the correct
 Site project, verify its actual student URL and teacher route, then synchronize
 the finished website source into the dedicated interactive-labs GitHub repo

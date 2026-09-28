@@ -61,7 +61,7 @@ These are examples of checks, not mandatory topics for later tutorials.
 
 - [ ] Maintained source updated in CV_Tutorial; deployment copy matches approved source.
 - [ ] Correct Site published and actual URL checked, or explicitly recorded as pending.
-- [ ] Finished website synchronized to dedicated website repository; remote commit IDs verified.
+- [ ] Both CV_Tutorial and the dedicated website repository synchronized within the approved scope; both remote commit IDs and requested files verified. A repository without changes is explicitly verified unchanged.
 - [ ] Hub entry and ILIAS description/link prepared or updated as authorized.
 - [ ] Final summary identifies checks performed, untested items and remaining limitations.
 

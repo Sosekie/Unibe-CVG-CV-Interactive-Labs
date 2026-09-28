@@ -10,6 +10,8 @@ Local, self-contained copies of the interactive websites used in the University 
 
 For Zahra, Luca and future authors: the [tutorial authoring guide](docs/tutorial-authoring/README.md) includes [copyable English prompts](docs/tutorial-authoring/PROMPTS.md), a [tutorial brief](docs/tutorial-authoring/TUTORIAL_BRIEF.md), source examples and a [review/release checklist](docs/tutorial-authoring/CHECKLIST.md). Use it with the current slides, worksheet and solutions to continue the Tutorial 01–03 approach.
 
+Project maintenance rule: every request to **sync to GitHub** includes **both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs** within the approved scope. CV_Tutorial must be synchronized every time. Follow the [project synchronization skill](.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and requested files before reporting completion.
+
 ### Included labs
 
 | Lab | Folder | Topics |
