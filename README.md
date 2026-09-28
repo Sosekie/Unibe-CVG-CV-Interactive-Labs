@@ -27,6 +27,8 @@ For Zahra, Luca and future authors: the [tutorial authoring guide](docs/tutorial
 
 The solution PDFs are intended for use after the tutorial discussion.
 
+Tutorial 02 PDFs updated on 28 September 2026: Question 4 explains the signed-angle convention and the `-phi` label in the ray diagram.
+
 ### Requirements
 
 - [Node.js](https://nodejs.org/) 22.13 or newer
@@ -79,6 +81,8 @@ Der [Leitfaden für Tutorial-Autorinnen und -Autoren](docs/tutorial-authoring/RE
 
 Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
 
+Tutorial-02-PDFs aktualisiert am 28. September 2026: Aufgabe 4 erklärt die Winkelvorzeichen und die Beschriftung `-phi` im Strahlendiagramm.
+
 ### Voraussetzungen
 
 - [Node.js](https://nodejs.org/) ab Version 22.13
@@ -130,6 +134,8 @@ Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffen
 | Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
 
 解答 PDF 建议在课堂讨论结束后查看。
+
+Tutorial 02 PDF 于 2026 年 9 月 28 日更新：第四题补充了角度的正负约定，以及光线图中 `-phi` 标注的含义。
 
 ### 环境要求
 
