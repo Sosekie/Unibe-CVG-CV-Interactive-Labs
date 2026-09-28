@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { interestPointMetrics } from '@/lib/interest-points';
 import { HarrisVisualization, intensityColor } from '@/components/harris-visualization';
+import { InterestPointGuide } from '@/components/interest-point-guide';
 
 const points = {
   star: { row: 3, column: 3, label: '(*) corner candidate' },
@@ -49,6 +50,7 @@ export function InterestPointsLab() {
         </div>
       </div>
       <div className="formula-strip"><div><span>Structure tensor</span><strong>A = avg([Iₓ², IₓIᵧ; IₓIᵧ, Iᵧ²])</strong></div><div><span>Harris score</span><strong>R = det(A) − k·tr(A)²</strong></div><div><span>Interpretation</span><strong>two large λ → corner · one → edge</strong></div></div>
+      <InterestPointGuide metrics={metrics} contrast={contrast} k={k} />
     </section>
   );
 }

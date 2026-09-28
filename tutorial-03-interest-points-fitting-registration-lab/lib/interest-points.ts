@@ -51,5 +51,6 @@ export function interestPointMetrics(contrast: number, row: number, column: numb
   const hessian = ixx * iyy - ixy ** 2;
   const classification = trace < 1e-10 ? 'flat' : harris > 1e-12 ? 'corner' : harris < -1e-12 ? 'edge' : 'flat';
 
-  return { image, tensor, determinant, trace, eigenvalues, harris, hessian, classification };
+  const hessianTensor: Matrix2 = [[ixx, ixy], [ixy, iyy]];
+  return { image, tensor, determinant, trace, eigenvalues, harris, hessian, hessianTensor, classification };
 }
