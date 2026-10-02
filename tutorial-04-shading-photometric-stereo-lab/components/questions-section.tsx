@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { WorkedAnswer } from '@/components/worked-answer';
+import { InteractiveAnswer } from '@/components/interactive-answer';
 
 export const questionGroups = ['Normal Integration', 'Photometric Stereo', 'Light & Reflectance'] as const;
 const refreshInterval = 5000;
@@ -69,7 +69,7 @@ export function QuestionsSection() {
       </output>
       <div className="question-grid">
         {!questions.length && !error ? <p className="loading-question">Loading the Tutorial 04 questions…</p> : null}
-        {filtered.map((question) => <article className={question.answerPublished ? 'question-card question-card-released' : 'question-card'} key={question.id}><div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, '0')}</span><span>{question.difficulty} · {question.votes} {question.votes === 1 ? 'vote' : 'votes'}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + question.sortOrder + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={question.hasVoted || submitting === question.id} onClick={() => submitVote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.answerPublished ? 'answer-status published' : 'answer-status'}>{question.answerPublished ? 'Answer released' : 'Think first'}</span></div>{question.answerPublished && question.answer ? <WorkedAnswer questionId={question.id} fallback={question.answer} /> : null}</article>)}
+        {filtered.map((question) => <article className={question.answerPublished ? 'question-card question-card-released' : 'question-card'} key={question.id}><div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, '0')}</span><span>{question.difficulty} · {question.votes} {question.votes === 1 ? 'vote' : 'votes'}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + question.sortOrder + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={question.hasVoted || submitting === question.id} onClick={() => submitVote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.answerPublished ? 'answer-status published' : 'answer-status'}>{question.answerPublished ? 'Answer released' : 'Think first'}</span></div>{question.answerPublished && question.answer ? <InteractiveAnswer questionId={question.id} fallback={question.answer} /> : null}</article>)}
       </div>
     </section>
   );

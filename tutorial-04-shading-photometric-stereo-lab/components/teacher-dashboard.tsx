@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CheckCheck, Eye, EyeOff, RefreshCw, Send, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { questionGroups } from '@/components/questions-section';
-import { WorkedAnswer } from '@/components/worked-answer';
+import { InteractiveAnswer } from '@/components/interactive-answer';
 
 const groups = ['All', ...questionGroups] as const;
 const refreshInterval = 5000;
@@ -107,7 +107,7 @@ export function TeacherDashboard() {
                 <div className="teacher-answer"><span>Prepared explanation</span><p>{question.answer}</p></div>
               </div>
               <div className="teacher-actions"><strong>{question.votes}</strong><span>votes</span><Button variant={question.answerPublished ? 'secondary' : 'default'} disabled={changing !== null} onClick={() => updateAnswers({ questionId: question.id, published: !question.answerPublished })}>{changing === question.id ? 'Updating…' : question.answerPublished ? <><EyeOff size={14} /> Hide answer</> : <><Eye size={14} /> Publish answer</>}</Button></div>
-              <details className="teacher-answer-preview"><summary>Preview the worked answer · Q{String(question.sortOrder).padStart(2, '0')}</summary><WorkedAnswer questionId={question.id} fallback={question.answer} /></details>
+              <details className="teacher-answer-preview"><summary>Preview the worked answer · Q{String(question.sortOrder).padStart(2, '0')}</summary><InteractiveAnswer questionId={question.id} fallback={question.answer} /></details>
             </article>
           ))}
         </div>

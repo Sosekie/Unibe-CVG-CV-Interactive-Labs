@@ -5,6 +5,7 @@ import { estimatePhotometricStereo } from '../lib/photometric';
 import { contourSegments, reflectance } from '../lib/reflectance';
 import { GRID_COLUMNS, GRID_ROWS, normalFromSlopes, normalIntegrationSurface } from '../lib/shading';
 import { tutorialQuestions } from '../lib/question-bank';
+import { determinant3, nearLightBrightness, pathIntegrals, solveWorksheetLights } from '../lib/worked-answers';
 
 const closeTo = (actual: number, expected: number, tolerance = 1e-6) => assert.ok(Math.abs(actual - expected) <= tolerance, `expected ${actual} within ${tolerance} of ${expected}`);
 const methods = ['least-squares', 'xy', 'yx'] as const;
@@ -109,4 +110,40 @@ void test('the question bank has two questions per lab with unique ids', () => {
   const counts = new Map<string, number>();
   for (const question of tutorialQuestions) counts.set(question.groupName, (counts.get(question.groupName) ?? 0) + 1);
   assert.deepEqual([...counts.values()], [2, 2, 2]);
+});
+
+void test('worked answer Q2: the two paths for (y, 0) give 0 and -1, and (y, x) gives one answer', () => {
+  const failing = pathIntegrals(0, 1, 1);
+  closeTo(failing.viaX, 0); closeTo(failing.viaY, -1); closeTo(failing.gap, 1);
+  for (const [a, b] of [[1, 1], [0.4, 1.3], [1.5, 0.2]]) closeTo(pathIntegrals(1, a, b).gap, 0);
+  const general = pathIntegrals(0.4, 1.3, 0.7);
+  closeTo(general.gap, general.curl * 1.3 * 0.7);
+});
+
+void test('worked answer Q3: the worksheet lights are coplanar, the Q4 lights are not', () => {
+  const coplanar = [[0, 0, 1], [Math.SQRT1_2, 0, Math.SQRT1_2], [-Math.SQRT1_2, 0, Math.SQRT1_2]] as [number, number, number][];
+  const independent = [[0, 0, 1], [Math.SQRT1_2, 0, Math.SQRT1_2], [0, Math.SQRT1_2, Math.SQRT1_2]] as [number, number, number][];
+  closeTo(determinant3(coplanar), 0, 1e-12);
+  closeTo(determinant3(independent), 0.5, 1e-12);
+});
+
+void test('worked answer Q4: the worksheet intensities give rho = 3/5, and scaling I keeps n', () => {
+  const intensities = [0.2, 0.3 * Math.SQRT2, 0.3 * Math.SQRT2];
+  const solved = solveWorksheetLights(intensities);
+  closeTo(solved.albedo, 0.6, 1e-12);
+  assert.ok(solved.normal);
+  solved.normal.forEach((value, index) => closeTo(value, [2 / 3, 2 / 3, 1 / 3][index], 1e-12));
+  const brighter = solveWorksheetLights(intensities.map((value) => 1.5 * value));
+  closeTo(brighter.albedo, 0.9, 1e-12);
+  assert.ok(brighter.normal);
+  brighter.normal.forEach((value, index) => closeTo(value, solved.normal![index], 1e-12));
+  assert.equal(solveWorksheetLights([0, 0, 0]).normal, null);
+});
+
+void test('worked answer Q6: corner ratio 0.816 without and 0.544 with the 1/d^2 fall-off', () => {
+  const corner = nearLightBrightness(10, Math.sqrt(50));
+  closeTo(corner.cosine, 10 / Math.sqrt(150));
+  closeTo(corner.relativeWithFalloff, (100 / 150) ** 1.5);
+  const below = nearLightBrightness(10, 0);
+  closeTo(below.cosine, 1); closeTo(below.withFalloff, 0.01); closeTo(below.angle, 0);
 });

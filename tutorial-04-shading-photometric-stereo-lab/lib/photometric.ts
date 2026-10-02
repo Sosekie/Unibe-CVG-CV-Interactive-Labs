@@ -52,6 +52,15 @@ function symmetricEigenvalues3(source: number[][]) {
   return [matrix[0][0], matrix[1][1], matrix[2][2]].sort((a, b) => a - b);
 }
 
+// Rank and condition number kappa(S) = sigma_max / sigma_min of a light matrix.
+export function lightMatrixStats(lights: Vector3[]) {
+  const ata = Array.from({ length: 3 }, (_, i) => Array.from({ length: 3 }, (_, j) => lights.reduce((sum, light) => sum + light[i] * light[j], 0)));
+  const eigenvalues = symmetricEigenvalues3(ata);
+  const rank = eigenvalues.filter((value) => value > 1e-7).length;
+  const condition = eigenvalues[0] > 1e-9 ? Math.sqrt(eigenvalues[2] / eigenvalues[0]) : Number.POSITIVE_INFINITY;
+  return { rank, condition };
+}
+
 export function estimatePhotometricStereo(options: { set?: LightSet; count: number; spread: number; noise: number; tilt: number; azimuth?: number; albedo?: number }) {
   const set = options.set ?? 'ring';
   const normal = set === 'worksheet' ? WORKSHEET_NORMAL : surfaceNormal(options.tilt, options.azimuth ?? 35);
@@ -62,11 +71,7 @@ export function estimatePhotometricStereo(options: { set?: LightSet; count: numb
   // A fixed, repeatable noise pattern (not random), so a setting always gives the same picture.
   const intensities = cleanIntensities.map((value, index) => Math.max(0, value + options.noise * Math.sin((index + 1) * 2.17)));
   const estimate = leastSquares(lights, intensities) as Vector3 | null;
-  const ata = Array.from({ length: 3 }, (_, i) => Array.from({ length: 3 }, (_, j) => lights.reduce((sum, light) => sum + light[i] * light[j], 0)));
-  const eigenvalues = symmetricEigenvalues3(ata);
-  const rank = eigenvalues.filter((value) => value > 1e-7).length;
-  // kappa(S) = largest / smallest singular value of S.
-  const condition = eigenvalues[0] > 1e-9 ? Math.sqrt(eigenvalues[2] / eigenvalues[0]) : Number.POSITIVE_INFINITY;
+  const { rank, condition } = lightMatrixStats(lights);
   const base = { set, normal, albedo, lights, intensities, cleanIntensities, rank, condition };
   if (!estimate || rank < 3) return { ...base, estimate: null, estimatedAlbedo: Number.NaN, estimatedNormal: null, angularError: Number.POSITIVE_INFINITY, residual: Number.POSITIVE_INFINITY };
   const estimatedAlbedo = length(estimate);
