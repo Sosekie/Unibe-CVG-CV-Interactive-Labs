@@ -27,6 +27,7 @@ Maintain source first in `CV_Tutorial`. Local `sites/` folders are deployment co
 | `2026/tutorials/tutorial_01/pinhole-camera-lab-production/` | `tutorial-01-pinhole-camera-lab/` |
 | `2026/tutorials/tutorial_02/cv-tutorial02-optics-filters-edges-lab/` | `tutorial-02-optics-filters-edges-lab/` |
 | `2026/tutorials/tutorial_03/cv-tutorial03-interest-points-fitting-registration-lab/` | `tutorial-03-interest-points-fitting-registration-lab/` |
+| `2026/tutorials/tutorial_04/cv-tutorial04-shading-photometric-stereo-lab/` | `tutorial-04-shading-photometric-stereo-lab/` |
 
 Preserve intentional public-copy differences such as local runtime/database setup and environment-based teacher configuration. Shared authoring prompts and checklists should agree; adapt repository-specific links in guides.
 
