@@ -6,12 +6,6 @@ Local, self-contained copies of the interactive websites used in the University 
 
 ## English
 
-### Creating the next tutorial
-
-For Zahra, Luca and future authors: the [tutorial authoring guide](docs/tutorial-authoring/README.md) includes [copyable English prompts](docs/tutorial-authoring/PROMPTS.md), a [tutorial brief](docs/tutorial-authoring/TUTORIAL_BRIEF.md), source examples and a [review/release checklist](docs/tutorial-authoring/CHECKLIST.md). Use it with the current slides, worksheet and solutions to continue the Tutorial 01–03 approach.
-
-Project maintenance rule: every request to **sync to GitHub** includes **both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs** within the approved scope. CV_Tutorial must be synchronized every time. Follow the [project synchronization skill](.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and requested files before reporting completion.
-
 ### Included labs
 
 | Lab | Folder | Topics |
@@ -71,10 +65,6 @@ No ChatGPT account is required. The visualizations, questions and released answe
 
 ## Deutsch
 
-### Das nächste Tutorial erstellen
-
-Der [Leitfaden für Tutorial-Autorinnen und -Autoren](docs/tutorial-authoring/README.md) enthält englische Prompts, eine Vorlage für die Tutorial-Planung, Quellcode-Beispiele und eine Prüf- und Veröffentlichungscheckliste. Ergänze die aktuellen Vorlesungsfolien, Aufgaben und Lösungen.
-
 ### Enthaltene Labs
 
 | Lab | Ordner | Themen |
@@ -133,10 +123,6 @@ npm run dev:04
 Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffentlichte Antworten funktionieren lokal. Abstimmungen werden nur in der lokalen Entwicklungsdatenbank gespeichert und nicht mit der Kurswebseite synchronisiert. Der Entwicklungsserver ist absichtlich nur auf dem eigenen Computer erreichbar.
 
 ## 中文
-
-### 制作后续 Tutorial
-
-[教程制作交接指南](docs/tutorial-authoring/README.md)包含可复制的英文提示词、教程信息模板、源码参考和验收发布清单。配合当年的 slides、习题和答案，可继续沿用 Tutorial 01–03 的制作方式。
 
 ### 包含的网站
 

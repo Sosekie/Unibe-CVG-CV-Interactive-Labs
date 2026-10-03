@@ -106,4 +106,6 @@ The release plan determines which solutions go into which folder. For example, A
 
 After review, publish the site and maintain the approved source in [CV_Tutorial](https://github.com/Sosekie/CV_Tutorial). Synchronize the finished website into [Unibe-CVG-CV-Interactive-Labs](https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs), following that repository's layout and public configuration policy. Preserve unrelated local work, historical question IDs and votes. Add the new tutorial to the hub and provide ILIAS with the stable student URL.
 
+**GitHub synchronization rule:** every request to sync to GitHub covers both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs within the approved release scope, and CV_Tutorial is synchronized every time. Follow the [project synchronization skill](../../.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and the requested files before reporting completion.
+
 Answer publication controls govern the student interface. Source code committed to a public GitHub repository may contain worked answers, so interface gating does **not** promise answer secrecy. Keep genuinely unreleased material out of public commits and client bundles; agree the course's source/release policy before synchronization.
