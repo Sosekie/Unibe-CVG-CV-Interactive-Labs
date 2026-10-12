@@ -169,7 +169,8 @@ If publishing is authorized and tools/access are available, publish the correct
 Site project, verify its actual student URL and teacher route, then synchronize
 the finished website source into the dedicated interactive-labs GitHub repo
 using that repo's public configuration policy. Check local and remote commit
-IDs. Update the course hub when the new lab is ready. If deployment/access is
+IDs. When the new lab is ready, add its card to the course hub
+(`site/index.html` in the interactive-labs repo). If deployment/access is
 unavailable, provide the ready package and state that publication is pending.
 
 Deliver the maintained source path, release files, tested URL, relevant commits,

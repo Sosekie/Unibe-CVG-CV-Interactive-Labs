@@ -6,6 +6,8 @@ Local, self-contained copies of the interactive websites used in the University 
 
 ## English
 
+To use the tutorials in your browser with nothing to install, open the [course website](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/). It links to every tutorial of the course.
+
 ### Included labs
 
 | Lab | Folder | Topics |
@@ -65,6 +67,8 @@ No ChatGPT account is required. The visualizations, questions and released answe
 
 ## Deutsch
 
+Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseite](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/). Sie verlinkt alle Tutorials des Kurses.
+
 ### Enthaltene Labs
 
 | Lab | Ordner | Themen |
@@ -123,6 +127,8 @@ npm run dev:04
 Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffentlichte Antworten funktionieren lokal. Abstimmungen werden nur in der lokalen Entwicklungsdatenbank gespeichert und nicht mit der Kurswebseite synchronisiert. Der Entwicklungsserver ist absichtlich nur auf dem eigenen Computer erreichbar.
 
 ## 中文
+
+无需安装、直接在浏览器中使用：打开[课程网站](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/)，那里有本课程所有 tutorial 的链接。
 
 ### 包含的网站
 

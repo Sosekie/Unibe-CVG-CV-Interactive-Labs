@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <meta name="description" content="Computer Vision 2026 interactive tutorials at the University of Bern. Choose a tutorial and explore the exercises.">
+  <title>Computer Vision 2026 · Interactive Tutorials</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%232a94c2'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='white' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='6' fill='white'/%3E%3C/svg%3E">
+  <style>
+    :root{--zoom:1;--ink:#203044;--ink-strong:#18304c;--muted:#61758b;--blue:#2a94c2;--blue-deep:#237eae;--amber:#bc722c;--line:rgba(79,119,157,.18);font-size:calc(16px * var(--zoom))}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 4% 2%,rgba(126,198,255,.35),transparent 28rem),radial-gradient(circle at 96% 16%,rgba(208,179,255,.28),transparent 31rem),radial-gradient(circle at 52% 98%,rgba(172,237,226,.23),transparent 33rem),linear-gradient(145deg,#f9fbff 0%,#eef4fb 48%,#f9f6ff 100%)}
+    a{color:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}button{font:inherit}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;min-height:5.4rem;padding:1rem max(4.8vw,1.25rem);border-bottom:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.55);box-shadow:0 8px 32px rgba(52,83,118,.07);backdrop-filter:blur(22px) saturate(145%)}
+    .brand{display:flex;align-items:center;gap:.85rem;min-width:0;text-decoration:none}.brand-mark{display:grid;place-items:center;flex:none;width:2.65rem;height:2.65rem;border:1px solid rgba(37,132,183,.6);border-radius:50%;color:var(--blue-deep);background:rgba(255,255,255,.65);box-shadow:0 7px 18px rgba(32,133,185,.12);font-size:.78rem;font-weight:800;letter-spacing:-.07em}.brand small,.eyebrow,.section-kicker{display:block;color:#647b98;font-size:.58rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.brand strong{display:block;margin-top:.18rem;color:var(--ink-strong);font-size:1.16rem;letter-spacing:-.025em}
+    .top-actions{display:flex;align-items:center;gap:.75rem}.source-link{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:2.3rem;padding:.6rem .86rem;border:1px solid rgba(42,148,194,.25);border-radius:3px;color:var(--blue-deep);background:rgba(255,255,255,.68);font-size:.72rem;font-weight:750;text-decoration:none;white-space:nowrap}.source-link:hover{border-color:var(--blue);background:white}.source-link svg{width:1rem;height:1rem;fill:currentColor}
+    .zoom-controls{display:flex;align-items:center;padding:.18rem;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.7)}.zoom-controls button{min-width:1.8rem;height:1.8rem;border:0;border-radius:3px;color:#536982;background:transparent;cursor:pointer;font-size:1rem}.zoom-controls button:hover{background:rgba(42,148,194,.1);color:var(--blue-deep)}.zoom-controls button:disabled{opacity:.4;cursor:not-allowed}.zoom-controls .zoom-value{min-width:3.1rem;font-size:.65rem;font-weight:700;white-space:nowrap}
+    .intro-strip{display:flex;justify-content:space-between;gap:1rem;padding:.75rem max(4.8vw,1.25rem);border-bottom:1px solid rgba(154,185,209,.22);color:#5c7189;background:rgba(255,255,255,.35);font-size:.68rem}.intro-strip span:last-child{color:var(--amber);font-weight:700}
+    main{width:min(100%,1535px);margin:0 auto;padding:2.3rem max(4.8vw,1.25rem) 3rem}.hero{margin-bottom:2rem}.hero h1{max-width:50rem;margin:.55rem 0 .65rem;color:#20334e;font-size:clamp(2rem,3.5vw,3.1rem);font-weight:600;letter-spacing:-.04em;line-height:1.12}.hero h1 span{color:var(--blue-deep)}.hero p:last-child{max-width:47rem;margin:0;color:#617a90;font-size:.9rem;line-height:1.6}
+    .section-heading{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1rem}.section-heading h2{margin:.38rem 0 0;color:#20334e;font-size:1.35rem;font-weight:600;letter-spacing:-.025em}.section-heading p:last-child{margin:0;color:#768ca0;font-size:.7rem}
+    .lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.lab-card{display:flex;flex-direction:column;min-height:17rem;padding:1.45rem;border:1px solid rgba(255,255,255,.9);border-radius:3px;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(244,250,255,.64));box-shadow:0 20px 55px rgba(47,76,112,.08),inset 0 1px 0 rgba(255,255,255,.92);backdrop-filter:blur(22px);transition:transform .2s,box-shadow .2s}.lab-card:hover{transform:translateY(-4px);box-shadow:0 25px 60px rgba(47,76,112,.13)}.lab-number{color:var(--amber);font:700 .72rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase}.lab-card h3{margin:1.5rem 0 .7rem;color:#20334e;font-size:1.38rem;font-weight:600;letter-spacing:-.03em;line-height:1.22}.lab-card p{margin:0;color:#617a90;font-size:.79rem;line-height:1.62}.topic-list{display:flex;flex-wrap:wrap;gap:.38rem;margin:1.25rem 0 1.4rem}.topic-list span{padding:.4rem .55rem;border:1px solid rgba(79,119,157,.12);border-radius:2px;color:#526c81;background:rgba(240,247,251,.82);font-size:.62rem}.card-link{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:auto;padding-top:1.05rem;border-top:1px solid rgba(105,143,179,.16);color:var(--blue-deep);font-size:.75rem;font-weight:800;text-decoration:none}.card-link span:last-child{font-size:1.16rem;line-height:1}.card-link:hover{text-decoration:underline;text-underline-offset:3px}
+    .info-panel{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin-top:1.25rem;padding:1.35rem 1.5rem;border:1px solid rgba(255,255,255,.9);border-radius:3px;background:rgba(255,255,255,.59);box-shadow:0 15px 36px rgba(49,80,117,.05)}.info-panel h2{margin:.3rem 0 .4rem;color:#20334e;font-size:1rem;font-weight:650}.info-panel p:last-child{margin:0;color:#657d95;font-size:.75rem;line-height:1.55}.info-panel a{flex:none;color:var(--blue-deep);font-size:.72rem;font-weight:800;text-decoration:none}.info-panel a:hover{text-decoration:underline}
+    footer{display:flex;justify-content:space-between;gap:1.5rem;padding:0 max(4.8vw,1.25rem) 1.7rem;color:#72899e;font-size:.67rem}footer a{color:var(--blue-deep);text-decoration:none}footer a:hover{text-decoration:underline}
+    @media(max-width:900px){.lab-grid{grid-template-columns:1fr}.lab-card{min-height:0}.lab-card h3{margin-top:1rem}.topbar{flex-wrap:wrap}.top-actions{margin-left:auto}}
+    @media(max-width:620px){.topbar{align-items:flex-start}.brand strong{font-size:1rem}.top-actions{width:100%;justify-content:space-between}.intro-strip span:last-child{display:none}main{padding-top:1.9rem}.hero h1{font-size:2.2rem}.lab-grid{grid-template-columns:1fr}.lab-card{min-height:15rem}.lab-card h3{margin-top:1.2rem}.info-panel{align-items:flex-start;flex-direction:column;gap:.7rem}footer{flex-direction:column;gap:.35rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lab-card{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Computer Vision 2026 tutorials, top of page"><span class="brand-mark" aria-hidden="true">CV</span><span><small>University of Bern · CVG</small><strong>Computer Vision 2026</strong></span></a>
+    <div class="top-actions">
+      <a class="source-link" href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs" target="_blank" rel="noopener noreferrer" aria-label="Open the tutorial code on GitHub (new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.51-1.3-1.24-1.65-1.24-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.15 1.73 1.15 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.47-.28-5.07-1.24-5.07-5.54 0-1.22.44-2.22 1.15-3-.11-.28-.5-1.42.11-2.95 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.08-1.15 3.08-1.15.61 1.53.22 2.67.1 2.95.72.78 1.15 1.78 1.15 3 0 4.31-2.6 5.26-5.08 5.53.4.35.76 1.04.76 2.1v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>GitHub</a>
+      <div class="zoom-controls" role="group" aria-label="Page zoom"><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="zoom-reset" class="zoom-value" type="button" aria-label="Reset zoom to 100 percent">100%</button><button id="zoom-in" type="button" aria-label="Zoom in">+</button></div>
+    </div>
+  </header>
+  <div class="intro-strip"><span>Interactive tutorials for the Computer Vision course</span><span>University of Bern · 2026</span></div>
+  <main id="top">
+    <section class="hero" aria-labelledby="page-title"><p class="eyebrow">Welcome to the tutorials</p><h1 id="page-title">Choose a tutorial and <span>start exploring.</span></h1><p>Use the interactive activities alongside your exercise sheet on ILIAS. Change the inputs, make a prediction, and compare it with what you see.</p></section>
+    <section aria-labelledby="labs-title"><div class="section-heading"><div><p class="section-kicker">All tutorials</p><h2 id="labs-title">Select a topic</h2></div><p>Opens in a new tab</p></div>
+      <div class="lab-grid">
+        <!--
+          To add a tutorial: copy one <article> block, paste it after the last one,
+          and change the number, title, description, topics and link. Write & as &amp;.
+          Every change to this folder on main is published automatically.
+          See docs/tutorial-authoring/README.md, section "Course hub".
+        -->
+        <article class="lab-card">
+          <span class="lab-number">Tutorial 01</span>
+          <h3>Pinhole Camera</h3>
+          <p>See how a 3D point becomes an image point. Try different camera settings and observe the field of view.</p>
+          <div class="topic-list" aria-label="Topics"><span>Projection</span><span>Field of view</span><span>Camera geometry</span></div>
+          <a class="card-link" href="https://pinhole-camera-lab.chenrui-fan.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span>Start Tutorial 01</span><span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="lab-card">
+          <span class="lab-number">Tutorial 02</span>
+          <h3>Camera Models, Filters, Events &amp; Edges</h3>
+          <p>Try the camera and image-processing examples to see how filtering, events and edges behave.</p>
+          <div class="topic-list" aria-label="Topics"><span>Optics</span><span>Filtering</span><span>Edges</span></div>
+          <a class="card-link" href="https://cv-tutorial-02-lab.chenrui-fan.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span>Start Tutorial 02</span><span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="lab-card">
+          <span class="lab-number">Tutorial 03</span>
+          <h3>Interest Points, Registration &amp; Fitting</h3>
+          <p>Explore how to find interest points, fit a model to data, and align images.</p>
+          <div class="topic-list" aria-label="Topics"><span>Interest points</span><span>Fitting</span><span>Registration</span></div>
+          <a class="card-link" href="https://cv-tutorial-03-lab.chenrui-fan.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span>Start Tutorial 03</span><span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="lab-card">
+          <span class="lab-number">Tutorial 04</span>
+          <h3>Shading &amp; Photometric Stereo</h3>
+          <p>Recover shape from shading, test integrability, and estimate normals from multiple light directions.</p>
+          <div class="topic-list" aria-label="Topics"><span>Shape from shading</span><span>Integrability</span><span>Photometric stereo</span></div>
+          <a class="card-link" href="https://cv-tutorial-04-lab.chenrui-fan.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span>Start Tutorial 04</span><span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="lab-card">
+          <span class="lab-number">Tutorial 05</span>
+          <h3>Optical Flow</h3>
+          <p>Turn brightness constancy into a motion equation, see the aperture problem, and estimate flow with Lucas–Kanade when the light changes or the camera moves.</p>
+          <div class="topic-list" aria-label="Topics"><span>Brightness constancy</span><span>Lucas–Kanade</span><span>Camera motion</span></div>
+          <a class="card-link" href="https://cv-optical-flow-lab.unibe-7123.chatgpt.site/" target="_blank" rel="noopener noreferrer"><span>Start Tutorial 05</span><span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </section>
+    <aside class="info-panel" aria-label="Help finding course materials"><div><h2>Looking for the exercise sheets?</h2><p>Find the PDFs and assignment materials in your ILIAS course. To run Tutorials 01–04 on your own computer, follow the instructions on GitHub.</p></div><a href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs" target="_blank" rel="noopener noreferrer">Open GitHub ↗</a></aside>
+  </main>
+  <footer><span>University of Bern · Computer Vision Group · 2026</span><span><a href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs" target="_blank" rel="noopener noreferrer">Tutorial code on GitHub</a></span></footer>
+  <script>
+    (() => {
+      document.querySelectorAll('.lab-card').forEach(card=>{const link=card.querySelector('.card-link'),number=card.querySelector('.lab-number'),title=card.querySelector('h3');if(link&&number&&title&&!link.hasAttribute('aria-label'))link.setAttribute('aria-label','Open '+number.textContent.trim()+' '+title.textContent.trim()+' (new tab)')});
+      const MIN=75,MAX=150,STEP=10,KEY='cv-hub-zoom';
+      const out=document.getElementById('zoom-out'),reset=document.getElementById('zoom-reset'),inside=document.getElementById('zoom-in');
+      let zoom=100;
+      try{const stored=Number(localStorage.getItem(KEY));if(Number.isFinite(stored)&&stored>=MIN&&stored<=MAX)zoom=stored}catch{}
+      function setZoom(value){zoom=Math.max(MIN,Math.min(MAX,Math.round(value/5)*5));document.documentElement.style.setProperty('--zoom',String(zoom/100));reset.textContent=zoom+'%';reset.setAttribute('aria-label','Reset zoom to 100 percent; current zoom '+zoom+' percent');out.disabled=zoom<=MIN;inside.disabled=zoom>=MAX;try{localStorage.setItem(KEY,String(zoom))}catch{}}
+      out.addEventListener('click',()=>setZoom(zoom-STEP));inside.addEventListener('click',()=>setZoom(zoom+STEP));reset.addEventListener('click',()=>setZoom(100));setZoom(zoom);
+      document.addEventListener('wheel',event=>{if(event.ctrlKey||event.metaKey){event.preventDefault();if(event.deltaY!==0)setZoom(zoom+(event.deltaY<0?STEP:-STEP));return}if(!event.shiftKey)return;let node=event.target instanceof Element?event.target:null;while(node&&node!==document.documentElement){if(node.scrollWidth>node.clientWidth+1){const unit=event.deltaMode===1?16:event.deltaMode===2?node.clientWidth:1;const delta=(Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY)*unit;event.preventDefault();node.scrollLeft+=delta;return}node=node.parentElement}},{passive:false});
+    })();
+  </script>
+</body>
+</html>

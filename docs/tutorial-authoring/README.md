@@ -41,7 +41,7 @@ Use the current program and instructor decisions for scope and timing, and the r
 | Tutorial 02 | [Optics, filters and events lab](https://cv-tutorial-02-lab.chenrui-fan.chatgpt.site/) | [tutorial-02-optics-filters-edges-lab](../../tutorial-02-optics-filters-edges-lab/) |
 | Tutorial 03 | [Interest points, fitting and registration lab](https://cv-tutorial-03-lab.chenrui-fan.chatgpt.site/) | [tutorial-03-interest-points-fitting-registration-lab](../../tutorial-03-interest-points-fitting-registration-lab/) |
 
-The [course hub](https://cv-2026-interactive-labs.chenrui-fan.chatgpt.site/) is the common student entry point. Instructor dashboards use `/teacher`; access requires the configured teacher account.
+The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is the common student entry point; [Course hub](#course-hub) explains how to add a tutorial. Instructor dashboards use `/teacher`; access requires the configured teacher account.
 
 ### Where to look in the source
 
@@ -79,6 +79,18 @@ For a new tutorial, provision its own Site, database and authorized teacher conf
 
 For a `chatgpt.site` publication, use the available Sites publishing workflow with the course maintainer's access. An ordinary chat may generate the code without having publication access. Keep credentials and teacher account configuration outside public source, and report the actual deployment result and tested URL.
 
+## Course hub
+
+The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is a single static page, [`site/index.html`](../../site/index.html) in this repository. It only links to the labs, so a lab can be hosted anywhere, including on another tutor's `chatgpt.site` address. Every push to `main` that changes `site/` publishes the page through [`.github/workflows/pages.yml`](../../.github/workflows/pages.yml). The run appears under **Actions**, and the page updates about a minute after the run succeeds. This needs the one-time repository setting **Settings → Pages → Source: GitHub Actions**.
+
+To add a tutorial:
+
+1. Open `site/index.html` on GitHub and choose **Edit**. Committing to `main` needs write access; ask the repository owner to add you as a collaborator. Without write access, GitHub offers to fork the repository, and you can submit the change as a pull request.
+2. Copy the last `<article class="lab-card">` block and paste it after that block. Change the tutorial number (it appears twice), the title, the one-sentence description, the topics and the lab URL. Write `&` as `&amp;`.
+3. Commit to `main`, wait until the **Publish course hub** run has finished, then open the hub and test the new link.
+
+The box "Looking for the exercise sheets?" names the tutorials whose source can run locally (currently 01–04). Update it only when you add a lab's source to this repository.
+
 ## Repository and release convention
 
 Maintain one website source directory inside `2026/tutorials/tutorial_NN/` in **CV_Tutorial**. A local `sites/` checkout is a deployment copy; do not turn it into another maintained version. Student experiments and questions share one page, with the existing separate instructor route.
@@ -104,7 +116,7 @@ Use Tutorial 01's `sources/` arrangement where appropriate; the diagram is a pac
 
 The release plan determines which solutions go into which folder. For example, Assignment 01's starter and reference solution were intentionally included together in Tutorial 03's pre-class package; do not impose delayed release on every assignment. Assignment text should describe a practical exercise; add report/submission requirements only when the current course instructions require them.
 
-After review, publish the site and maintain the approved source in [CV_Tutorial](https://github.com/Sosekie/CV_Tutorial). Synchronize the finished website into [Unibe-CVG-CV-Interactive-Labs](https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs), following that repository's layout and public configuration policy. Preserve unrelated local work, historical question IDs and votes. Add the new tutorial to the hub and provide ILIAS with the stable student URL.
+After review, publish the site and maintain the approved source in [CV_Tutorial](https://github.com/Sosekie/CV_Tutorial). Synchronize the finished website into [Unibe-CVG-CV-Interactive-Labs](https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs), following that repository's layout and public configuration policy. Preserve unrelated local work, historical question IDs and votes. Add the new tutorial to the [course hub](#course-hub) and provide ILIAS with the stable student URL.
 
 **GitHub synchronization rule:** every request to sync to GitHub covers both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs within the approved release scope, and CV_Tutorial is synchronized every time. Follow the [project synchronization skill](../../.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and the requested files before reporting completion.
 
