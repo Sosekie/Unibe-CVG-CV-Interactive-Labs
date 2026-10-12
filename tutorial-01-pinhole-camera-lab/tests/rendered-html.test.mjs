@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("includes development preview metadata in the server build", async () => {
-  // Vinext's Cloudflare bundle imports the cloudflare:workers virtual module,
-  // so plain Node cannot execute it. Inspect the successful server build
-  // instead of importing a runtime that only exists in Workers.
-  const source = await readFile(new URL("../dist/server/index.js", import.meta.url), "utf8");
-  assert.match(source, /codex-preview/);
-  assert.match(source, /development/);
+test("the static export contains the student and teacher pages", async () => {
+  // npm test builds first; scripts/export-site.mjs collects the pages into out/.
+  const student = await readFile(new URL("../out/index.html", import.meta.url), "utf8");
+  const teacher = await readFile(new URL("../out/teacher/index.html", import.meta.url), "utf8");
+  assert.match(student, /<title>Pinhole Camera Lab<\/title>/);
+  assert.match(student, /<link rel="icon" href="[^"]*\/favicon\.svg"/);
+  assert.match(teacher, /Sign in to see the votes/);
 });

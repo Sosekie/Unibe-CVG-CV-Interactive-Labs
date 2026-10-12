@@ -1,13 +1,7 @@
-import { notFound } from "next/navigation";
-import { requireChatGPTUser } from "@/app/chatgpt-auth";
-import { TeacherDashboard } from "@/components/teacher-dashboard";
+import { TeacherApp } from '@/components/teacher-app';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-static';
 
-export default async function TeacherPage() {
-  const teacherEmail = process.env.TEACHER_EMAIL?.toLowerCase();
-  if (!teacherEmail) notFound();
-  const user = await requireChatGPTUser("/teacher");
-  if (user.email.toLowerCase() !== teacherEmail) notFound();
-  return <TeacherDashboard />;
+export default function TeacherPage() {
+  return <TeacherApp />;
 }

@@ -37,34 +37,34 @@ Use the current program and instructor decisions for scope and timing, and the r
 
 | Example | Student site | Maintained source |
 | --- | --- | --- |
-| Tutorial 01 | [Pinhole camera lab](https://pinhole-camera-lab.chenrui-fan.chatgpt.site/) | [tutorial-01-pinhole-camera-lab](../../tutorial-01-pinhole-camera-lab/) |
-| Tutorial 02 | [Optics, filters and events lab](https://cv-tutorial-02-lab.chenrui-fan.chatgpt.site/) | [tutorial-02-optics-filters-edges-lab](../../tutorial-02-optics-filters-edges-lab/) |
-| Tutorial 03 | [Interest points, fitting and registration lab](https://cv-tutorial-03-lab.chenrui-fan.chatgpt.site/) | [tutorial-03-interest-points-fitting-registration-lab](../../tutorial-03-interest-points-fitting-registration-lab/) |
+| Tutorial 01 | [Pinhole camera lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-01/) | [tutorial-01-pinhole-camera-lab](../../tutorial-01-pinhole-camera-lab/) |
+| Tutorial 02 | [Optics, filters and events lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-02/) | [tutorial-02-optics-filters-edges-lab](../../tutorial-02-optics-filters-edges-lab/) |
+| Tutorial 03 | [Interest points, fitting and registration lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-03/) | [tutorial-03-interest-points-fitting-registration-lab](../../tutorial-03-interest-points-fitting-registration-lab/) |
 
-The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is the common student entry point; [Course hub](#course-hub) explains how to add a tutorial. Instructor dashboards use `/teacher`; access requires the configured teacher account.
+The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is the common student entry point; [Course hub](#course-hub) explains how to add a tutorial. Each lab has an instructor page at `teacher/` below its address, for example `…/tutorial-02/teacher/`. Instructors sign in with GitHub.
 
 ### Where to look in the source
 
 Within the Tutorial 02 website directory:
 
-- `app/page.tsx`, `app/layout.tsx`, `app/globals.css`, `components/site-header.tsx`: page structure, shared navigation and visual design.
-- `components/questions-section.tsx`, `components/interactive-answer.tsx`: question tabs, voting state, interactive worked answers.
-- `components/teacher-dashboard.tsx`, `app/teacher/page.tsx`: instructor layout and answer publication controls.
-- `app/api/questions/route.ts`, `app/api/votes/route.ts`, `app/api/teacher/questions/route.ts`: student and teacher endpoints.
-- `app/chatgpt-auth.ts`, `app/teacher/page.tsx`, `app/api/teacher/questions/route.ts`, `db/`, `drizzle/`: host-specific authentication, teacher authorization and persistent storage. The public Tutorial 02/03 copies read the teacher identity from `TEACHER_EMAIL`; configure it privately for the intended teacher when adapting the template.
+- `components/lab-home.tsx`, `app/layout.tsx`, `app/globals.css`, `components/site-header.tsx`: page structure, shared navigation and visual design. `app/page.tsx` only wraps the page for the static export.
+- `lib/question-bank.ts`, `components/questions-section.tsx`, `components/interactive-answer.tsx`: questions, voting state, interactive worked answers.
+- `components/teacher-app.tsx`, `components/teacher-dashboard.tsx`, `app/teacher/page.tsx`: instructor sign-in, layout and answer publication controls.
+- `lib/labs-api.ts`: the client for the course API (votes, releases, sign-in). It is the same file in every lab.
+- [`api/`](../../api/): the course API, a Cloudflare Worker with a D1 database. `api/src/tutorials.ts` lists the question ids of each tutorial, and `TEACHERS` in `api/wrangler.json` lists the instructors' GitHub accounts.
 
-Within Tutorial 03, also inspect `components/harris-visualization.tsx`, `components/prewitt-plane-diagram.tsx`, `lib/tutorial-questions.ts`, `lib/teacher.ts` and `tests/tutorial03.test.ts` for visualizations, question identifiers, teacher configuration and numerical checks. Reuse the design and patterns; replace the topic-specific mathematics, data and identifiers.
+Within Tutorial 03, also inspect `components/harris-visualization.tsx`, `components/prewitt-plane-diagram.tsx`, `lib/question-bank.ts` and `tests/tutorial03.test.ts` for visualizations, question identifiers and numerical checks. Reuse the design and patterns; replace the topic-specific mathematics, data and identifiers.
 
 ## Local preview and hosting
 
-For the current Tutorial 03 source, `package.json` requires Node.js **22.13.0 or later**. From that website directory:
+The labs need Node.js **22.13.0 or later**. From a lab directory:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the local address printed by the development server. The current verification commands are:
+Open the local address printed by the development server. The verification commands are:
 
 ```sh
 npm test
@@ -73,27 +73,35 @@ npx tsc --noEmit
 npm run build
 ```
 
-Check each template's own `package.json` before reusing these commands. The templates use React, TypeScript, Vinext and Cloudflare D1. This public copy configures a local development database; student visualizations and released answers do not require a ChatGPT account locally. Local votes are not synchronized with the classroom site. See the [repository README](../../README.md) for the setup and launch shortcuts. Math tests and a build do not establish that hosted authentication or the production question database works. Hosted voting and teacher publication need the appropriate `DB` binding and authentication configuration. Inspect the template's database initialization/migrations and hosting configuration with the deployment maintainer.
+Check each lab's own `package.json` before reusing these commands; Tutorial 01 uses ESLint and builds before its tests. The labs use React, TypeScript and Vinext and are exported as static pages, which GitHub Pages serves. `npm run build` writes the site to `out/`; the environment variable `LABS_BASE_PATH` sets the folder it is served from, for example `/Unibe-CVG-CV-Interactive-Labs/tutorial-05`.
 
-For a new tutorial, provision its own Site, database and authorized teacher configuration. Review copied `.openai` metadata, database bindings, question IDs, topic names, URLs and assets before deployment. Do not deploy with a previous tutorial's project identity or database. The authentication headers in `app/chatgpt-auth.ts` depend on the trusted hosting layer; they are not a standalone authentication system for arbitrary hosting. A browser-only prototype can demonstrate the mathematics, but cannot safely provide persistent shared votes or protected teacher actions without a backend.
+Votes and answer releases are kept by the course API in [`api/`](../../api/), a Cloudflare Worker with a D1 database; every lab reaches it through `lib/labs-api.ts`. A local preview uses the live course API, so do not test voting or publishing there. For tests, run the API with its own local database: create an untracked `api/.dev.vars` with `DEV_TEACHER_LOGIN=<your GitHub login>` and `SESSION_SECRET=<any text>`, run `npm --prefix api run dev` (port 8787) and start the lab with `LABS_API_URL=http://127.0.0.1:8787`. `DEV_TEACHER_LOGIN` signs you in as an instructor without GitHub and works only on localhost.
 
-For a `chatgpt.site` publication, use the available Sites publishing workflow with the course maintainer's access. An ordinary chat may generate the code without having publication access. Keep credentials and teacher account configuration outside public source, and report the actual deployment result and tested URL.
+To add a tutorial lab:
+
+1. Copy a lab folder and replace the topic-specific mathematics, data and text. In Unibe-CVG-CV-Interactive-Labs, name it `tutorial-NN-<topic>-lab/`. Keep `lib/labs-api.ts`, `components/teacher-app.tsx`, `scripts/export-site.mjs`, `next.config.ts` and `vite.config.ts`.
+2. Give the questions new, stable ids in `lib/question-bank.ts` and set `tutorialSlug` to `tutorial-NN`.
+3. Register the same ids under `tutorial-NN` in `api/src/tutorials.ts`; `api/test/registry.test.ts` checks that the lists agree.
+4. Push to `main`. The **Publish course site** workflow tests and builds every `tutorial-*` folder and serves it at `https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-NN/`; **Deploy course API** redeploys the API.
+5. Add a card to the [course hub](#course-hub).
+
+Instructors are the GitHub accounts listed in `TEACHERS` in `api/wrangler.json`. A tutor can also host a lab elsewhere, for example on their own `chatgpt.site` address as for Tutorial 05, and add only a hub card. Tutorials 01–04 were first published as ChatGPT Sites; those copies are no longer updated.
 
 ## Course hub
 
-The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is a single static page, [`site/index.html`](../../site/index.html) in this repository. It only links to the labs, so a lab can be hosted anywhere, including on another tutor's `chatgpt.site` address. Every push to `main` that changes `site/` publishes the page through [`.github/workflows/pages.yml`](../../.github/workflows/pages.yml). The run appears under **Actions**, and the page updates about a minute after the run succeeds. This needs the one-time repository setting **Settings → Pages → Source: GitHub Actions**.
+The [course hub](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/) is a single static page, [`site/index.html`](../../site/index.html) in this repository. It only links to the labs, so a lab can be hosted anywhere, including on another tutor's `chatgpt.site` address. Every push to `main` that changes `site/` or a lab folder publishes the site through [`.github/workflows/pages.yml`](../../.github/workflows/pages.yml), which tests and builds every lab. The run appears under **Actions**, and the site updates a few minutes after the push. This needs the one-time repository setting **Settings → Pages → Source: GitHub Actions**.
 
 To add a tutorial:
 
 1. Open `site/index.html` on GitHub and choose **Edit**. Committing to `main` needs write access; ask the repository owner to add you as a collaborator. Without write access, GitHub offers to fork the repository, and you can submit the change as a pull request.
-2. Copy the last `<article class="lab-card">` block and paste it after that block. Change the tutorial number (it appears twice), the title, the one-sentence description, the topics and the lab URL. Write `&` as `&amp;`.
-3. Commit to `main`, wait until the **Publish course hub** run has finished, then open the hub and test the new link.
+2. Copy the last `<article class="lab-card">` block and paste it after that block. Change the tutorial number (it appears twice), the title, the one-sentence description, the topics and the lab URL; a lab in this repository is served at `https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-NN/`. Write `&` as `&amp;`.
+3. Commit to `main`, wait until the **Publish course site** run has finished, then open the hub and test the new link.
 
 The box "Looking for the exercise sheets?" names the tutorials whose source can run locally (currently 01–04). Update it only when you add a lab's source to this repository.
 
 ## Repository and release convention
 
-Maintain one website source directory inside `2026/tutorials/tutorial_NN/` in **CV_Tutorial**. A local `sites/` checkout is a deployment copy; do not turn it into another maintained version. Student experiments and questions share one page, with the existing separate instructor route.
+Maintain one website source directory inside `2026/tutorials/tutorial_NN/` in **CV_Tutorial**. Its copy in Unibe-CVG-CV-Interactive-Labs is identical, and GitHub Pages builds the lab from that copy. Local `sites/` checkouts are left from the earlier ChatGPT Sites publications; do not turn them into maintained versions. Student experiments and questions share one page, with the separate instructor page.
 
 Suggested course package, following Tutorials 01–02:
 
@@ -116,8 +124,8 @@ Use Tutorial 01's `sources/` arrangement where appropriate; the diagram is a pac
 
 The release plan determines which solutions go into which folder. For example, Assignment 01's starter and reference solution were intentionally included together in Tutorial 03's pre-class package; do not impose delayed release on every assignment. Assignment text should describe a practical exercise; add report/submission requirements only when the current course instructions require them.
 
-After review, publish the site and maintain the approved source in [CV_Tutorial](https://github.com/Sosekie/CV_Tutorial). Synchronize the finished website into [Unibe-CVG-CV-Interactive-Labs](https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs), following that repository's layout and public configuration policy. Preserve unrelated local work, historical question IDs and votes. Add the new tutorial to the [course hub](#course-hub) and provide ILIAS with the stable student URL.
+After review, maintain the approved source in [CV_Tutorial](https://github.com/Sosekie/CV_Tutorial) and synchronize the finished website into [Unibe-CVG-CV-Interactive-Labs](https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs); the push to `main` publishes it. Preserve unrelated local work, historical question IDs and votes. Add the new tutorial to the [course hub](#course-hub) and provide ILIAS with the stable student URL.
 
 **GitHub synchronization rule:** every request to sync to GitHub covers both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs within the approved release scope, and CV_Tutorial is synchronized every time. Follow the [project synchronization skill](../../.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and the requested files before reporting completion.
 
-Answer publication controls govern the student interface. Source code committed to a public GitHub repository may contain worked answers, so interface gating does **not** promise answer secrecy. Keep genuinely unreleased material out of public commits and client bundles; agree the course's source/release policy before synchronization.
+Answer publication controls when the student page shows an answer. The static pages and the public source contain every worked answer, so publication does **not** keep answers secret. Keep genuinely unreleased material out of public commits and pages; agree the course's source/release policy before synchronization.

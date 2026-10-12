@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin']
 export const metadata: Metadata = {
   title: 'CV Tutorial 03 — Edges, Interest Points, Fitting & Registration',
   description: 'Interactive Computer Vision Tutorial 03 lab for edges, interest points, fitting, and registration.',
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: `${process.env.LABS_BASE_PATH ?? ''}/favicon.svg` },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

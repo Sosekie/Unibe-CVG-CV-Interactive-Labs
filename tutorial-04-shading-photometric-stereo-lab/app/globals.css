@@ -259,3 +259,13 @@
 .teacher-release-status{grid-column:1;grid-template-columns:1fr;gap:8px}
 .lab-footer a{display:block;margin:4px 0}
 }
+
+/* Instructor sign-in: the teacher page is static and signs in with GitHub on the course server. */
+.teacher-account{display:inline-flex;align-items:center;gap:12px}
+.teacher-account button{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid rgba(105,143,179,.24);border-radius:3px;color:#28425e;background:rgba(255,255,255,.72);font-size:10px;font-weight:700;letter-spacing:0;cursor:pointer}
+.teacher-account button:hover{border-color:#2a94c2;color:#237eae}
+.teacher-signin{max-width:560px;margin:34px auto 0;padding:30px 32px;border:1px solid rgba(255,255,255,.88);border-left:3px solid #d58a3f;border-radius:3px;background:rgba(255,255,255,.72);box-shadow:0 14px 36px rgba(50,79,110,.08);backdrop-filter:blur(18px)}
+.teacher-signin h1{margin:5px 0 10px;color:#20334e;font-size:30px;letter-spacing:-.03em}
+.teacher-signin>p:not(.section-kicker){margin:0 0 18px;color:#657d95;font-size:13px;line-height:1.55}
+.teacher-signin .teacher-signin-message{display:block;margin:0 0 18px;padding:10px 13px;border-left:3px solid #2a94c2;color:#326e8c;background:rgba(226,246,252,.74);font-size:12px}
+@media(max-width:620px){.teacher-topbar{gap:10px;flex-wrap:wrap}.teacher-signin{padding:24px 20px}.teacher-signin h1{font-size:25px}}

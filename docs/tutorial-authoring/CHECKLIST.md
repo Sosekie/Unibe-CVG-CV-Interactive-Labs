@@ -49,11 +49,11 @@ These are examples of checks, not mandatory topics for later tutorials.
 - [ ] Desktop and 375px-wide layouts checked; no unintended horizontal overflow or hidden controls.
 - [ ] Touch hit areas, screen-to-plot conversion, pointer capture/cancel and touch-action checked.
 - [ ] Controls usable with keyboard; shared zoom and Shift-wheel navigation checked on student/teacher routes.
-- [ ] Correct teacher account configuration and server authorization checked with an isolated test setup.
-- [ ] Unauthorized direct teacher requests denied; unpublished answer fields absent from student API.
-- [ ] Publish all, Hide all, per-question release and answer previews work in the test database.
+- [ ] Instructor GitHub accounts listed in `api/wrangler.json`; teacher sign-in checked with a local course API.
+- [ ] Teacher requests without a valid instructor session are refused by the course API.
+- [ ] Publish all, Hide all, per-question release and answer previews work against the local course API.
 - [ ] Vote persistence and duplicate-vote behavior checked locally; no production votes/release changes made for QA.
-- [ ] New tutorial has separate project/database bindings and unique question IDs; historical votes preserved.
+- [ ] New tutorial has unique question IDs, registered in `api/src/tutorials.ts`; historical votes preserved.
 - [ ] Public source/answer release policy reviewed; no credentials, personal configuration or withheld materials staged.
 - [ ] Applicable math tests, lint, type checks and build pass; console findings assessed with evidence.
 

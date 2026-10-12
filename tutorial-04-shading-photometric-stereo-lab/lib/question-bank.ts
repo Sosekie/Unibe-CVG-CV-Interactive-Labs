@@ -1,4 +1,7 @@
 // Two short questions per lab, taken from the simplest parts of the Tutorial 04 worksheet.
+// The course API stores votes and releases under this tutorial id (api/src/tutorials.ts).
+export const tutorialSlug = 'tutorial-04';
+
 export const tutorialQuestions = [
   {
     id: 't04-integration-plane', groupName: 'Normal Integration', difficulty: 'Easy', sortOrder: 1,

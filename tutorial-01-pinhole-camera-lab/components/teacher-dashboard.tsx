@@ -1,33 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnswerExplanation } from "@/components/answer-explanation";
-import type { DiscussionQuestion } from "@/lib/answer-types";
 import { DiscussionConvention } from "@/components/discussion-convention";
+import { tutorialQuestions } from "@/lib/question-bank";
+import { tutorialAnswers } from "@/lib/tutorial-answers";
+import { fetchTeacherState, LabsApiError, updateRelease, type TeacherQuestionState, type TeacherSession } from "@/lib/labs-api";
 
 const REFRESH_INTERVAL_MS = 5000;
 
-type TeacherQuestion = DiscussionQuestion;
-
-export function TeacherDashboard() {
-  const [questions, setQuestions] = useState<TeacherQuestion[]>([]);
+export function TeacherDashboard({ session, onSignOut }: { session: TeacherSession; onSignOut: (reason?: "expired") => void }) {
+  const [state, setState] = useState<Record<string, TeacherQuestionState> | null>(null);
   const [loading, setLoading] = useState(true);
   const [changing, setChanging] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
+  const questions = useMemo(() => tutorialQuestions
+    .map((question) => ({ ...question, explanation: tutorialAnswers[question.id], votes: state?.[question.id]?.votes ?? 0, answerPublished: state?.[question.id]?.published ?? false }))
+    .sort((first, second) => second.votes - first.votes || first.sortOrder - second.sortOrder), [state]);
+
+  const showError = useCallback((loadError: unknown) => {
+    if (loadError instanceof LabsApiError && loadError.status === 401) onSignOut("expired");
+    else setError(loadError instanceof Error ? loadError.message : "Could not load results.");
+  }, [onSignOut]);
+
   const load = async () => {
-    setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/teacher/questions", { cache: "no-store" });
-      const data = (await response.json()) as { questions?: TeacherQuestion[]; error?: string };
-      if (!response.ok) throw new Error(data.error ?? "Could not load results.");
-      setQuestions(data.questions ?? []);
+      setState((await fetchTeacherState(session)).questions);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Could not load results.");
+      showError(loadError);
     } finally {
       setLoading(false);
     }
@@ -37,15 +43,13 @@ export function TeacherDashboard() {
     let active = true;
     const refreshQuestions = async () => {
       try {
-        const response = await fetch("/api/teacher/questions", { cache: "no-store" });
-        const data = (await response.json()) as { questions?: TeacherQuestion[]; error?: string };
-        if (!response.ok) throw new Error(data.error ?? "Could not load results.");
+        const next = await fetchTeacherState(session);
         if (active) {
-          setQuestions(data.questions ?? []);
+          setState(next.questions);
           setError("");
         }
       } catch (loadError) {
-        if (active) setError(loadError instanceof Error ? loadError.message : "Could not load results.");
+        if (active) showError(loadError);
       } finally {
         if (active) setLoading(false);
       }
@@ -64,24 +68,19 @@ export function TeacherDashboard() {
       window.clearInterval(intervalId);
       document.removeEventListener("visibilitychange", refreshWhenVisible);
     };
-  }, []);
+  }, [session, showError]);
 
   const updateAnswers = async (payload: { scope: "all"; published: boolean } | { questionId: string; published: boolean }) => {
     setChanging("scope" in payload ? "all" : payload.questionId);
     setError("");
     setNotice("");
     try {
-      const response = await fetch("/api/teacher/questions", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = (await response.json()) as { error?: string };
-      if (!response.ok) throw new Error(data.error ?? "Could not update answer visibility.");
-      setNotice(payload.published ? "Answers released. Open student pages update automatically within about 5 seconds." : "Answers hidden. Open student pages update automatically within about 5 seconds.");
+      await updateRelease(session, payload);
+      setNotice(payload.published ? "Answers released. Open student pages update automatically within about 10 seconds." : "Answers hidden. Open student pages update automatically within about 10 seconds.");
       await load();
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : "Could not update answer visibility.");
+      if (updateError instanceof LabsApiError && updateError.status === 401) onSignOut("expired");
+      else setError(updateError instanceof Error ? updateError.message : "Could not update answer visibility.");
     } finally {
       setChanging(null);
     }
@@ -94,19 +93,19 @@ export function TeacherDashboard() {
     <main className="teacher-shell">
       <header className="teacher-topbar">
         <Link className="teacher-brand" href="/">← Pinhole Camera Lab</Link>
-        <span>INSTRUCTOR VIEW</span>
+        <span className="teacher-account">INSTRUCTOR VIEW · {session.login}<button type="button" onClick={() => onSignOut()}><LogOut size={13} /> Sign out</button></span>
       </header>
       <section className="teacher-content">
         <div className="teacher-heading">
           <div><p className="section-kicker">LIVE CLASS SIGNAL</p><h1>Questions to discuss</h1><p>Use the ranked votes to decide what to explain next. Votes and released answers update automatically every few seconds.</p></div>
-          <Button type="button" variant="outline" className="refresh-button" onClick={load} disabled={loading}>{loading ? "Refreshing…" : "Refresh now"}</Button>
+          <Button type="button" variant="outline" className="refresh-button" onClick={() => { setLoading(true); void load(); }} disabled={loading}>{loading ? "Refreshing…" : "Refresh now"}</Button>
         </div>
         {error ? <p className="question-error" role="alert">{error}</p> : null}
         <section className="classroom-release" aria-labelledby="release-heading">
           <div><p className="section-kicker">REVEAL → READ & REFLECT → DISCUSS</p><h2 id="release-heading">Ready to reveal the answers?</h2><p>Publish the full set, give students time to read the diagrams and reasoning, then lead the discussion. Preview each answer below before you release it.</p></div>
           <div className="classroom-release-controls">
-            <span>{publishedCount} / {questions.length || "7"} answers visible to students</span>
-            <Button type="button" className="publish-button release-all-button" onClick={() => updateAnswers({ scope: "all", published: true })} disabled={loading || changing !== null || questions.length === 0 || publishedCount === questions.length}>{changing === "all" ? "Updating…" : publishedCount === questions.length && questions.length ? "All answers published" : "Publish all answers"}</Button>
+            <span>{publishedCount} / {questions.length} answers visible to students</span>
+            <Button type="button" className="publish-button release-all-button" onClick={() => updateAnswers({ scope: "all", published: true })} disabled={loading || changing !== null || publishedCount === questions.length}>{changing === "all" ? "Updating…" : publishedCount === questions.length ? "All answers published" : "Publish all answers"}</Button>
             <Button type="button" variant="outline" className="refresh-button" onClick={() => updateAnswers({ scope: "all", published: false })} disabled={loading || changing !== null || publishedCount === 0}>Hide all answers</Button>
           </div>
           <p className="classroom-release-notice" role="status" aria-live="polite">{notice || "Publishing changes what every student can see. Previewing below is visible only to you."}</p>

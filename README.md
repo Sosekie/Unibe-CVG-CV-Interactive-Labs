@@ -2,7 +2,7 @@
 
 [English](#english) · [Deutsch](#deutsch) · [中文](#中文)
 
-Local, self-contained copies of the interactive websites used in the University of Bern Computer Vision tutorials.
+Source code of the interactive websites used in the University of Bern Computer Vision tutorials.
 
 ## English
 
@@ -16,6 +16,8 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Thin lenses, ray transfer, filtering, gradients and events |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Edges, interest points, fitting and registration |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normal integration, photometric stereo, reflectance map and nearby light |
+
+`site/` contains the course website and `api/` the small server that stores votes and released answers.
 
 ### Course PDFs
 
@@ -63,7 +65,7 @@ Start Tutorial 04 with:
 npm run dev:04
 ```
 
-No ChatGPT account is required. The visualizations, questions and released answers work locally. Votes are stored only in the local development database and are not synchronized with the classroom website. The development server is intentionally available only on your own computer.
+No account is required. Votes and released answers come from the course server, as on the course website, so they need an internet connection; the visualizations also work offline. The development server is only reachable from your own computer.
 
 ## Deutsch
 
@@ -77,6 +79,8 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Dünne Linsen, Strahltransfer, Filterung, Gradienten und Events |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Kanten, Interest Points, Fitting und Registrierung |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normalenintegration, photometrisches Stereo, Reflektanzkarte und nahe Lichtquelle |
+
+`site/` enthält die Kurswebseite, `api/` den kleinen Server für Abstimmungen und veröffentlichte Antworten.
 
 ### Kursunterlagen als PDF
 
@@ -124,7 +128,7 @@ Tutorial 04 startest du mit:
 npm run dev:04
 ```
 
-Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffentlichte Antworten funktionieren lokal. Abstimmungen werden nur in der lokalen Entwicklungsdatenbank gespeichert und nicht mit der Kurswebseite synchronisiert. Der Entwicklungsserver ist absichtlich nur auf dem eigenen Computer erreichbar.
+Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten kommen wie auf der Kurswebseite vom Kursserver und brauchen daher eine Internetverbindung; die Visualisierungen funktionieren auch offline. Der Entwicklungsserver ist nur auf dem eigenen Computer erreichbar.
 
 ## 中文
 
@@ -138,6 +142,8 @@ Ein ChatGPT-Konto ist nicht erforderlich. Visualisierungen, Fragen und veröffen
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | 薄透镜、光线传递、滤波、梯度和事件相机 |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | 边缘、兴趣点、拟合和图像配准 |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | 法线积分、光度立体、反射率图和近距离光源 |
+
+`site/` 是课程网站，`api/` 是保存投票和答案发布状态的小型服务器。
 
 ### 课程 PDF
 
@@ -185,4 +191,4 @@ npm run dev:03
 npm run dev:04
 ```
 
-本地使用不需要 ChatGPT 账号。可视化、题目和已公布答案均可使用；投票只保存在本机开发数据库中，不会与课堂网站同步。开发服务器仅允许本机访问。
+本地使用不需要任何账号。投票和已公布的答案与课程网站一样来自课程服务器，因此需要联网；可视化部分离线也能使用。开发服务器仅允许本机访问。

@@ -1,0 +1,6 @@
+node_modules/
+.wrangler/
+.dev.vars*
+worker-configuration.d.ts
+wrangler.ci.json
+secrets.json

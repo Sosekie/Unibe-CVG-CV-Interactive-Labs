@@ -20,7 +20,7 @@ Read this skill from either repository's root `AGENTS.md`. Locate checkouts by t
 
 ## File ownership and mapping
 
-Maintain source first in `CV_Tutorial`. Local `sites/` folders are deployment copies. Map approved website files to the public repository's existing tutorial folders:
+Maintain source first in `CV_Tutorial`. Map approved website files to the public repository's existing tutorial folders; GitHub Pages builds the labs from the public copies. Local `sites/` folders are left from the earlier ChatGPT Sites publications and are not maintained sources:
 
 | CV_Tutorial canonical source | Public repository folder |
 | --- | --- |
@@ -29,7 +29,7 @@ Maintain source first in `CV_Tutorial`. Local `sites/` folders are deployment co
 | `2026/tutorials/tutorial_03/cv-tutorial03-interest-points-fitting-registration-lab/` | `tutorial-03-interest-points-fitting-registration-lab/` |
 | `2026/tutorials/tutorial_04/cv-tutorial04-shading-photometric-stereo-lab/` | `tutorial-04-shading-photometric-stereo-lab/` |
 
-Preserve intentional public-copy differences such as local runtime/database setup and environment-based teacher configuration. Shared authoring prompts and checklists should agree; adapt repository-specific links in guides.
+The lab copies are identical in both repositories, apart from each lab's `README.md` and the public `materials/` folders. The course website `site/`, the course API `api/` and the workflows in `.github/workflows/` exist only in the public repository. Shared authoring prompts and checklists should agree; adapt repository-specific links in guides.
 
 For a released tutorial PDF, synchronize the required main-repository copies (including `release_after_discussion/` or `upload_before_class/`, as applicable) and the public lab's `materials/` copy. Include the editable source and its dependencies in CV_Tutorial when they belong to the approved release. Refresh affected packaged copies, upload ZIPs and README links. Keep the current course release plan: a GitHub sync request does not independently release previously withheld material. Existing explicit release authorization persists.
 

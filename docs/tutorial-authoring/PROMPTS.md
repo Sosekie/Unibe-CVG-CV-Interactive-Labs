@@ -54,7 +54,7 @@ identity, restrained blue/orange palette, readable equations, compact controls
 and responsive layout. Write the website in clear student-facing English.
 
 Put experiments and selected discussion questions on one student page. Keep
-the separate /teacher route. Include the public GitHub link. Do not create
+the separate teacher/ page. Include the public GitHub link. Do not create
 alternate student pages or engineering-status text in the learning interface.
 Do not add a prediction form unless it is requested in the brief.
 
@@ -81,15 +81,15 @@ and make every answer control affect the appropriate diagram and calculation.
 
 Preserve working voting and publication behavior. Teacher controls must include
 obvious Publish all answers, Hide all answers, per-question release controls,
-answer previews and publication status. Enforce teacher authorization on the
-server for every protected endpoint. Unpublished answers must not be returned
-in student API payloads. Review public source/client bundles if answers must
-actually remain confidential; hidden UI alone cannot ensure secrecy.
+answer previews and publication status. Votes and releases go through the
+course API in api/ (lib/labs-api.ts in every lab), which checks the instructor
+sign-in on every protected request. The static pages contain every worked
+answer, so hidden UI cannot keep answers confidential.
 
-Use separate project/database configuration for a new tutorial, unique stable
-question identifiers and privately configured authorized teacher identity.
-Do not reuse another tutorial's production database, deploy identity or votes.
-Do not put credentials or personal account configuration in public source.
+Give a new tutorial unique, stable question identifiers in lib/question-bank.ts
+and register them under its tutorial id in api/src/tutorials.ts. Do not reuse
+another tutorial's question identifiers or votes. Do not put credentials or
+personal account configuration in public source.
 
 Apply shared navigation to student and teacher routes: Ctrl/Cmd-wheel zoom;
 visible keyboard-accessible minus/plus/reset controls with percentage; normal
@@ -100,8 +100,9 @@ pointercancel, adequate hit areas and appropriate touch-action.
 
 Implement and preview with the available tools. Run applicable math tests,
 lint, type checks and build. Describe actual checks and remaining limitations.
-Keep changes in the maintained source first; the deployment checkout is a copy.
-Do not test voting or publish/hide actions against the live classroom database.
+Keep changes in the maintained source first; GitHub Pages builds the public
+copy. Test voting and publish/hide only against a local course API
+(npm --prefix api run dev), never against the live classroom one.
 ```
 
 ## 3. Audit every experiment and answer
@@ -129,11 +130,11 @@ Check desktop and 375px-wide mobile views, touch dragging, keyboard controls,
 zoom controls and horizontal scrolling. Inspect console errors and distinguish
 application faults from host/platform faults without asserting an untested fix.
 
-Test votes, answer release, Publish all/Hide all and teacher authorization only
-with an isolated test database or mocks. Check unauthorized direct requests
-and that unpublished answer fields are absent from the student API. Use
-read-only inspection on production; do not change classroom votes or release
-state as a test. Review public source policy separately from UI release state.
+Test votes, answer release, Publish all/Hide all and teacher sign-in only with
+a local course API and its own database, or with mocks. Check that requests
+without a valid instructor session are refused. Use read-only inspection on
+production; do not change classroom votes or release state as a test. Review
+public source policy separately from UI release state.
 
 Fix verified problems without departing from the slides. Rerun the affected
 checks. Deliver a compact results table with evidence and explicit untested
@@ -165,13 +166,13 @@ remote branch refs and the requested artifacts before reporting completion.
 If a repository has no changes, verify it unchanged rather than making an
 empty commit. Report any incomplete repository sync explicitly.
 
-If publishing is authorized and tools/access are available, publish the correct
-Site project, verify its actual student URL and teacher route, then synchronize
-the finished website source into the dedicated interactive-labs GitHub repo
-using that repo's public configuration policy. Check local and remote commit
-IDs. When the new lab is ready, add its card to the course hub
-(`site/index.html` in the interactive-labs repo). If deployment/access is
-unavailable, provide the ready package and state that publication is pending.
+If publishing is authorized, synchronize the finished website source into the
+dedicated interactive-labs GitHub repo. A push to main builds the lab and
+publishes it on GitHub Pages; changes to api/ redeploy the course API. Check
+local and remote commit IDs, the workflow runs, the student URL and the
+teacher page. When the new lab is ready, add its card to the course hub
+(`site/index.html` in the interactive-labs repo). If access is unavailable,
+provide the ready package and state that publication is pending.
 
 Deliver the maintained source path, release files, tested URL, relevant commits,
 validation summary and remaining limitations. Do not send messages to colleagues

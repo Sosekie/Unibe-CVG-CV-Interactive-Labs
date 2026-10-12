@@ -3,59 +3,43 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { InteractiveAnswer } from '@/components/interactive-answer';
+import { tutorialQuestions } from '@/lib/question-bank';
+import { browserVoterId, fetchQuestionState, labsApiAvailable, submitVote, type QuestionState } from '@/lib/labs-api';
 
 export const questionGroups = ['Normal Integration', 'Photometric Stereo', 'Light & Reflectance'] as const;
-const refreshInterval = 5000;
-type StudentQuestion = { id: string; groupName: string; difficulty: string; prompt: string; sortOrder: number; votes: number; hasVoted: boolean; answer?: string; answerPublished: boolean };
-
-function voterId() {
-  const key = 'cv-tutorial-04-voter-id';
-  const existing = window.localStorage.getItem(key);
-  if (existing) return existing;
-  const next = typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : 'voter-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-  window.localStorage.setItem(key, next);
-  return next;
-}
+const refreshInterval = 10000;
+const noState: QuestionState = { votes: 0, hasVoted: false, published: false };
 
 export function QuestionsSection() {
-  const [browserVoterId] = useState<string | null>(() => typeof window === 'undefined' ? null : voterId());
-  const [questions, setQuestions] = useState<StudentQuestion[]>([]);
+  const [voterId] = useState<string | null>(() => typeof window === 'undefined' ? null : browserVoterId('cv-tutorial-04-voter-id'));
+  const [state, setState] = useState<Record<string, QuestionState> | null>(null);
   const [activeGroup, setActiveGroup] = useState<(typeof questionGroups)[number]>('Normal Integration');
   const [submitting, setSubmitting] = useState<string | null>(null);
-  const [error, setError] = useState('');
-  const load = async (id: string) => {
-    const response = await fetch('/api/questions?voter=' + encodeURIComponent(id), { cache: 'no-store' });
-    const data = await response.json() as { questions?: StudentQuestion[]; error?: string };
-    if (!response.ok) throw new Error(data.error ?? 'Could not load questions.');
-    setQuestions(data.questions ?? []);
-  };
+  const [error, setError] = useState(labsApiAvailable ? '' : 'Voting and released answers are not connected in this copy of the lab.');
+  const questions = useMemo(() => tutorialQuestions.map((question) => ({ ...question, ...(state?.[question.id] ?? noState) })), [state]);
   useEffect(() => {
-    if (!browserVoterId) return;
+    if (!voterId || !labsApiAvailable) return;
     let active = true;
     const refresh = async () => {
       try {
-        const response = await fetch('/api/questions?voter=' + encodeURIComponent(browserVoterId), { cache: 'no-store' });
-        const data = await response.json() as { questions?: StudentQuestion[]; error?: string };
-        if (!response.ok) throw new Error(data.error ?? 'Could not load questions.');
-        if (active) { setQuestions(data.questions ?? []); setError(''); }
-      } catch (loadError) { if (active) setError(loadError instanceof Error ? loadError.message : 'Could not load questions.'); }
+        const next = await fetchQuestionState(voterId);
+        if (active) { setState(next); setError(''); }
+      } catch (loadError) { if (active) setError(loadError instanceof Error ? loadError.message : 'Could not load the votes.'); }
     };
     const refreshWhenVisible = () => { if (document.visibilityState === 'visible') void refresh(); };
     void refresh();
     const interval = window.setInterval(refreshWhenVisible, refreshInterval);
     document.addEventListener('visibilitychange', refreshWhenVisible);
     return () => { active = false; window.clearInterval(interval); document.removeEventListener('visibilitychange', refreshWhenVisible); };
-  }, [browserVoterId]);
+  }, [voterId]);
   const filtered = useMemo(() => questions.filter((question) => question.groupName === activeGroup), [questions, activeGroup]);
-  const releasedCount = questions.filter((question) => question.answerPublished).length;
-  const submitVote = async (questionId: string) => {
-    if (!browserVoterId) return;
+  const releasedCount = questions.filter((question) => question.published).length;
+  const vote = async (questionId: string) => {
+    if (!voterId) return;
     setSubmitting(questionId); setError('');
     try {
-      const response = await fetch('/api/votes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ questionId, voterId: browserVoterId }) });
-      const data = await response.json() as { error?: string };
-      if (!response.ok) throw new Error(data.error ?? 'Could not submit vote.');
-      await load(browserVoterId);
+      await submitVote(questionId, voterId);
+      setState(await fetchQuestionState(voterId));
     } catch (voteError) { setError(voteError instanceof Error ? voteError.message : 'Could not submit vote.'); }
     finally { setSubmitting(null); }
   };
@@ -65,11 +49,10 @@ export function QuestionsSection() {
       <div className="question-groups" role="tablist" aria-label="Question group">{questionGroups.map((group) => <button key={group} role="tab" aria-selected={activeGroup === group} className={activeGroup === group ? 'active' : ''} onClick={() => setActiveGroup(group)}><strong>{group}</strong><span>{questions.filter((question) => question.groupName === group).length}</span></button>)}</div>
       {error ? <p className="question-error" role="alert">{error}</p> : null}
       <output className={releasedCount ? 'answer-release-announcement published' : 'answer-release-announcement'} aria-live="polite" aria-atomic="true">
-        {releasedCount ? `${releasedCount === questions.length ? 'All answers are' : `${releasedCount} of ${questions.length} answers are`} now available in the topic tabs below.` : questions.length ? 'Answers will appear here when your instructor releases them. No refresh needed.' : ''}
+        {releasedCount ? `${releasedCount === questions.length ? 'All answers are' : `${releasedCount} of ${questions.length} answers are`} now available in the topic tabs below.` : state ? 'Answers will appear here when your instructor releases them. No refresh needed.' : ''}
       </output>
       <div className="question-grid">
-        {!questions.length && !error ? <p className="loading-question">Loading the Tutorial 04 questions…</p> : null}
-        {filtered.map((question) => <article className={question.answerPublished ? 'question-card question-card-released' : 'question-card'} key={question.id}><div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, '0')}</span><span>{question.difficulty} · {question.votes} {question.votes === 1 ? 'vote' : 'votes'}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + question.sortOrder + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={question.hasVoted || submitting === question.id} onClick={() => submitVote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.answerPublished ? 'answer-status published' : 'answer-status'}>{question.answerPublished ? 'Answer released' : 'Think first'}</span></div>{question.answerPublished && question.answer ? <InteractiveAnswer questionId={question.id} fallback={question.answer} /> : null}</article>)}
+        {filtered.map((question) => <article className={question.published ? 'question-card question-card-released' : 'question-card'} key={question.id}><div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, '0')}</span><span>{question.difficulty}{state ? ` · ${question.votes} ${question.votes === 1 ? 'vote' : 'votes'}` : ''}</span></div><p className="question-prompt">{question.prompt}</p><div className="question-card-bottom"><Button type="button" aria-label={'Vote for question ' + question.sortOrder + ': ' + question.prompt} variant={question.hasVoted ? 'secondary' : 'default'} className={question.hasVoted ? 'vote-button voted' : 'vote-button'} disabled={!labsApiAvailable || question.hasVoted || submitting === question.id} onClick={() => vote(question.id)}>{submitting === question.id ? 'Sending…' : question.hasVoted ? 'Vote recorded' : 'I want this explained'}</Button><span className={question.published ? 'answer-status published' : 'answer-status'}>{question.published ? 'Answer released' : 'Think first'}</span></div>{question.published ? <InteractiveAnswer questionId={question.id} fallback={question.answer} /> : null}</article>)}
       </div>
     </section>
   );

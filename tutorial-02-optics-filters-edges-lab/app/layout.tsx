@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'CV Tutorial 02 — Camera Models, Filters & Event Cameras',
   description: 'Interactive Computer Vision Tutorial 02 lab for camera models, filtering, and event-based cameras.',
-  icons: { icon: '/favicon.svg', shortcut: '/favicon.ico' },
+  icons: { icon: `${process.env.LABS_BASE_PATH ?? ''}/favicon.svg`, shortcut: `${process.env.LABS_BASE_PATH ?? ''}/favicon.ico` },
 };
 
 export default function RootLayout({

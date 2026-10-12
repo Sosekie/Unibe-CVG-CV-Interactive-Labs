@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function SiteHeader() {
   return (
@@ -12,7 +13,7 @@ export function SiteHeader() {
           <Image unoptimized src="https://www.unibe.ch/assets/media/image/logo_unibern@2x.png" alt="University of Bern" width={360} height={276} />
           <span>Computer Vision Group</span>
         </a>
-        <nav className="topbar-nav" aria-label="Site navigation"><a href="#questions">Questions</a><a href="/teacher">Teacher</a></nav>
+        <nav className="topbar-nav" aria-label="Site navigation"><a href="#questions">Questions</a><Link href="/teacher">Teacher</Link></nav>
         <div className="model-note"><span className="note-dot" />Feature geometry</div>
       </div>
     </header>

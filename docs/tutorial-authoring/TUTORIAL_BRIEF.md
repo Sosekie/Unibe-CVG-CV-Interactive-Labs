@@ -21,11 +21,11 @@ Design reference: [latest Tutorial 02 website source + exercise/solution PDFs]
 Additional references: [Tutorial 01 header; Tutorial 03 visual examples]
 
 Maintained website source directory: [one path under tutorial_NN]
-Existing site to revise, or new site: [URL/project, if known]
+Existing site to revise, or new site: [URL, if known]
 Student URL for PDF/ILIAS: [verified URL, or pending]
-Authorized teacher setup: [configure privately; no credentials here]
-Hosting owner: [who can provision/publish]
-Separate database for this tutorial: [provisioning status; no secrets]
+Instructors' GitHub accounts for the teacher page: [logins; no credentials here]
+Who can push to Unibe-CVG-CV-Interactive-Labs: [name]
+Question ids registered in api/src/tutorials.ts: [yes / pending]
 
 Experiments:
   [Concept | control | expected visible change | convention | contrasting presets]

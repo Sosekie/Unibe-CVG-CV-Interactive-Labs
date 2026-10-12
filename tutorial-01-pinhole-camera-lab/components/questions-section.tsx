@@ -1,46 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getVoterId } from "@/lib/voter-session";
 import { AnswerExplanation } from "@/components/answer-explanation";
-import type { DiscussionQuestion } from "@/lib/answer-types";
 import { DiscussionConvention } from "@/components/discussion-convention";
+import { tutorialQuestions } from "@/lib/question-bank";
+import { tutorialAnswers } from "@/lib/tutorial-answers";
+import { fetchQuestionState, labsApiAvailable, submitVote, type QuestionState } from "@/lib/labs-api";
 
-const REFRESH_INTERVAL_MS = 5000;
-
-type StudentQuestion = DiscussionQuestion;
+const REFRESH_INTERVAL_MS = 10000;
+const NO_STATE: QuestionState = { votes: 0, hasVoted: false, published: false };
 
 export function QuestionsSection() {
-  const [voterId, setVoterId] = useState<string | null>(null);
-  const [questions, setQuestions] = useState<StudentQuestion[]>([]);
-  const [error, setError] = useState("");
+  const [voterId] = useState<string | null>(() => (typeof window === "undefined" ? null : getVoterId()));
+  const [state, setState] = useState<Record<string, QuestionState> | null>(null);
+  const [error, setError] = useState(labsApiAvailable ? "" : "Voting and released answers are not connected in this copy of the lab.");
   const [submitting, setSubmitting] = useState<string | null>(null);
-
-  useEffect(() => { setVoterId(getVoterId()); }, []);
-
-  const loadQuestions = async (id: string) => {
-    const response = await fetch(`/api/questions?voter=${encodeURIComponent(id)}`, { cache: "no-store" });
-    const data = (await response.json()) as { questions?: StudentQuestion[]; error?: string };
-    if (!response.ok) throw new Error(data.error ?? "Could not load questions.");
-    setQuestions(data.questions ?? []);
-  };
+  const questions = useMemo(() => tutorialQuestions.map((question) => {
+    const current = state?.[question.id] ?? NO_STATE;
+    return { ...question, votes: current.votes, hasVoted: current.hasVoted, answerPublished: current.published, explanation: tutorialAnswers[question.id] };
+  }), [state]);
 
   useEffect(() => {
-    if (!voterId) return;
+    if (!voterId || !labsApiAvailable) return;
     let active = true;
 
     const refreshQuestions = async () => {
       try {
-        const response = await fetch(`/api/questions?voter=${encodeURIComponent(voterId)}`, { cache: "no-store" });
-        const data = (await response.json()) as { questions?: StudentQuestion[]; error?: string };
-        if (!response.ok) throw new Error(data.error ?? "Could not load questions.");
+        const next = await fetchQuestionState(voterId);
         if (active) {
-          setQuestions(data.questions ?? []);
+          setState(next);
           setError("");
         }
       } catch (loadError) {
-        if (active) setError(loadError instanceof Error ? loadError.message : "Could not load questions.");
+        if (active) setError(loadError instanceof Error ? loadError.message : "Could not load the votes.");
       }
     };
 
@@ -64,14 +58,8 @@ export function QuestionsSection() {
     setSubmitting(questionId);
     setError("");
     try {
-      const response = await fetch("/api/votes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId, voterId }),
-      });
-      const data = (await response.json()) as { error?: string };
-      if (!response.ok) throw new Error(data.error ?? "Could not submit vote.");
-      await loadQuestions(voterId);
+      await submitVote(questionId, voterId);
+      setState(await fetchQuestionState(voterId));
     } catch (voteError) {
       setError(voteError instanceof Error ? voteError.message : "Could not submit vote.");
     } finally {
@@ -95,14 +83,13 @@ export function QuestionsSection() {
       {error ? <p className="question-error" role="alert">{error}</p> : null}
       <DiscussionConvention />
       <div className="answer-release-announcement" role="status" aria-live="polite" aria-atomic="true">
-        {released.length ? `${released.length === questions.length ? "All answers are" : `${released.length} of ${questions.length} answers are`} now available below. Take some time to read and reflect.` : questions.length ? "Answers will appear here when your instructor releases them. No refresh needed." : ""}
+        {released.length ? `${released.length === questions.length ? "All answers are" : `${released.length} of ${questions.length} answers are`} now available below. Take some time to read and reflect.` : state ? "Answers will appear here when your instructor releases them. No refresh needed." : ""}
       </div>
       {released.length ? <nav className="answer-jump-nav" aria-label="Jump to a released answer"><span>READ ANSWERS</span>{released.map((question) => <a key={question.id} href={`#discussion-${question.sortOrder}`} aria-label={`Read answer for question ${question.sortOrder}: ${question.prompt}`}>Q{String(question.sortOrder).padStart(2, "0")}</a>)}</nav> : null}
       <div className="question-grid">
-        {questions.length === 0 && !error ? <p className="loading-question">Loading questions…</p> : null}
         {questions.map((question) => (
           <article className={`question-card${question.answerPublished ? " question-card-released" : ""}`} key={question.id} id={`discussion-${question.sortOrder}`}>
-            <div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, "0")}</span><span>{question.votes} {question.votes === 1 ? "vote" : "votes"}</span></div>
+            <div className="question-card-topline"><span>Q{String(question.sortOrder).padStart(2, "0")}</span><span>{state ? `${question.votes} ${question.votes === 1 ? "vote" : "votes"}` : ""}</span></div>
             <p className="question-prompt">{question.prompt}</p>
             <div className="question-card-bottom">
               <Button
@@ -110,14 +97,14 @@ export function QuestionsSection() {
                 aria-label={`Vote for question ${question.sortOrder}: ${question.prompt}`}
                 variant={question.hasVoted ? "secondary" : "default"}
                 className={question.hasVoted ? "vote-button voted" : "vote-button"}
-                disabled={question.hasVoted || submitting === question.id}
+                disabled={!labsApiAvailable || question.hasVoted || submitting === question.id}
                 onClick={() => vote(question.id)}
               >
                 {submitting === question.id ? "Sending…" : question.hasVoted ? "Vote recorded" : "I want this explained"}
               </Button>
               {question.answerPublished ? <span className="answer-status published">Answer released</span> : <span className="answer-status">Think first</span>}
             </div>
-            {question.answerPublished && question.explanation ? <AnswerExplanation explanation={question.explanation} questionNumber={question.sortOrder} /> : question.answerPublished && question.answer ? <div className="released-answer"><span>ANSWER</span><p>{question.answer}</p></div> : null}
+            {question.answerPublished && question.explanation ? <AnswerExplanation explanation={question.explanation} questionNumber={question.sortOrder} /> : question.answerPublished ? <div className="released-answer"><span>ANSWER</span><p>{question.answer}</p></div> : null}
           </article>
         ))}
       </div>

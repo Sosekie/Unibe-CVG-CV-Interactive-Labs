@@ -49,7 +49,7 @@ export function FilteringLab() {
 
   useEffect(() => {
     const image = new Image();
-    image.src = '/cameraman.png';
+    image.src = `${process.env.LABS_BASE_PATH ?? ''}/cameraman.png`;
     image.onload = () => {
       const staging = document.createElement('canvas');
       staging.width = canvasSize;

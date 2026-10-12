@@ -1,5 +1,5 @@
-// Loaded by the server question repository only. Unreleased explanations must
-// never be imported by a client component or included in the student payload.
+// Worked explanations, bundled with the static page. The page shows one only
+// after the instructor releases it through the course API; the source is public.
 import type { AnswerExplanation } from "./answer-types";
 
 export const tutorialAnswers: Record<string, AnswerExplanation> = {
@@ -125,7 +125,3 @@ export const tutorialAnswers: Record<string, AnswerExplanation> = {
     reflection: "If you move a line sideways without changing its direction, does its vanishing point move?",
   },
 };
-
-export function releasedAnswerFields(question: { id: string; answer: string; answerPublished: boolean }) {
-  return question.answerPublished ? { answer: question.answer, explanation: tutorialAnswers[question.id] } : {};
-}
