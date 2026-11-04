@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="From 1D Gaussian mixtures and least-squares fitting to 2D fields, 3D reconstruction, and a real captured Gaussian scene.">
+  <meta name="theme-color" content="#f3f7fc">
+  <title>3D Gaussian Splatting · Interactive Lab</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to interactive lab</a>
+  <header class="topbar">
+    <a class="brand" href="#mixture" aria-label="Gaussian Splatting Lab home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><span class="eyebrow">COMPUTER VISION · INTERACTIVE TUTORIAL</span><strong>3D Gaussian Splatting Lab</strong></span>
+    </a>
+    <div class="header-right">
+      <a class="institution" href="https://www.cvg.unibe.ch/" target="_blank" rel="noreferrer"><b>uni<span>be</span></b><span>UNIVERSITY OF BERN<br>Computer Vision Group</span></a>
+      <a href="#questions" class="question-link">Worked questions <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <div class="intro-strip"><span><i class="status-dot"></i> A first-principles playground for learning to render with Gaussians.</span><span class="draft-badge">FIRST EDITION · SLIDE ALIGNMENT PENDING</span></div>
+  <main>
+    <section class="page-intro">
+      <div><p class="eyebrow">BUILD INTUITION · ADD DIMENSIONS · RECONSTRUCT</p><h1>From Gaussian curves to 3D scenes.</h1><p>Approximate a 1D function. Extend the idea to 2D and 3D.<br class="desktop-break"> Add colour, reconstruct from images, compare with NeRF, then explore a real garden.</p></div>
+      <div class="learning-path" aria-label="Learning path"><span>1D</span><b>→</b><span>2D → 3D</span><b>→</b><span>COLOUR → SCENE</span><small>7 sections <i>·</i> 14 worked questions <i>·</i> linked experiments</small></div>
+    </section>
+    <nav class="module-nav" aria-label="Experiments" role="tablist" id="module-nav"></nav>
+    <section id="workspace" class="workspace" role="tabpanel" tabindex="-1" aria-label="Interactive experiment"></section>
+    <section id="questions" class="questions-section" aria-labelledby="questions-title"></section>
+    <section class="context-strip"><div><p class="eyebrow">THE TEACHING PROGRESSION</p><p>Fit 1D functions, then 2D and 3D scalar fields. Add colour and opacity before reconstructing an independently rendered primitive scene from images. Compare explicit splats with a trainable neural radiance field, then finish with a pretrained captured garden. The small experiments use synthetic data; full 3DGS trains on calibrated photographs and uses GPU rasterization.</p></div><div><p class="eyebrow">READ FURTHER</p><a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/" target="_blank" rel="noreferrer">Kerbl et al. · 3D Gaussian Splatting (2023) ↗</a><a href="https://www.matthewtancik.com/nerf" target="_blank" rel="noreferrer">Mildenhall et al. · Neural Radiance Fields (2020) ↗</a><a href="https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs" target="_blank" rel="noreferrer">Explore the companion CV interactive labs ↗</a></div></section>
+  </main>
+  <footer><span>UNIVERSITY OF BERN · COMPUTER VISION GROUP</span><span>Exploratory tutorial · Lecture references will be added later</span><button id="reset-all" class="text-button">Reset all experiments ↺</button></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "gaussian-splatting-nerf-handouts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "katex": "0.19.1",
+    "playwright": "1.64.1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "gaussian-splatting-interactive-lab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check dist/app.js && node --check dist/basis-math.js && node --check dist/colour.js && node --check dist/ellipsoid.js && node --check dist/field-math.js && node --check dist/foundations.js && node --check dist/math.js && node --check dist/nerf-math.js && node --check dist/nerf.js && node --check dist/primitives.js && node --check dist/questions.js && node --check dist/reconstruction-math.js && node --check dist/reconstruction.js && node --check dist/volume.js",
+    "dev": "python3 -m http.server 4173 --bind 0.0.0.0 --directory dist"
+  }
+}

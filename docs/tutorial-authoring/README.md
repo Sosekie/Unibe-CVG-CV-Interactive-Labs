@@ -129,3 +129,7 @@ After review, maintain the approved source in [CV_Tutorial](https://github.com/S
 **GitHub synchronization rule:** every request to sync to GitHub covers both CV_Tutorial and Unibe-CVG-CV-Interactive-Labs within the approved release scope, and CV_Tutorial is synchronized every time. Follow the [project synchronization skill](../../.agents/skills/cv-tutorial-github-sync/SKILL.md) and verify both remote states and the requested files before reporting completion.
 
 Answer publication controls when the student page shows an answer. The static pages and the public source contain every worked answer, so publication does **not** keep answers secret. Keep genuinely unreleased material out of public commits and pages; agree the course's source/release policy before synchronization.
+
+## Buildless supplementary Gaussian Splatting & NeRF lab
+
+The [Gaussian Splatting & NeRF lab](../../gaussian-splatting-nerf-lab/) is an unnumbered supplementary tutorial imported as a complete standalone app. Its maintained `dist/` source is copied directly to `/gaussian-splatting-nerf/` by the Pages workflow, after syntax and numerical checks. It uses browser-local question attempts and independently viewable worked answers; it is not registered with the shared voting/teacher-release API. This preserves the reviewed tutorial behavior. Exercise/solution PDFs and editable generators are under `materials/`. Run `npm run dev:gaussians` from the root, or serve that lab’s `dist/` directory with Python 3.

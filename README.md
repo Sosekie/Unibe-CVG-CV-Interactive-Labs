@@ -16,6 +16,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Thin lenses, ray transfer, filtering, gradients and events |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Edges, interest points, fitting and registration |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normal integration, photometric stereo, reflectance map and nearby light |
+| Supplementary | [Gaussian Splatting & NeRF](gaussian-splatting-nerf-lab/) | Gaussian fitting, splatting, reconstruction, neural fields |
 
 `site/` contains the course website and `api/` the small server that stores votes and released answers.
 
@@ -27,6 +28,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
 | Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Solution PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
+| Gaussian Splatting & NeRF | [Tutorial PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_tutorial.pdf) | [Solution PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_solution.pdf) |
 
 The solution PDFs are intended for use after the tutorial discussion.
 
@@ -79,6 +81,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | Dünne Linsen, Strahltransfer, Filterung, Gradienten und Events |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Kanten, Interest Points, Fitting und Registrierung |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normalenintegration, photometrisches Stereo, Reflektanzkarte und nahe Lichtquelle |
+| Zusatzlab | [Gaussian Splatting & NeRF](gaussian-splatting-nerf-lab/) | Gauß-Funktionen, Rekonstruktion und neuronale Strahlungsfelder |
 
 `site/` enthält die Kurswebseite, `api/` den kleinen Server für Abstimmungen und veröffentlichte Antworten.
 
@@ -90,6 +93,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 02 | [Tutorial-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Lösungs-PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
 | Tutorial 03 | [Tutorial-PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Lösungs-PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Lösungs-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
+| Gaussian Splatting & NeRF | [Tutorial PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_tutorial.pdf) | [Solution PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_solution.pdf) |
 
 Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
 
@@ -142,6 +146,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 02 | `tutorial-02-optics-filters-edges-lab` | 薄透镜、光线传递、滤波、梯度和事件相机 |
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | 边缘、兴趣点、拟合和图像配准 |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | 法线积分、光度立体、反射率图和近距离光源 |
+| 补充实验 | [Gaussian Splatting & NeRF](gaussian-splatting-nerf-lab/) | 高斯拟合、重建和神经辐射场 |
 
 `site/` 是课程网站，`api/` 是保存投票和答案发布状态的小型服务器。
 
@@ -153,6 +158,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 02 | [Tutorial PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02.pdf) | [Solution PDF](tutorial-02-optics-filters-edges-lab/materials/tutorial_02_solution.pdf) |
 | Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Solution PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
+| Gaussian Splatting & NeRF | [Tutorial PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_tutorial.pdf) | [Solution PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_solution.pdf) |
 
 解答 PDF 建议在课堂讨论结束后查看。
 
@@ -192,3 +198,9 @@ npm run dev:04
 ```
 
 本地使用不需要任何账号。投票和已公布的答案与课程网站一样来自课程服务器，因此需要联网；可视化部分离线也能使用。开发服务器仅允许本机访问。
+
+## Gaussian Splatting & NeRF supplementary lab
+
+[Open the lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/gaussian-splatting-nerf/) · [Complete source](gaussian-splatting-nerf-lab/) · [Exercise PDF](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_tutorial.pdf) · [Worked solutions](gaussian-splatting-nerf-lab/materials/gaussian_splatting_nerf_solution.pdf)
+
+This independent buildless lab includes seven experiments and fourteen worked questions. Run `npm run dev:gaussians`; verify with `npm run check:gaussians` and `npm run test:gaussians`. It needs Python 3 for the local server, Node.js for numerical checks, and no app dependencies. All small experiments and local question progress work without a course API account. The final Garden scene streams from an external WebGL viewer. Editable PDF sources are in `gaussian-splatting-nerf-lab/materials/source/`.

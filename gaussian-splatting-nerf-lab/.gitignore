@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+materials/source/node_modules/
+materials/source/.generated/
