@@ -1,0 +1,236 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
+\hypersetup{pdfauthor={Luca Scharr},pdftitle={Tutorial 09 - Gaussian Splatting and NeRF}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist{leftmargin=*,itemsep=0.15em,topsep=0.15em}
+\emergencystretch=2em
+\begin{document}
+\begin{center}
+{\Large\bfseries Tutorial 9. Gaussian Splatting and NeRF}\\[2mm]
+Luca Scharr\\
+Computer Vision 2026\\
+University of Bern\\[1mm]
+Interactive lab: \href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/}{\nolinkurl{sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/}}\\
+Source code: \href{https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs}{\nolinkurl{github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs}}
+\end{center}
+
+\section*{Learning objectives}
+\begin{itemize}[nosep]
+\item Relate Gaussian shape to covariance, PCA, and function approximation.
+\item Derive projection, compositing, and fitting behaviour from the underlying models.
+\item Compare Gaussian Splatting and NeRF and evaluate reconstruction evidence.
+\end{itemize}
+\noindent\textbf{Key concepts.} Least squares, covariance, gradient descent, alpha compositing, multi-view geometry, volume rendering, and neural radiance fields.
+
+Explain your reasoning and show relevant derivations.
+The interactive lab provides experiments for each exercise.
+Lecture-slide references will be added after alignment.
+\section*{1. Approximate a function in 1D}
+\noindent\textbf{Objective.} Distinguish amplitude fitting, basis geometry, and identifiability.
+\subsection*{1.1 Identifiability --- Linear Fitting}
+You fit two 1D Gaussian basis functions with exactly the same mean and width.
+Only their amplitudes are free.
+The target samples are fixed.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What can least squares determine about the two amplitudes?
+Justify your answer.
+\item Would adding a penalty $\lambda\|a\|^2$ make the amplitudes identifiable from the observations?
+\end{enumerate}
+\subsection*{1.2 Model Assumptions --- Signed Weights}
+After an unconstrained amplitude fit, a nonnegative target is approximated using both positive and negative Gaussian coefficients.
+Small regions of the approximation fall below zero.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which interpretation is consistent with the model used in this lab?
+Justify your answer.
+\item Why can a low sample error coexist with large, unstable positive and negative coefficients?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 1.}\begin{enumerate}[nosep]
+\item Fit the smooth-bump target with N = 2 and N = 8.
+Record sample RMSE and basis rank.
+\item Make two kernels identical in mean and width.
+Predict the rank and possible amplitude solutions before fitting.
+\item Try the signed-oscillation target.
+Inspect the individual contributions and explain negative coefficients.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#mixture}{Open the corresponding experiment.}\par
+\section*{2. Covariance and a 2D input domain}
+\noindent\textbf{Objective.} Read Gaussian geometry from covariance eigenpairs and distinguish scale from normalization.
+\subsection*{2.1 Covariance --- Principal Axes}
+A 2D Gaussian has $\Sigma=\begin{bmatrix}0.20&0.16\\0.16&0.20\end{bmatrix}$.
+The diagonal entries are equal.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What shape does this covariance describe?
+Justify your answer.
+\item What happens to the usefulness of a rotation gradient as the two principal scales become equal?
+\end{enumerate}
+\subsection*{2.2 Gaussian Behavior --- Normalization}
+Consider one unnormalized 2D kernel $a\exp(-\frac12(x-\mu)^\top\Sigma^{-1}(x-\mu))$.
+Double both principal scales while keeping its amplitude a fixed.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to its peak value and its integral over the whole plane?
+Justify your answer.
+\item Does the fourfold integral increase imply fourfold image brightness after projecting and alpha-compositing a 3D splat?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 2.}\begin{enumerate}[nosep]
+\item Set one Gaussian’s scales to 0.60 and 0.20 and its rotation to 45${}^\circ$.
+Inspect its covariance.
+\item Make it isotropic and rotate again.
+Explain which quantities stop changing and why.
+\item Isolate one contribution and double both scales at fixed amplitude.
+Predict the peak and full-plane integral; account for the finite plot and automatic display scaling.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#dimensions}{Open the corresponding experiment.}\par
+\section*{3. Fit a 3D scalar function}
+\noindent\textbf{Objective.} Separate approximation capacity, initialization, and optimization error.
+\subsection*{3.1 Optimization --- Gradient Flow}
+The 3D model is $\hat{y}$(x) = $a\phi(x;\mu,\Sigma)$, fitted by mean squared error to sampled target values.
+Consider the raw gradient at a = 0, with positive scales.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which parameters can receive a nonzero loss gradient at that instant?
+Justify your answer.
+\item Can Adam momentum move a mean when its current raw gradient is zero?
+\end{enumerate}
+\subsection*{3.2 Approximation --- Capacity Vs Optimization}
+One Gaussian fits the ring-shaped 3D target poorly after many updates.
+Its slices fill the hole or miss much of the ring.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What can be concluded from the Gaussian model itself, without assuming the optimizer found a global minimum?
+Justify your answer.
+\item If the displayed volume RMSE is small, could a visually important part of the ring still be poorly fitted?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 3.}\begin{enumerate}[nosep]
+\item Choose the Gaussian-bump target and N = 1.
+Set amplitude to zero, record geometry, and apply one update.
+Explain the raw-gradient effect.
+\item Fit the ring target with N = 1 and N = 8 using comparable update budgets.
+Inspect all three residual slices.
+\item Rotate the inspection view without editing the fit.
+Explain why the sampled scalar objective stays fixed.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#parameters}{Open the corresponding experiment.}\par
+\section*{4. Project, composite, and expose ambiguity}
+\noindent\textbf{Objective.} Relate visibility to gradients and distinguish rotation from translation.
+\subsection*{4.1 Visibility --- Photometric Gradients}
+At one pixel, a foreground splat has $\alpha_1=0.98$ and a rear splat has $\alpha_2=0.6$.
+Hold geometry and opacity fixed while differentiating the pixel colour with respect to the rear RGB.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What is $\partial$C/$\partial$c${}_2$ for each RGB channel, and what does it imply for fitting?
+Justify your answer.
+\item Would directly adding the two coloured kernels give the same learning behavior?
+\end{enumerate}
+\subsection*{4.2 Multi-View Geometry --- Ambiguity}
+For an isolated Gaussian and a fixed pinhole camera, multiply its camera-relative mean and all spatial scales by k > 0.
+Keep RGB and opacity fixed, and keep it in front of the near plane.
+Its locally projected footprint is unchanged.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which extra observation generally constrains this depth–scale ambiguity?
+Justify your answer.
+\item Why can three nearby training views provide less useful depth information than three spread-out views?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 4.}\begin{enumerate}[nosep]
+\item Use three-splat overlap.
+Sample one pixel, vary foreground opacity, and follow the rear colour weights.
+\item Keep one Gaussian.
+Record its projected axes, move it along the viewing ray with the provided scale change, and compare.
+\item Change camera yaw to expose the 3D difference.
+Here yaw orbits the camera centre; explain why pure rotation at a fixed centre is different.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#colour}{Open the corresponding experiment.}\par
+\section*{5. Recover a scene from images}
+\noindent\textbf{Objective.} Design controlled comparisons and distinguish image agreement from geometric evidence.
+\subsection*{5.1 Experiment Design --- Generalization}
+A fit from one selected camera has low training MSE but a much larger reserved-view MSE.
+You want to test whether limited view coverage is contributing to the failure.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which comparison provides the most relevant controlled evidence?
+Justify your answer.
+\item If you repeatedly choose budgets and stop times using frame 10, is it still an untouched final test?
+\end{enumerate}
+\subsection*{5.2 Density Control --- Model Changes}
+Consider one isolated coloured splat with opacity o.
+Replace it by two coincident splats with identical shape and colour, each with opacity $o^\prime=1-\sqrt{1-o}$.
+Let $\phi$ be their shared projected Gaussian value at a pixel.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Does this opacity adjustment preserve the rendered image everywhere?
+Justify your answer.
+\item For an additive scalar field, would two coincident copies with amplitudes a/2 preserve the function?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 5.}\begin{enumerate}[nosep]
+\item Fit one training view with 24 Gaussians for 100 updates.
+Record training and reserved-view MSE.
+\item Restart with three spread-out views, using the same budget and update count.
+Compare both errors and residual structure.
+\item Record error and count, apply density refinement once, then fit 25 further updates.
+Separate the immediate model change from subsequent learning.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#reconstruction}{Open the corresponding experiment.}\par
+\section*{6. NeRF: a neural field along camera rays}
+\noindent\textbf{Objective.} Distinguish density, segment opacity, quadrature, and neural-field capacity.
+\subsection*{6.1 Volume Rendering --- Optical Thickness}
+A ray crosses a homogeneous slab of length $L=1$ with density $\sigma=2$ and constant RGB.
+You approximate it with N equal intervals of length $\delta=L/N$, using $\alpha_i=1-\exp(-\sigma\delta)$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to total transmittance if you change N from 10 to 100?
+Justify your answer.
+\item If a thin high-density feature lies entirely between the sample points, does a low sampled density prove the ray is empty?
+\end{enumerate}
+\subsection*{6.2 Neural Fields --- Multi-View Consistency}
+In a classical NeRF-style model, density is $\sigma_\theta(x)$, while RGB is $c_\theta(x,d)$.
+A proposed variant also lets density depend freely on viewing direction: $\sigma_\theta(x,d)$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Why is position-only density a useful constraint for reconstructing a static scene?
+Justify your answer.
+\item Is increasing the number of samples per ray the NeRF equivalent of adding more Gaussian primitives?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 6.}\begin{enumerate}[nosep]
+\item At yaw 90${}^\circ$ and the centre ray, compare density with termination weights.
+Explain the weak contribution of hidden orange density.
+\item Compare 8 and 64 ray samples with fixed network weights.
+Track interval length, alpha, and total transmittance.
+\item Fit 50 updates and inspect the reserved 0${}^\circ$ view.
+Compare errors and explain why additional ray samples do not add network parameters.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#nerf}{Open the corresponding experiment.}\par
+\section*{7. Transfer to the real captured Garden}
+\noindent\textbf{Objective.} Evaluate appearance and geometry claims at scene scale.
+\subsection*{7.1 Appearance --- Representation Choice}
+Suppose a glossy leaf changes brightness with viewing direction in the captured photographs, but a reconstruction represents each Gaussian with one fixed RGB value.
+Even with good spatial coverage, a highlight appears painted onto the surface.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which model change directly addresses this missing behavior?
+Justify your answer.
+\item Could a low photometric error prove that positions and covariances are correct when colour is very flexible?
+\end{enumerate}
+\subsection*{7.2 Transfer --- Rendering Vs Geometry}
+The garden looks sharp from several viewpoints.
+A colleague wants to treat the visible Gaussian ellipsoids as a reliable surface model for collision detection.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What does the rendering evidence justify?
+Justify your answer.
+\item If rendering at twice the resolution reveals smaller floaters, has the underlying geometry become worse?
+\end{enumerate}
+\noindent\textbf{Interactive experiment 7.}\begin{enumerate}[nosep]
+\item Load the Garden when network and WebGL are available.
+It streams approximately 187 MB and renders Gaussian Splatting.
+\item Inspect thin structures and viewpoints away from the comfortable viewing region.
+Record two artifacts and competing explanations.
+\item Relate observations to coverage, representation, or appearance; identify evidence needed before using this renderer as collision geometry.
+\end{enumerate}
+Record settings, numerical results, and observations.
+\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#highres}{Open the corresponding experiment.}\par
+\end{document}

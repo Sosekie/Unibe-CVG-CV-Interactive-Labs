@@ -5,6 +5,8 @@ from content import SECTIONS, EQUATIONS, LAB_URL, GITHUB_URL
 HERE = Path(__file__).resolve().parent
 OUT = HERE / '.generated'
 OUT.mkdir(exist_ok=True)
+TEX = HERE / 'tex'
+TEX.mkdir(exist_ok=True)
 questions = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', "import {questions} from '../../dist/questions.js';console.log(JSON.stringify(questions));"], cwd=HERE, text=True))
 
 # Render selected multi-character expressions as proper mathematical notation.
@@ -30,7 +32,8 @@ pattern = re.compile('|'.join(re.escape(k) for k in sorted(INLINE, key=len, reve
 def plain(s):
     return ''.join(('$'+MAP[c]+'$') if c in MAP else ESC.get(c,c) for c in str(s))
 def rich(s):
-    s=str(s); parts=[]; start=0
+    # Newlines separate sentences in the LaTeX source but remain spaces in print.
+    s=re.sub(r'(?<=[.!?]) +(?=[A-Z])', '\n', str(s)); parts=[]; start=0
     for match in pattern.finditer(s):
         parts += [plain(s[start:match.start()]), '$'+INLINE[match.group()]+'$']; start=match.end()
     return ''.join(parts)+plain(s[start:])
@@ -47,7 +50,7 @@ Source code: \href{''' + GITHUB_URL + r'''}{\nolinkurl{github.com/Sosekie/Unibe-
 \end{center}
 '''
     if solution:
-        return output + '\nThese worked solutions follow the numbered exercises in the problem sheet. The interactive experiments illustrate the derivations and assumptions.\n'
+        return output + '\nThese worked solutions follow the numbered exercises in the problem sheet.\nThe interactive experiments illustrate the derivations and assumptions.\n'
     return output + r'''
 \section*{Learning objectives}
 \begin{itemize}[nosep]
@@ -57,7 +60,9 @@ Source code: \href{''' + GITHUB_URL + r'''}{\nolinkurl{github.com/Sosekie/Unibe-
 \end{itemize}
 \noindent\textbf{Key concepts.} Least squares, covariance, gradient descent, alpha compositing, multi-view geometry, volume rendering, and neural radiance fields.
 
-Explain your reasoning and show relevant derivations. The interactive lab provides experiments for each exercise. Lecture-slide references will be added after alignment.
+Explain your reasoning and show relevant derivations.
+The interactive lab provides experiments for each exercise.
+Lecture-slide references will be added after alignment.
 '''
 
 def heading(i,j,q):
@@ -68,10 +73,10 @@ def exercise(section,i):
     result=r'\section*{'+str(i+1)+'. '+plain(title)+'}\n'+r'\noindent\textbf{Objective.} '+rich(aim)+'\n'
     for j,q in enumerate(questions[key]):
         result+=heading(i,j,q)+rich(q['scenario'])+'\n\\begin{enumerate}[label=(\\alph*),nosep]\n'
-        result+=r'\item '+rich(q['title'])+' Justify your answer.\n'+r'\item '+rich(q['extension'])+'\n\\end{enumerate}\n'
+        result+=r'\item '+rich(q['title'])+'\nJustify your answer.\n'+r'\item '+rich(q['extension'])+'\n\\end{enumerate}\n'
     result+=r'\noindent\textbf{Interactive experiment '+str(i+1)+r'.}\begin{enumerate}[nosep]'+'\n'
     result+=''.join(r'\item '+rich(t)+'\n' for t in tasks)
-    result+=r'\end{enumerate} Record settings, numerical results, and observations. '
+    result+=r'\end{enumerate}'+'\nRecord settings, numerical results, and observations.\n'
     result+=r'\href{'+LAB_URL+'#'+key+r'}{Open the corresponding experiment.}\par'+'\n'
     return result
 
@@ -83,7 +88,8 @@ FIGURE = r'''\begin{center}
 \draw[->,thick] (0,0)--(1.06,1.06) node[above right] {$s_1=0.6$};
 \draw[->,thick] (0,0)--(.35,-.35) node[below right] {$s_2=0.2$};
 \end{tikzpicture}\\
-{\small The $1\sigma$ ellipse. Principal axes have standard deviations 0.6 and 0.2.}
+{\small The $1\sigma$ ellipse.
+Principal axes have standard deviations 0.6 and 0.2.}
 \end{center}
 '''
 
@@ -116,10 +122,13 @@ PREAMBLE = r'''\documentclass[11pt,a4paper]{article}
 \begin{document}
 '''
 for name,is_solution in [('tutorial_09',False),('tutorial_09_solution',True)]:
-    if len(sys.argv)>1 and name not in sys.argv[1:]:
+    selected = [arg for arg in sys.argv[1:] if arg != '--source-only']
+    if selected and name not in selected:
         continue
     body=cover(is_solution)+''.join((solution if is_solution else exercise)(s,i) for i,s in enumerate(SECTIONS))
-    tex=OUT/(name+'.tex'); tex.write_text(PREAMBLE+body+'\\end{document}\n',encoding='utf-8')
+    tex=TEX/(name+'.tex'); tex.write_text(PREAMBLE+body+'\\end{document}\n',encoding='utf-8')
+    if '--source-only' in sys.argv[1:]:
+        continue
     subprocess.run(['pdflatex','-interaction=nonstopmode','-halt-on-error','-output-directory',str(OUT),str(tex)],cwd=HERE,check=True,stdout=subprocess.DEVNULL)
     (HERE.parent/(name+'.pdf')).write_bytes((OUT/(name+'.pdf')).read_bytes())
     print(HERE.parent/(name+'.pdf'))

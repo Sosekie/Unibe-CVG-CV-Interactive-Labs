@@ -2,7 +2,7 @@
 
 The exercise and solution PDFs are generated with LaTeX, using the same course-handout conventions as the earlier tutorials: a centred course header, unboxed numbered questions, mathematical derivations, page numbers, and links to the interactive lab and source code. Luca Scharr is credited in the header and PDF metadata.
 
-Both PDFs use the fourteen-question bank in `../../dist/questions.js`. Edit the guided experiments and LaTeX display equations in `content.py` and the document layout and generator in `build.py`. The generated `.tex` files and intermediate LaTeX files are written to the ignored `.generated/` directory.
+Both PDFs use the fourteen-question bank in `../../dist/questions.js`. Edit the guided experiments and LaTeX display equations in `content.py` and the document layout and generator in `build.py`. The generated `.tex` files are maintained in `tex/`; intermediate LaTeX files go in the ignored `.generated/` directory. In LaTeX source, start each sentence on a new line and leave no trailing whitespace.
 
 ## Rebuild
 
