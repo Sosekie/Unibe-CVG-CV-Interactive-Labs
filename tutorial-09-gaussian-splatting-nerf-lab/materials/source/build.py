@@ -30,7 +30,7 @@ MAP = {'Σ':r'\Sigma','Φ':r'\Phi','α':r'\alpha','β':r'\beta','δ':r'\delta','
 ESC = {'&':r'\&','%':r'\%','$':r'\$','#':r'\#','_':r'\_','{':r'\{','}':r'\}','~':r'\textasciitilde{}','^':r'\textasciicircum{}','\\':r'\textbackslash{}'}
 pattern = re.compile('|'.join(re.escape(k) for k in sorted(INLINE, key=len, reverse=True)))
 def plain(s):
-    return ''.join(('$'+MAP[c]+'$') if c in MAP else ESC.get(c,c) for c in str(s))
+    return ''.join(('$'+MAP[c]+'$') if c in MAP else ESC.get(c,c) for c in str(s).replace('—','-').replace('–','-'))
 def rich(s):
     # Newlines separate sentences in the LaTeX source but remain spaces in print.
     s=re.sub(r'(?<=[.!?]) +(?=[A-Z])', '\n', str(s)); parts=[]; start=0
@@ -39,7 +39,7 @@ def rich(s):
     return ''.join(parts)+plain(s[start:])
 
 def cover(solution):
-    suffix = ' --- Worked Solutions' if solution else ''
+    suffix = ' - Worked Solutions' if solution else ''
     output = r'''\begin{center}
 {\Large\bfseries Tutorial 9. Gaussian Splatting and NeRF''' + suffix + r'''}\\[2mm]
 Luca Scharr\\
@@ -66,7 +66,7 @@ Lecture-slide references will be added after alignment.
 '''
 
 def heading(i,j,q):
-    return r'\subsection*{' + str(i+1)+'.'+str(j+1)+' '+plain(q['level'].title().replace(' · ',' --- ')) + '}\n'
+    return r'\subsection*{' + str(i+1)+'.'+str(j+1)+' '+plain(q['level'].title().replace(' · ',' - ')) + '}\n'
 
 def exercise(section,i):
     key,title,aim,tasks=section

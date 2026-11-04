@@ -5,6 +5,10 @@
 Start each sentence on a new line in LaTeX source code, and do not leave trailing whitespace.
 Apply this convention to generated LaTeX as well as hand-written source.
 
+## Punctuation preference
+
+Use a normal hyphen (-) instead of an em dash.
+
 ## Required GitHub synchronization
 
 For any GitHub synchronization, push or release-package sync in this project, read and apply [.agents/skills/cv-tutorial-github-sync/SKILL.md](.agents/skills/cv-tutorial-github-sync/SKILL.md).

@@ -15,7 +15,7 @@
 \emergencystretch=2em
 \begin{document}
 \begin{center}
-{\Large\bfseries Tutorial 9. Gaussian Splatting and NeRF --- Worked Solutions}\\[2mm]
+{\Large\bfseries Tutorial 9. Gaussian Splatting and NeRF - Worked Solutions}\\[2mm]
 Luca Scharr\\
 Computer Vision 2026\\
 University of Bern\\[1mm]
@@ -26,7 +26,7 @@ Source code: \href{https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs}{\no
 These worked solutions follow the numbered exercises in the problem sheet.
 The interactive experiments illustrate the derivations and assumptions.
 \section*{1. Approximate a function in 1D}
-\subsection*{1.1 Identifiability --- Linear Fitting}
+\subsection*{1.1 Identifiability - Linear Fitting}
 \noindent\textbf{Result.} Their sum can be determined, but the individual amplitudes are not identifiable.
 
 The two design-matrix columns are identical: $\Phi$ = [$\phi$ $\phi$].
@@ -42,7 +42,7 @@ Nearly identical kernels instead make the coefficients sensitive to small pertur
 \]
 \noindent\textbf{Follow-up.} A positive quadratic penalty selects a unique minimum-norm pair (here equal amplitudes), but this uniqueness comes from the added preference.
 The observations still constrain only the sum.
-\subsection*{1.2 Model Assumptions --- Signed Weights}
+\subsection*{1.2 Model Assumptions - Signed Weights}
 \noindent\textbf{Result.} Signed coefficients are valid for function approximation; nonnegativity would require a different constrained fit.
 
 Here $\phi$${}_i$ is an unnormalized basis function and $\hat y=\sum_i a_i\phi_i$ is a scalar function.
@@ -60,7 +60,7 @@ The sampled sum can remain accurate while individual coefficients are sensitive 
 Rank, conditioning, off-sample behavior, and coefficient size tell us more than training error alone.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#mixture}{Interactive experiment.}
 \section*{2. Covariance and a 2D input domain}
-\subsection*{2.1 Covariance --- Principal Axes}
+\subsection*{2.1 Covariance - Principal Axes}
 \noindent\textbf{Result.} An elongated Gaussian, with standard deviations 0.6 and 0.2 along axes rotated by 45${}^\circ$.
 
 Eigenvalues solve the characteristic equation det($\Sigma$ $-$ $\lambda$I) = 0.
@@ -93,7 +93,7 @@ Principal axes have standard deviations 0.6 and 0.2.}
 \noindent\textbf{Follow-up.} The function becomes independent of angle at exact isotropy, so the angle derivative vanishes.
 Near isotropy, orientation has little effect and can be weakly constrained.
 A rotation parameter is not always an observable property.
-\subsection*{2.2 Gaussian Behavior --- Normalization}
+\subsection*{2.2 Gaussian Behavior - Normalization}
 \noindent\textbf{Result.} The peak stays fixed and the integral becomes four times as large.
 
 The principal scales have a direct PCA interpretation.
@@ -121,7 +121,7 @@ Projection, camera pose, opacity saturation, overlap, and transmittance determin
 The peak opacity of an unnormalized splat stays fixed at its projected mean.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#dimensions}{Interactive experiment.}
 \section*{3. Fit a 3D scalar function}
-\subsection*{3.1 Optimization --- Gradient Flow}
+\subsection*{3.1 Optimization - Gradient Flow}
 \noindent\textbf{Result.} Amplitude can receive a nonzero gradient, while the mean and covariance gradients are zero.
 
 The derivative with respect to amplitude is $\phi$.
@@ -138,7 +138,7 @@ Large residuals alone do not guarantee useful parameter gradients.
 \noindent\textbf{Follow-up.} Yes, if its stored first moment is nonzero from previous updates.
 A zero current gradient is not the same as a zero optimizer update.
 For the proposed lab experiment, editing an amplitude clears optimizer moments, so the first update isolates the raw-gradient effect.
-\subsection*{3.2 Approximation --- Capacity Vs Optimization}
+\subsection*{3.2 Approximation - Capacity Vs Optimization}
 \noindent\textbf{Result.} One Gaussian cannot represent the target exactly; more optimization may help, but cannot remove this representation mismatch.
 
 For a positive amplitude, every nonempty positive level set of a Gaussian is an ellipsoid enclosing one maximum.
@@ -158,7 +158,7 @@ A localized structure can contribute little to the global average while being ba
 Check multiple slices, residual location, and sampling density; consider a region-weighted diagnostic before declaring success.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#parameters}{Interactive experiment.}
 \section*{4. Project, composite, and expose ambiguity}
-\subsection*{4.1 Visibility --- Photometric Gradients}
+\subsection*{4.1 Visibility - Photometric Gradients}
 \noindent\textbf{Result.} 0.012: foreground transmittance strongly attenuates the rear colour gradient at this pixel.
 
 The foreground leaves T${}_2$ = 1 $-$ 0.98 = 0.02.
@@ -175,7 +175,7 @@ Visibility influences which parameters can actually learn from each observation.
 \noindent\textbf{Follow-up.} No.
 In an additive colour sum, the rear colour derivative would lack the foreground transmittance factor.
 Alpha compositing couples visibility and parameter influence; it is not just the scalar basis expansion with RGB outputs.
-\subsection*{4.2 Multi-View Geometry --- Ambiguity}
+\subsection*{4.2 Multi-View Geometry - Ambiguity}
 \noindent\textbf{Result.} A calibrated image from a different camera centre, with parallax and visibility of the Gaussian.
 
 Scaling camera-relative position preserves x/z and y/z, hence the projected mean.
@@ -194,7 +194,7 @@ A wider baseline can supply stronger depth constraints, while also changing visi
 More separated views still cannot constrain surfaces they never observe.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#colour}{Interactive experiment.}
 \section*{5. Recover a scene from images}
-\subsection*{5.1 Experiment Design --- Generalization}
+\subsection*{5.1 Experiment Design - Generalization}
 \noindent\textbf{Result.} Fit one view and three spread-out views from the same seeds, Gaussian budget, shape mode, and update budget; evaluate both at the reserved pose.
 
 The controlled comparison varies view coverage while holding the initialization and model family fixed.
@@ -212,7 +212,7 @@ L_{\rm train}(\theta)=\frac1{|\mathcal V|}\sum_{v\in\mathcal V}\|R(\theta,P_v)-I
 It remains excluded from gradients, but it has become a validation view used for model selection.
 An unbiased final performance estimate needs additional untouched views.
 This tutorial uses frame 10 as a diagnostic reserved view, not as a benchmark claim.
-\subsection*{5.2 Density Control --- Model Changes}
+\subsection*{5.2 Density Control - Model Changes}
 \noindent\textbf{Result.} No: it matches alpha at $\phi$ = 1, but the composited falloff generally differs elsewhere.
 
 At the projected centre, $\phi$ = 1 and 1 $-$ (1$-$o$\prime$)${}^2$ = o by construction.
@@ -230,7 +230,7 @@ Subsequent optimization must make the new capacity useful.
 This distinction is why arguments about additive basis expansion cannot be transferred unchanged to alpha-composited image fitting.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#reconstruction}{Interactive experiment.}
 \section*{6. NeRF: a neural field along camera rays}
-\subsection*{6.1 Volume Rendering --- Optical Thickness}
+\subsection*{6.1 Volume Rendering - Optical Thickness}
 \noindent\textbf{Result.} It stays exp($-$2); each smaller interval has proportionally less optical thickness.
 
 Each interval transmits exp($-$$\sigma$L/N).
@@ -249,7 +249,7 @@ Midpoint samples can miss a thin feature.
 Increasing or redistributing samples addresses integration error of the current field.
 It does not by itself add observations, learn the missing structure, or guarantee a correct field.
 Distinguish field approximation from quadrature error.
-\subsection*{6.2 Neural Fields --- Multi-View Consistency}
+\subsection*{6.2 Neural Fields - Multi-View Consistency}
 \noindent\textbf{Result.} It makes different cameras query the same spatial extinction field, while allowing directional appearance in the RGB branch.
 
 A static spatial density field should supply consistent extinction at the same location across views.
@@ -269,7 +269,7 @@ Adding Gaussians changes the explicit scene parameterization.
 Sampling also changes the numerical gradients used during subsequent fitting, so it can affect learning even though it does not increase neural-field capacity.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#nerf}{Interactive experiment.}
 \section*{7. Transfer to the real captured Garden}
-\subsection*{7.1 Appearance --- Representation Choice}
+\subsection*{7.1 Appearance - Representation Choice}
 \noindent\textbf{Result.} Let each Gaussian’s emitted colour depend on viewing direction, for example through spherical harmonics.
 
 The spatial Gaussian specifies local support; the appearance model specifies colour.
@@ -287,7 +287,7 @@ c_i(d)=\sum_{\ell,m}\beta_{i,\ell m}Y_{\ell m}(d)
 Geometry and appearance can compensate for each other under finite observations.
 Evaluate new viewing directions and, when geometry matters, use independent geometric evidence.
 Directional colour increases expressiveness; it is not a uniqueness guarantee.
-\subsection*{7.2 Transfer --- Rendering Vs Geometry}
+\subsection*{7.2 Transfer - Rendering Vs Geometry}
 \noindent\textbf{Result.} It supports appearance quality from those views; reliable collision geometry needs additional geometric validation and a defined surface representation.
 
 A photometric objective constrains rendered rays.

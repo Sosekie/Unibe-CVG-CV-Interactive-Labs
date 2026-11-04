@@ -1,4 +1,4 @@
-# Release record — 4 November 2026
+# Release record - 4 November 2026
 
 ## Included material
 
@@ -20,8 +20,8 @@ This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions re
 - Full external Garden streaming/WebGL rendering is not part of the automated test.
 
 PDF SHA-256:
-- Exercise: 4d641adfa7cf80fa8f4d66235b1a8467830537b4ffe1bdcc4f06aae7b1256ea4
-- Solutions: 328c7595276ec8afecff42e91f14704957d06ac6b33411c1c77ccdfbb01f9c45
+- Exercise: ce2cf04ebd68804da0dc905efb59ee1c95c8dacb25b3fffe8a4d7bfc79f9f97b
+- Solutions: 1624ed57ba27736257749dd6ae46009f53ee2eef4f51b3e3fd4801848a17736c
 
 ## Scope
 
