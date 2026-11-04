@@ -11,7 +11,6 @@ on:
     paths:
       - "site/**"
       - "tutorial-*/**"
-      - "gaussian-splatting-nerf-lab/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -54,13 +53,8 @@ jobs:
             cp -r "$lab/out" "_site/$slug"
             echo "::endgroup::"
           done
-      - name: Test and publish Gaussian Splatting and NeRF lab
-        run: |
-          npm --prefix gaussian-splatting-nerf-lab run check
-          npm --prefix gaussian-splatting-nerf-lab test
-          mkdir -p _site/gaussian-splatting-nerf
-          cp -r gaussian-splatting-nerf-lab/dist/. _site/gaussian-splatting-nerf/
-          cp -r gaussian-splatting-nerf-lab/materials _site/gaussian-splatting-nerf/materials
+      - name: Preserve the earlier Gaussian/NeRF URL
+        run: cp -r _site/tutorial-09 _site/gaussian-splatting-nerf
       - name: Set up Pages
         uses: actions/configure-pages@v6
       - name: Upload site

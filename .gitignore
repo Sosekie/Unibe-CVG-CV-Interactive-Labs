@@ -11,5 +11,5 @@
 npm-debug.log*
 
 # This buildless lab maintains its browser source in dist/.
-!gaussian-splatting-nerf-lab/dist/
-!gaussian-splatting-nerf-lab/dist/**
+!tutorial-09-gaussian-splatting-nerf-lab/dist/
+!tutorial-09-gaussian-splatting-nerf-lab/dist/**

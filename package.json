@@ -6,13 +6,14 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci && npm --prefix tutorial-03-interest-points-fitting-registration-lab ci && npm --prefix tutorial-04-shading-photometric-stereo-lab ci",
+    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci && npm --prefix tutorial-03-interest-points-fitting-registration-lab ci && npm --prefix tutorial-04-shading-photometric-stereo-lab ci && npm --prefix tutorial-09-gaussian-splatting-nerf-lab ci",
     "dev:01": "npm --prefix tutorial-01-pinhole-camera-lab run dev",
     "dev:02": "npm --prefix tutorial-02-optics-filters-edges-lab run dev",
     "dev:03": "npm --prefix tutorial-03-interest-points-fitting-registration-lab run dev",
     "dev:04": "npm --prefix tutorial-04-shading-photometric-stereo-lab run dev",
-    "dev:gaussians": "npm --prefix gaussian-splatting-nerf-lab run dev",
-    "check:gaussians": "npm --prefix gaussian-splatting-nerf-lab run check",
-    "test:gaussians": "npm --prefix gaussian-splatting-nerf-lab test"
+    "dev:gaussians": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab run dev",
+    "check:gaussians": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab run check",
+    "test:gaussians": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab test",
+    "dev:09": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab run dev"
   }
 }

@@ -1,4 +1,4 @@
-LAB_URL = 'https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/gaussian-splatting-nerf/'
+LAB_URL = 'https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/'
 GITHUB_URL = 'https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs'
 SECTIONS = [
  ('mixture','Approximate a function in 1D','Distinguish amplitude fitting, basis geometry, and identifiability.',[
