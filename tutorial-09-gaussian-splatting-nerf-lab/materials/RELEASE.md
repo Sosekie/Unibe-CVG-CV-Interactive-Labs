@@ -4,7 +4,7 @@
 
 - Complete seven-section Gaussian Splatting and NeRF lab, including all fourteen worked questions.
 - Reformatted exercise and worked-solution PDFs.
-- Editable question bank, guided experiments, LaTeX equation source, print CSS, and pinned PDF-build dependencies.
+- Editable question bank, guided experiments, LaTeX equation source, and PDF generator.
 - Numerical and browser checks, run instructions, course-hub entry, and GitHub Pages publishing integration.
 - External Garden viewer/model references remain credited; the 187 MB model is not redistributed.
 
@@ -16,12 +16,12 @@ This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions re
 - JavaScript syntax checks and all 33 numerical checks pass.
 - Browser QA passes for all seven sections, fourteen questions, all answer branches, neural fitting, reset/pause behavior, keyboard controls, and mobile layout.
 - GitHub Pages subpath, hub link, and both PDF routes tested with a local static preview.
-- All PDF pages rendered and inspected; equations checked for overflow; all fourteen question identifiers and clickable links verified.
+- LaTeX PDF pages rendered and inspected; equations checked for overflow; all fourteen question identifiers and clickable links verified.
 - Full external Garden streaming/WebGL rendering is not part of the automated test.
 
 PDF SHA-256:
-- Exercise: 961cbd52d357bc5152336585c33670fd52049171def74fe9a264ec44c7bd1518
-- Solutions: 856e03b1c4bc8427cde95320b665ce2a57730228c4a9ade9431866c9d69638eb
+- Exercise: 4d641adfa7cf80fa8f4d66235b1a8467830537b4ffe1bdcc4f06aae7b1256ea4
+- Solutions: 328c7595276ec8afecff42e91f14704957d06ac6b33411c1c77ccdfbb01f9c45
 
 ## Scope
 
