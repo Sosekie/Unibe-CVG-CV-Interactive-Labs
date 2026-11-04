@@ -68,12 +68,16 @@ Lecture-slide references will be added after alignment.
 def heading(i,j,q):
     return r'\subsection*{' + str(i+1)+'.'+str(j+1)+' '+plain(q['level'].title().replace(' · ',' - ')) + '}\n'
 
+def question(q):
+    result=rich(q['scenario'])+'\n\\begin{enumerate}[label=(\\alph*),nosep]\n'
+    result+=r'\item '+rich(q['title'])+'\nJustify your answer.\n'
+    return result+r'\item '+rich(q['extension'])+'\n\\end{enumerate}\n'
+
 def exercise(section,i):
     key,title,aim,tasks=section
     result=r'\section*{'+str(i+1)+'. '+plain(title)+'}\n'+r'\noindent\textbf{Objective.} '+rich(aim)+'\n'
     for j,q in enumerate(questions[key]):
-        result+=heading(i,j,q)+rich(q['scenario'])+'\n\\begin{enumerate}[label=(\\alph*),nosep]\n'
-        result+=r'\item '+rich(q['title'])+'\nJustify your answer.\n'+r'\item '+rich(q['extension'])+'\n\\end{enumerate}\n'
+        result+=heading(i,j,q)+question(q)
     result+=r'\noindent\textbf{Interactive experiment '+str(i+1)+r'.}\begin{enumerate}[nosep]'+'\n'
     result+=''.join(r'\item '+rich(t)+'\n' for t in tasks)
     result+=r'\end{enumerate}'+'\nRecord settings, numerical results, and observations.\n'
@@ -97,11 +101,11 @@ def solution(section,i):
     key,title,_,_=section
     result=r'\section*{'+str(i+1)+'. '+plain(title)+'}\n'
     for j,q in enumerate(questions[key]):
-        result+=heading(i,j,q)+r'\noindent\textbf{Result.} '+rich(q['options'][q['correct']])+'\n\n'
+        result+=heading(i,j,q)+question(q)+r'\noindent\textbf{Solution (a).} '+rich(q['options'][q['correct']])+'\n\n'
         result+='\n\n'.join(rich(p) for p in q['explanation'])+'\n'
         result+='\\[\n'+EQUATIONS[q['id']]+'\n\\]\n'
         if q['id']=='m1': result+=FIGURE
-        result+=r'\noindent\textbf{Follow-up.} '+rich(q['extensionAnswer'])+'\n'
+        result+=r'\noindent\textbf{Solution (b).} '+rich(q['extensionAnswer'])+'\n'
     return result+r'\noindent\href{'+LAB_URL+'#'+key+r'}{Interactive experiment.}'+'\n'
 
 PREAMBLE = r'''\documentclass[11pt,a4paper]{article}

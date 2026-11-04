@@ -21,7 +21,7 @@ This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions re
 
 PDF SHA-256:
 - Exercise: ce2cf04ebd68804da0dc905efb59ee1c95c8dacb25b3fffe8a4d7bfc79f9f97b
-- Solutions: 1624ed57ba27736257749dd6ae46009f53ee2eef4f51b3e3fd4801848a17736c
+- Solutions: f8711b9320ed89b40b31caf89743938d6f363e7e61d29362d2fba760083b55f8
 
 ## Scope
 
