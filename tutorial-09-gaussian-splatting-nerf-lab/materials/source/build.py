@@ -30,7 +30,7 @@ def links():
     return f'<div class="links"><div><b>Interactive lab:</b> <a href="{LAB_URL}">sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/</a></div><div><b>Source code:</b> <a href="{GITHUB_URL}">github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs</a></div></div>'
 def cover(solution):
     title=' — Worked Solutions' if solution else ''
-    header=f'''<header><h1>Tutorial 9. Gaussian Splatting and NeRF{title}</h1><p class="meta">Computer Vision 2026<br>University of Bern · Computer Vision Group</p>{links()}</header>'''
+    header=f'''<header><h1>Tutorial 9. Gaussian Splatting and NeRF{title}</h1><p class="meta">Luca Scharr<br>Computer Vision 2026<br>University of Bern · Computer Vision Group</p>{links()}</header>'''
     if solution:
         return header+'<p class="lead">These worked solutions follow the numbered exercises in the problem sheet. The interactive experiments illustrate the derivations and assumptions.</p>'
     return header+'''<h2>Learning objectives</h2><ul class="objectives"><li>Relate Gaussian shape to covariance, PCA, and function approximation.</li><li>Derive projection, compositing, and fitting behaviour from the underlying models.</li><li>Compare Gaussian Splatting and NeRF and evaluate reconstruction evidence.</li></ul><p><b>Key concepts:</b> least squares, covariance, gradient descent, alpha compositing, multi-view geometry, volume rendering, and neural radiance fields.</p><p>Explain your reasoning and show relevant derivations. The interactive lab provides experiments for each exercise. Lecture-slide references will be added after alignment.</p>'''
@@ -52,12 +52,22 @@ def solution_section(section,i):
     return f'<section class="exercise solution"><h2>{i+1}. {e(title)}</h2>'+''.join(solution(section,i,q,j) for j,q in enumerate(qs[key]))+f'<p class="section-link"><a href="{LAB_URL}#{key}">Interactive experiment ↗</a></p></section>'
 style=(HERE/'print.css').read_text()
 def doc(title,body):
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{e(title)}</title><link rel="stylesheet" href="../node_modules/katex/dist/katex.min.css"><style>{style}</style></head><body>{body}</body></html>'
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Luca Scharr"><title>{e(title)}</title><link rel="stylesheet" href="../node_modules/katex/dist/katex.min.css"><style>{style}</style></head><body>{body}</body></html>'
 docs=[
  ('tutorial_09',cover(False)+''.join(exercise(s,i) for i,s in enumerate(SECTIONS))),
  ('tutorial_09_solution',cover(True)+''.join(solution_section(s,i) for i,s in enumerate(SECTIONS)))
 ]
 files=[]
 for name,body in docs:
-    p=OUT/(name+'.html');p.write_text(doc(name.replace('_',' '),body));files.append(str(p))
+    title='Tutorial 09 - Gaussian Splatting and NeRF' + (' - Worked Solutions' if name.endswith('_solution') else '')
+    p=OUT/(name+'.html');p.write_text(doc(title,body));files.append(str(p))
 subprocess.run(['node','print.mjs',*files],cwd=HERE,check=True)
+from pypdf import PdfWriter
+for name,_ in docs:
+    pdf=HERE.parent/(name+'.pdf')
+    writer=PdfWriter(pdf, incremental=True)
+    writer.add_metadata({'/Author': 'Luca Scharr'})
+    temporary=pdf.with_suffix('.tmp.pdf')
+    with temporary.open('wb') as output:
+        writer.write(output)
+    temporary.replace(pdf)

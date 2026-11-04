@@ -11,6 +11,7 @@ Requires Python 3 and Node.js 22.13 or newer. From this directory:
 ~~~sh
 npm ci
 npx playwright install chromium
+python3 -m pip install -r requirements.txt
 npm run build
 ~~~
 

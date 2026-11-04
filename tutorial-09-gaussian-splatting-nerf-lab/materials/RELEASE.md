@@ -20,8 +20,8 @@ This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions re
 - Full external Garden streaming/WebGL rendering is not part of the automated test.
 
 PDF SHA-256:
-- Exercise: cc5a1327a220996b2435f9697f1102089d58740d77b7d792c8bca3f1b7876e0b
-- Solutions: 0be76846dda0aaa82faeb7d70762d8d8938fe0a5a9d7f980d6b1cfa85de42fe3
+- Exercise: 961cbd52d357bc5152336585c33670fd52049171def74fe9a264ec44c7bd1518
+- Solutions: 856e03b1c4bc8427cde95320b665ce2a57730228c4a9ade9431866c9d69638eb
 
 ## Scope
 
