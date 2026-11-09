@@ -6,7 +6,7 @@ Both PDFs use the fourteen-question bank in `../../dist/questions.js`. Edit the 
 
 ## Rebuild
 
-Requires Python 3, Node.js, and a LaTeX distribution providing `pdflatex`, Latin Modern fonts, AMS math, `enumitem`, TikZ, `xurl`, and `hyperref`. From this directory:
+Requires Python 3, Node.js, and a LaTeX distribution providing `pdflatex`, Latin Modern fonts, AMS math, `enumitem`, `needspace`, TikZ, `xurl`, and `hyperref`. From this directory:
 
 ```sh
 python3 build.py

@@ -15,7 +15,7 @@ export const questions={
       ],
       equation:'ŷ = (a₁ + a₂)φ\nΦ(a + δ[1,−1]ᵀ) = Φa; rank(Φ) = 1',
       extension:'Would adding a penalty λ‖a‖² make the amplitudes identifiable from the observations?',
-      extensionAnswer:'A positive quadratic penalty selects a unique minimum-norm pair (here equal amplitudes), but this uniqueness comes from the added preference. The observations still constrain only the sum.',
+      extensionAnswer:'A positive quadratic penalty yields a unique pair with equal amplitudes. It also generally shrinks their fitted sum relative to unregularized least squares. The minimum-norm unregularized solution instead has equal amplitudes without that shrinkage. Neither makes the individual amplitudes identifiable from the observations.',
       experiment:'Set N = 2. Give both kernels the same mean and width, then fit amplitudes. Inspect the reported basis rank. Move one mean slightly and compare rank and coefficients.',
       takeaway:'A good function fit need not identify its individual Gaussian components.',
       feedback:['An overdetermined system can still be rank-deficient. Extra samples do not separate identical columns.','Yes: the prediction depends on the sum. Explain why the coefficient pair is not unique.','Symmetry permits equal amplitudes but does not require them; infinitely many unequal pairs give the same sum.']
@@ -59,7 +59,7 @@ export const questions={
     },
     {
       id:'m2',level:'GAUSSIAN BEHAVIOR · NORMALIZATION',
-      scenario:'Consider one unnormalized 2D kernel a exp(−½(x−μ)ᵀΣ⁻¹(x−μ)). Double both principal scales while keeping its amplitude a fixed.',
+      scenario:'Consider one unnormalized 2D kernel a exp(−½(x−μ)ᵀΣ⁻¹(x−μ)) with positive amplitude a > 0. Double both principal scales while keeping a fixed.',
       title:'What happens to its peak value and its integral over the whole plane?',
       options:['The peak becomes one quarter as large and the integral stays fixed.','The peak stays fixed and the integral becomes four times as large.','The peak stays fixed and the integral becomes twice as large.'],correct:1,
       hint:'Evaluate the kernel at μ, then change variables from x to standardized principal-axis coordinates in the integral.',

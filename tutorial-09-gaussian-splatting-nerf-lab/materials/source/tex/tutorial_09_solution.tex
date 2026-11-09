@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage{tikz}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
@@ -25,8 +26,8 @@ Source code: \href{https://github.com/Sosekie/Unibe-CVG-CV-Interactive-Labs}{\no
 
 These worked solutions follow the numbered exercises in the problem sheet.
 The interactive experiments illustrate the derivations and assumptions.
-\section*{1. Approximate a function in 1D}
-\subsection*{1.1 Identifiability - Linear Fitting}
+\par\Needspace{18\baselineskip}\section*{1. Approximate a function in 1D}
+\Needspace{9\baselineskip}\subsection*{1.1 Identifiability - Linear Fitting}
 You fit two 1D Gaussian basis functions with exactly the same mean and width.
 Only their amplitudes are free.
 The target samples are fixed.
@@ -48,9 +49,11 @@ Nearly identical kernels instead make the coefficients sensitive to small pertur
 \[
 \hat y=(a_1+a_2)\phi,\qquad\operatorname{rank}(\Phi)=1,\qquad\Phi\begin{bmatrix}1\\-1\end{bmatrix}=0
 \]
-\noindent\textbf{Solution (b).} A positive quadratic penalty selects a unique minimum-norm pair (here equal amplitudes), but this uniqueness comes from the added preference.
-The observations still constrain only the sum.
-\subsection*{1.2 Model Assumptions - Signed Weights}
+\noindent\textbf{Solution (b).} A positive quadratic penalty yields a unique pair with equal amplitudes.
+It also generally shrinks their fitted sum relative to unregularized least squares.
+The minimum-norm unregularized solution instead has equal amplitudes without that shrinkage.
+Neither makes the individual amplitudes identifiable from the observations.
+\Needspace{9\baselineskip}\subsection*{1.2 Model Assumptions - Signed Weights}
 After an unconstrained amplitude fit, a nonnegative target is approximated using both positive and negative Gaussian coefficients.
 Small regions of the approximation fall below zero.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -74,8 +77,8 @@ Its optimum cannot have a smaller sample SSE than the unconstrained optimum usin
 The sampled sum can remain accurate while individual coefficients are sensitive to perturbations.
 Rank, conditioning, off-sample behavior, and coefficient size tell us more than training error alone.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#mixture}{Interactive experiment.}
-\section*{2. Covariance and a 2D input domain}
-\subsection*{2.1 Covariance - Principal Axes}
+\par\Needspace{18\baselineskip}\section*{2. Covariance and a 2D input domain}
+\Needspace{9\baselineskip}\subsection*{2.1 Covariance - Principal Axes}
 A 2D Gaussian has $\Sigma=\begin{bmatrix}0.20&0.16\\0.16&0.20\end{bmatrix}$.
 The diagonal entries are equal.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -115,9 +118,9 @@ Principal axes have standard deviations 0.6 and 0.2.}
 \noindent\textbf{Solution (b).} The function becomes independent of angle at exact isotropy, so the angle derivative vanishes.
 Near isotropy, orientation has little effect and can be weakly constrained.
 A rotation parameter is not always an observable property.
-\subsection*{2.2 Gaussian Behavior - Normalization}
-Consider one unnormalized 2D kernel $a\exp(-\frac12(x-\mu)^\top\Sigma^{-1}(x-\mu))$.
-Double both principal scales while keeping its amplitude a fixed.
+\Needspace{9\baselineskip}\subsection*{2.2 Gaussian Behavior - Normalization}
+Consider one unnormalized 2D kernel $a\exp(-\frac12(x-\mu)^\top\Sigma^{-1}(x-\mu))$ with positive amplitude a > 0.
+Double both principal scales while keeping a fixed.
 \begin{enumerate}[label=(\alph*),nosep]
 \item What happens to its peak value and its integral over the whole plane?
 Justify your answer.
@@ -149,8 +152,8 @@ The scalar-field integral is not the image-formation model.
 Projection, camera pose, opacity saturation, overlap, and transmittance determine pixel contributions.
 The peak opacity of an unnormalized splat stays fixed at its projected mean.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#dimensions}{Interactive experiment.}
-\section*{3. Fit a 3D scalar function}
-\subsection*{3.1 Optimization - Gradient Flow}
+\par\Needspace{18\baselineskip}\section*{3. Fit a 3D scalar function}
+\Needspace{9\baselineskip}\subsection*{3.1 Optimization - Gradient Flow}
 The 3D model is $\hat{y}$(x) = $a\phi(x;\mu,\Sigma)$, fitted by mean squared error to sampled target values.
 Consider the raw gradient at a = 0, with positive scales.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -174,7 +177,7 @@ Large residuals alone do not guarantee useful parameter gradients.
 \noindent\textbf{Solution (b).} Yes, if its stored first moment is nonzero from previous updates.
 A zero current gradient is not the same as a zero optimizer update.
 For the proposed lab experiment, editing an amplitude clears optimizer moments, so the first update isolates the raw-gradient effect.
-\subsection*{3.2 Approximation - Capacity Vs Optimization}
+\Needspace{9\baselineskip}\subsection*{3.2 Approximation - Capacity Vs Optimization}
 One Gaussian fits the ring-shaped 3D target poorly after many updates.
 Its slices fill the hole or miss much of the ring.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -200,8 +203,8 @@ Uniform volume MSE averages over many nearly empty samples.
 A localized structure can contribute little to the global average while being badly approximated.
 Check multiple slices, residual location, and sampling density; consider a region-weighted diagnostic before declaring success.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#parameters}{Interactive experiment.}
-\section*{4. Project, composite, and expose ambiguity}
-\subsection*{4.1 Visibility - Photometric Gradients}
+\par\Needspace{18\baselineskip}\section*{4. Project, composite, and expose ambiguity}
+\Needspace{9\baselineskip}\subsection*{4.1 Visibility - Photometric Gradients}
 At one pixel, a foreground splat has $\alpha_1=0.98$ and a rear splat has $\alpha_2=0.6$.
 Hold geometry and opacity fixed while differentiating the pixel colour with respect to the rear RGB.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -225,7 +228,7 @@ Visibility influences which parameters can actually learn from each observation.
 \noindent\textbf{Solution (b).} No.
 In an additive colour sum, the rear colour derivative would lack the foreground transmittance factor.
 Alpha compositing couples visibility and parameter influence; it is not just the scalar basis expansion with RGB outputs.
-\subsection*{4.2 Multi-View Geometry - Ambiguity}
+\Needspace{9\baselineskip}\subsection*{4.2 Multi-View Geometry - Ambiguity}
 For an isolated Gaussian and a fixed pinhole camera, multiply its camera-relative mean and all spatial scales by k > 0.
 Keep RGB and opacity fixed, and keep it in front of the near plane.
 Its locally projected footprint is unchanged.
@@ -251,8 +254,8 @@ Useful baseline and visibility matter; a second image is not an unconditional gu
 A wider baseline can supply stronger depth constraints, while also changing visibility.
 More separated views still cannot constrain surfaces they never observe.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#colour}{Interactive experiment.}
-\section*{5. Recover a scene from images}
-\subsection*{5.1 Experiment Design - Generalization}
+\par\Needspace{18\baselineskip}\section*{5. Recover a scene from images}
+\Needspace{9\baselineskip}\subsection*{5.1 Experiment Design - Generalization}
 A fit from one selected camera has low training MSE but a much larger reserved-view MSE.
 You want to test whether limited view coverage is contributing to the failure.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -277,7 +280,7 @@ L_{\rm train}(\theta)=\frac1{|\mathcal V|}\sum_{v\in\mathcal V}\|R(\theta,P_v)-I
 It remains excluded from gradients, but it has become a validation view used for model selection.
 An unbiased final performance estimate needs additional untouched views.
 This tutorial uses frame 10 as a diagnostic reserved view, not as a benchmark claim.
-\subsection*{5.2 Density Control - Model Changes}
+\Needspace{9\baselineskip}\subsection*{5.2 Density Control - Model Changes}
 Consider one isolated coloured splat with opacity o.
 Replace it by two coincident splats with identical shape and colour, each with opacity $o^\prime=1-\sqrt{1-o}$.
 Let $\phi$ be their shared projected Gaussian value at a pixel.
@@ -302,8 +305,8 @@ Subsequent optimization must make the new capacity useful.
 \noindent\textbf{Solution (b).} Yes, if their geometry stays identical: (a/2)$\phi$ + (a/2)$\phi$ = a$\phi$ exactly.
 This distinction is why arguments about additive basis expansion cannot be transferred unchanged to alpha-composited image fitting.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#reconstruction}{Interactive experiment.}
-\section*{6. NeRF: a neural field along camera rays}
-\subsection*{6.1 Volume Rendering - Optical Thickness}
+\par\Needspace{18\baselineskip}\section*{6. NeRF: a neural field along camera rays}
+\Needspace{9\baselineskip}\subsection*{6.1 Volume Rendering - Optical Thickness}
 A ray crosses a homogeneous slab of length $L=1$ with density $\sigma=2$ and constant RGB.
 You approximate it with N equal intervals of length $\delta=L/N$, using $\alpha_i=1-\exp(-\sigma\delta)$.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -315,7 +318,7 @@ Justify your answer.
 
 Each interval transmits exp($-$$\sigma$L/N).
 Multiplying N such factors gives exp($-$$\sigma$L), independent of N.
-Here T\_end = exp($-$2), approximately 0.1353.
+Here $T_{\mathrm{end}}$ = exp($-$2), approximately 0.1353.
 With constant colour, the slab contribution is (1$-$exp($-$2))c, plus the remaining background.
 
 Density has units of inverse distance; alpha is dimensionless and depends on interval length.
@@ -329,7 +332,7 @@ Midpoint samples can miss a thin feature.
 Increasing or redistributing samples addresses integration error of the current field.
 It does not by itself add observations, learn the missing structure, or guarantee a correct field.
 Distinguish field approximation from quadrature error.
-\subsection*{6.2 Neural Fields - Multi-View Consistency}
+\Needspace{9\baselineskip}\subsection*{6.2 Neural Fields - Multi-View Consistency}
 In a classical NeRF-style model, density is $\sigma_\theta(x)$, while RGB is $c_\theta(x,d)$.
 A proposed variant also lets density depend freely on viewing direction: $\sigma_\theta(x,d)$.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -355,8 +358,8 @@ More ray samples change where and how accurately a fixed field is evaluated; net
 Adding Gaussians changes the explicit scene parameterization.
 Sampling also changes the numerical gradients used during subsequent fitting, so it can affect learning even though it does not increase neural-field capacity.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/#nerf}{Interactive experiment.}
-\section*{7. Transfer to the real captured Garden}
-\subsection*{7.1 Appearance - Representation Choice}
+\par\Needspace{18\baselineskip}\section*{7. Transfer to the real captured Garden}
+\Needspace{9\baselineskip}\subsection*{7.1 Appearance - Representation Choice}
 Suppose a glossy leaf changes brightness with viewing direction in the captured photographs, but a reconstruction represents each Gaussian with one fixed RGB value.
 Even with good spatial coverage, a highlight appears painted onto the surface.
 \begin{enumerate}[label=(\alph*),nosep]
@@ -381,7 +384,7 @@ c_i(d)=\sum_{\ell,m}\beta_{i,\ell m}Y_{\ell m}(d)
 Geometry and appearance can compensate for each other under finite observations.
 Evaluate new viewing directions and, when geometry matters, use independent geometric evidence.
 Directional colour increases expressiveness; it is not a uniqueness guarantee.
-\subsection*{7.2 Transfer - Rendering Vs Geometry}
+\Needspace{9\baselineskip}\subsection*{7.2 Transfer - Rendering Vs Geometry}
 The garden looks sharp from several viewpoints.
 A colleague wants to treat the visible Gaussian ellipsoids as a reliable surface model for collision detection.
 \begin{enumerate}[label=(\alph*),nosep]

@@ -20,8 +20,8 @@ This is Tutorial 09. The PDF solutions reproduce reasoning already approved and 
 - Full external Garden streaming/WebGL rendering is not part of the automated test.
 
 PDF SHA-256:
-- Exercise: 9baf723a067c2f38364c44d673deb4c26ef72bf4f2d2eca6a99ebf08f9e41251
-- Solutions: f8711b9320ed89b40b31caf89743938d6f363e7e61d29362d2fba760083b55f8
+- Exercise: bf25a8673680ba53eb7a9b2efe5bed596216332185fea586e105cd211dea0882
+- Solutions: 159051b25a6f6dd7928f0010bd73cf03fb6f26847441c6d14414515bf867291f
 
 ## Scope
 

@@ -11,6 +11,7 @@ questions = json.loads(subprocess.check_output(['node', '--input-type=module', '
 
 # Render selected multi-character expressions as proper mathematical notation.
 INLINE = {
+ 'T_end': r'T_{\mathrm{end}}',
  'Σ = [[0.20, 0.16], [0.16, 0.20]]': r'\Sigma=\begin{bmatrix}0.20&0.16\\0.16&0.20\end{bmatrix}',
  'a exp(−½(x−μ)ᵀΣ⁻¹(x−μ))': r'a\exp(-\frac12(x-\mu)^\top\Sigma^{-1}(x-\mu))',
  'αᵢ = 1 − exp(−σδ)': r'\alpha_i=1-\exp(-\sigma\delta)',
@@ -65,7 +66,7 @@ The interactive lab provides experiments for each exercise.
 '''
 
 def heading(i,j,q):
-    return r'\subsection*{' + str(i+1)+'.'+str(j+1)+' '+plain(q['level'].title().replace(' · ',' - ')) + '}\n'
+    return r'\Needspace{9\baselineskip}\subsection*{' + str(i+1)+'.'+str(j+1)+' '+plain(q['level'].title().replace(' · ',' - ')) + '}\n'
 
 def question(q):
     result=rich(q['scenario'])+'\n\\begin{enumerate}[label=(\\alph*),nosep]\n'
@@ -74,10 +75,10 @@ def question(q):
 
 def exercise(section,i):
     key,title,aim,tasks=section
-    result=r'\section*{'+str(i+1)+'. '+plain(title)+'}\n'+r'\noindent\textbf{Objective.} '+rich(aim)+'\n'
+    result=r'\Needspace{12\baselineskip}\section*{'+str(i+1)+'. '+plain(title)+'}\n'+r'\noindent\textbf{Objective.} '+rich(aim)+'\n'
     for j,q in enumerate(questions[key]):
         result+=heading(i,j,q)+question(q)
-    result+=r'\noindent\textbf{Interactive experiment '+str(i+1)+r'.}\begin{enumerate}[nosep]'+'\n'
+    result+=r'\Needspace{7\baselineskip}\noindent\textbf{Interactive experiment '+str(i+1)+r'.}\begin{enumerate}[nosep]'+'\n'
     result+=''.join(r'\item '+rich(t)+'\n' for t in tasks)
     result+=r'\end{enumerate}'+'\nRecord settings, numerical results, and observations.\n'
     result+=r'\href{'+LAB_URL+'#'+key+r'}{Open the corresponding experiment.}\par'+'\n'
@@ -98,7 +99,7 @@ Principal axes have standard deviations 0.6 and 0.2.}
 
 def solution(section,i):
     key,title,_,_=section
-    result=r'\section*{'+str(i+1)+'. '+plain(title)+'}\n'
+    result=r'\par\Needspace{18\baselineskip}\section*{'+str(i+1)+'. '+plain(title)+'}\n'
     for j,q in enumerate(questions[key]):
         result+=heading(i,j,q)+question(q)+r'\noindent\textbf{Solution (a).} '+rich(q['options'][q['correct']])+'\n\n'
         result+='\n\n'.join(rich(p) for p in q['explanation'])+'\n'
@@ -114,6 +115,7 @@ PREAMBLE = r'''\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage{tikz}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
