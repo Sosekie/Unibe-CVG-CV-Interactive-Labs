@@ -12,4 +12,4 @@ Requires Python 3, Node.js, and a LaTeX distribution providing `pdflatex`, Latin
 python3 build.py
 ```
 
-The completed PDFs are written to the parent `materials/` directory. The exercise PDF contains open-ended questions; the separate solution PDF repeats each question and gives worked explanations for both parts. After editing, inspect the pages and links and update the compatibility copies and checksums recorded in `../RELEASE.md`. Lecture-slide alignment remains pending.
+The completed PDFs are written to the parent `materials/` directory. The exercise PDF contains open-ended questions; the separate solution PDF repeats each question and gives worked explanations for both parts. After editing, inspect the pages and links and update the compatibility copies and checksums recorded in `../RELEASE.md`.

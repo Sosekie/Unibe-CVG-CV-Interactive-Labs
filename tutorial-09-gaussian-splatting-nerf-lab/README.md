@@ -4,7 +4,7 @@ A master-level Computer Vision Tutorial 09 covering Gaussian function approximat
 
 [Open the interactive lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/) · [Exercise PDF](materials/tutorial_09.pdf) · [Worked-solution PDF](materials/tutorial_09_solution.pdf) · [Editable PDF sources](materials/source/)
 
-This lab is Tutorial 09. Lecture-slide alignment remains pending. The browser source in `dist/` is maintained source for this buildless app and is checked in deliberately.
+This lab is Tutorial 09. The browser source in `dist/` is maintained source for this buildless app and is checked in deliberately.
 
 ## Run and verify
 
@@ -36,11 +36,11 @@ Section 5’s optimizer receives only images, calibrated cameras, and noisy surf
 
 Frame 10 is permanently excluded inside the optimizer as well as disabled in the UI. Evaluation never contributes a gradient. Camera tours change only the inspected frame; independent inspection changes only the diagram. Coverage, initial budget, or shape-mode changes restart from the same seed prefix. Round-only mode ties the three scales and fixes rotation. Density refinement uses current training-image gradients and a size heuristic, capped at 64 Gaussians. Child initialization need not lower loss. The initial 400-update limit can be extended by another 100 updates after refinement. The separated-view improvement in the deterministic test fixture is evidence for that fixture, not a guarantee for every scene or initialization.
 
-## Later lecture alignment
+## Implementation and tests
 
 NeRF numerical tests additionally verify homogeneous optical thickness under subdivision, direction-independent density, MLP/rendering derivatives, training improvement, and reserved-target exclusion. The browser test accepts `GSPLAT_QA_URL` for an alternate local server.
 
-Content lives in `dist/foundations.js` (1D/2D/Garden), `dist/volume.js` (3D field), `dist/colour.js` (image formation), `dist/reconstruction.js` (image fitting), `dist/nerf.js` (neural-field UI) and `dist/nerf-math.js` (MLP, ray rendering, and backpropagation), and `dist/app.js` (navigation/question interaction) and `dist/questions.js` (question bank). Mathematics is in `basis-math.js`, `field-math.js`, `math.js`, `primitives.js`, and `reconstruction-math.js`. Once slides arrive, reconcile notation, learning outcomes, coordinates, and question IDs before adding verified slide references. No slide references or course tutorial number have been invented.
+Content lives in `dist/foundations.js` (1D/2D/Garden), `dist/volume.js` (3D field), `dist/colour.js` (image formation), `dist/reconstruction.js` (image fitting), `dist/nerf.js` (neural-field UI) and `dist/nerf-math.js` (MLP, ray rendering, and backpropagation), and `dist/app.js` (navigation/question interaction) and `dist/questions.js` (question bank). Mathematics is in `basis-math.js`, `field-math.js`, `math.js`, `primitives.js`, and `reconstruction-math.js`.
 
 References: [Mildenhall et al., 2020](https://arxiv.org/html/2003.08934v2), [Kerbl et al., 2023](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/), [Mip-NeRF 360](https://jonbarron.info/mipnerf360/), [viewer/conversion host](https://huggingface.co/cakewalk/splat-data). This GitHub copy was imported from reviewed tutorial source commit `ea947aaeaa3266ccdb805ed009ba47621c758e0f`. Site-specific hosting metadata and credentials are excluded. The Garden viewer and model stay with their credited providers.
 

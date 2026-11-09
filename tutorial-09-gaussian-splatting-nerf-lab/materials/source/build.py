@@ -62,7 +62,6 @@ Source code: \href{''' + GITHUB_URL + r'''}{\nolinkurl{github.com/Sosekie/Unibe-
 
 Explain your reasoning and show relevant derivations.
 The interactive lab provides experiments for each exercise.
-Lecture-slide references will be added after alignment.
 '''
 
 def heading(i,j,q):

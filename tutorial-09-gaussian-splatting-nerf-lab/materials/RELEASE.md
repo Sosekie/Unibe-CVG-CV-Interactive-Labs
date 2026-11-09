@@ -8,7 +8,7 @@
 - Numerical and browser checks, run instructions, course-hub entry, and GitHub Pages publishing integration.
 - External Garden viewer/model references remain credited; the 187 MB model is not redistributed.
 
-This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions reproduce reasoning already approved and visible in the interactive tutorial.
+This is Tutorial 09. The PDF solutions reproduce reasoning already approved and visible in the interactive tutorial.
 
 ## Verification
 
@@ -20,7 +20,7 @@ This is Tutorial 09. Lecture-slide mapping remains pending. The PDF solutions re
 - Full external Garden streaming/WebGL rendering is not part of the automated test.
 
 PDF SHA-256:
-- Exercise: ce2cf04ebd68804da0dc905efb59ee1c95c8dacb25b3fffe8a4d7bfc79f9f97b
+- Exercise: 9baf723a067c2f38364c44d673deb4c26ef72bf4f2d2eca6a99ebf08f9e41251
 - Solutions: f8711b9320ed89b40b31caf89743938d6f363e7e61d29362d2fba760083b55f8
 
 ## Scope
