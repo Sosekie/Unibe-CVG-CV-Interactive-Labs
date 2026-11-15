@@ -17,6 +17,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Edges, interest points, fitting and registration |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normal integration, photometric stereo, reflectance map and nearby light |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | Gaussian fitting, splatting, reconstruction, neural fields |
+| Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | Single-view ambiguity, SfM, representations, evaluation |
 
 `site/` contains the course website and `api/` the small server that stores votes and released answers.
 
@@ -29,6 +30,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Solution PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
+| Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
 
 The solution PDFs are intended for use after the tutorial discussion.
 
@@ -82,6 +84,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | Kanten, Interest Points, Fitting und Registrierung |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normalenintegration, photometrisches Stereo, Reflektanzkarte und nahe Lichtquelle |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | Gauß-Funktionen, Rekonstruktion und neuronale Strahlungsfelder |
+| Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | Einzelbild, SfM, Repräsentationen, Auswertung |
 
 `site/` enthält die Kurswebseite, `api/` den kleinen Server für Abstimmungen und veröffentlichte Antworten.
 
@@ -94,6 +97,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 03 | [Tutorial-PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Lösungs-PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Lösungs-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
+| Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
 
 Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
 
@@ -147,6 +151,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 03 | `tutorial-03-interest-points-fitting-registration-lab` | 边缘、兴趣点、拟合和图像配准 |
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | 法线积分、光度立体、反射率图和近距离光源 |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | 高斯拟合、重建和神经辐射场 |
+| Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | 单视图重建、运动恢复结构与评估 |
 
 `site/` 是课程网站，`api/` 是保存投票和答案发布状态的小型服务器。
 
@@ -159,6 +164,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 03 | [Tutorial PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03.pdf) | [Solution PDF](tutorial-03-interest-points-fitting-registration-lab/materials/tutorial_03_solution.pdf) |
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
+| Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
 
 解答 PDF 建议在课堂讨论结束后查看。
 
@@ -204,3 +210,9 @@ npm run dev:04
 [Open the lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-09/) · [Complete source](tutorial-09-gaussian-splatting-nerf-lab/) · [Exercise PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) · [Worked solutions](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf)
 
 This independent buildless lab includes seven experiments and fourteen worked questions. Run `npm run dev:09`; verify with `npm run check:gaussians` and `npm run test:gaussians`. It needs Python 3 for the local server, Node.js for numerical checks, and no app dependencies. All small experiments and local question progress work without a course API account. The final Garden scene streams from an external WebGL viewer. Editable PDF sources are in `tutorial-09-gaussian-splatting-nerf-lab/materials/source/`.
+
+## Tutorial 10: From Images to 3D
+
+[Open the lab](https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/) · [Complete source](tutorial-10-images-to-3d-lab/) · [Exercise PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) · [Worked solutions](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf)
+
+This buildless lab connects image ambiguity, learned priors, structure from motion, representations and evaluation. Run `npm run dev:10` and validate with `npm run test:10`. The PDFs and their editable LaTeX sources are in the lab's `materials/` folder.

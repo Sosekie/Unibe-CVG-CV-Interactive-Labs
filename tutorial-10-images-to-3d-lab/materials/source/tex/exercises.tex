@@ -1,0 +1,218 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,enumitem,xurl,xcolor}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
+\hypersetup{pdfauthor={Luca Scharr},pdftitle={From Images to 3D}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist{leftmargin=*,itemsep=0.15em,topsep=0.15em}
+\emergencystretch=2em
+\begin{document}
+\begin{center}
+{\Large\bfseries Tutorial 10 - From Images to 3D}\\[2mm]
+Luca Scharr\\
+Computer Vision 2026\\
+University of Bern\\[1mm]
+Interactive lab: \href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/}{Open Tutorial 10 online}
+\end{center}
+\section*{Learning objectives}
+\begin{itemize}[nosep]
+\item Derive projection ambiguity and reason about two-view geometry.
+\item Explain fitting, learned priors and generalisation from evidence.
+\item Compare 3D representations and choose evaluation protocols for a task.
+\end{itemize}
+Explain your reasoning and state your assumptions.
+Use the interactive experiments to check your predictions.
+\section*{Part 1. One image and more evidence}
+\subsection*{1. One image, many scenes}
+\noindent\textbf{Objective.} Derive projection ambiguity and distinguish the image from the physical scene.
+\begin{minipage}{\linewidth}
+\subsubsection*{1.1}
+A point $(X,Y,Z)$ projects to $x=fX/Z$ with a calibrated pinhole camera.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Multiply all three point coordinates by $k>0$.
+What happens to x?
+\item Does an unchanged image establish that the physical scene is unchanged?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{1.2}
+An object is twice as large and twice as far from the camera.
+The camera does not move.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to its projected size under perspective projection?
+\item Would a learned estimate of its size make the observation geometrically unique?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\textbf{Interactive experiment.}
+\begin{enumerate}[nosep]
+\item Change the object size and distance separately, then lock their scale together.
+\item Compare the side view, the image-plane segment and the projected image coordinate.
+\item Double the focal length and explain why this is a different change.
+\end{enumerate}
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#ambiguity}{Open the interactive experiment.}
+\subsection*{2. Combine a prior and a second view}
+\noindent\textbf{Objective.} Compare size assumptions and calibrated stereo measurements in the same camera coordinate system.
+\begin{minipage}{\linewidth}
+\subsubsection*{2.1}
+A calibrated camera has focal length f = 1.
+An object projects to image height h = 0.5, so $h=fH/Z$, where H is object height and Z is distance.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Calculate Z for H = 1.5 m and H = 3 m.
+Can this image alone distinguish them?
+\item Why could a model trained mostly on 1.5 m objects give a plausible but wrong metric estimate for a 3 m object?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.2}
+A toy model assigns probabilities to candidate object heights and uses the fixed image measurement h = 0.5 to obtain candidate distances.
+It then receives a disparity measurement from a second calibrated camera.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What determines the distance distribution before the second measurement?
+\item How should the second measurement change the candidate probabilities, and what if that measurement is noisy?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.3}
+Two parallel calibrated cameras with focal length f and baseline B observe a point with disparity $d=u_1-u_2$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Derive its depth Z in terms of $f,B,\text{ and }d$.
+\item Why does a small baseline make depth sensitive to matching error?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.4}
+A second camera rotates around the same optical centre as the first.
+A point is matched accurately across the images.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Does this rotation alone triangulate the distance of the point?
+\item What scale remains ambiguous if camera translation is estimated only from images?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\textbf{Interactive experiment.}
+\begin{enumerate}[nosep]
+\item Turn the size prior on and off.
+Explain which 3D points can produce the first image.
+\item Turn on the second camera and vary the baseline or disparity error.
+Compare its ray intersection with the prior-based estimate.
+\item Use an unusual object height and discuss when the prior and the second-view measurement disagree.
+\end{enumerate}
+\begin{minipage}{\linewidth}
+\subsection*{Optional extension: Shortcut learning}
+A toy model predicts depth as $4+w_{\rm size}(1/h-2)+w_{\rm colour}c$, where h is image height and c = -1 for red or +1 for blue.
+The training set contains a red object at 2 m with h = 1 and a blue object at 6 m with h = 1/3.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Ignoring regularisation, what constraint must the weights satisfy to fit both training examples exactly?
+Give two different solutions.
+\item Now add a blue object at 2 m and a red object at 6 m.
+Which weights fit all four examples exactly, and why does that change generalisation to swapped colours?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#learning}{Open the interactive experiment.}
+\section*{Part 2. Fit a scene}
+\subsection*{3. Fit structure and motion}
+\noindent\textbf{Objective.} Compute reprojection residuals and explain how joint fitting and incorrect correspondences affect reconstruction.
+\begin{minipage}{\linewidth}
+\subsubsection*{3.1}
+In the experiment, cameras 1 and 2 are at X = 0 and X = 1 with focal length f = 1.
+Landmark A has synthetic reference coordinates $(X,Y,Z)=(-0.65,0.42,3.2)$.
+The initial estimated coordinates are (-0.42, 0.53, 2.4).
+Each camera projects a point to $(u,v)=((X-C)/Z,Y/Z)$, where C is the camera position.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Compute the observed and initial projected coordinates for A in each of the first two images, and compute the mean of the two squared 2D residuals.
+\item The fitting control also adjusts the other three points and camera 3.
+Why must these parameters be considered together in the full objective?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{3.2}
+All four landmarks are visible in all three images, giving 12 two-dimensional observations.
+The experiment corrupts landmark C in camera 3 by adding 0.22 to its horizontal observation and subtracting 0.12 from its vertical observation.
+\begin{enumerate}[label=(\alph*),nosep]
+\item If the estimated geometry initially equals the true geometry, calculate the corrupted observation's squared 2D residual and the mean squared residual across all 12 observations.
+\item What can happen when the fitting algorithm tries to reduce this error, and how could one limit the influence of the wrong match?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\textbf{Interactive experiment.}
+\begin{enumerate}[nosep]
+\item Select landmark A.
+Compare its filled observations and outlined projections in cameras 1 and 2; record the mean reprojection error.
+\item Take one fitting step, then refine the reconstruction.
+Observe how all four point estimates and the third camera can change together.
+\item Reset, corrupt landmark C in camera 3, and refine again.
+Reveal the synthetic reference and compare the geometry with the image residuals.
+\end{enumerate}
+\noindent\textbf{Optional SfM factorisation.} Why does centering remove the image translations?
+Why does any invertible $3\times 3$ matrix leave the factorisation ambiguous?
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#sfm}{Open the interactive experiment.}
+\section*{Part 3. Representations and evaluation}
+\subsection*{4. Choose a 3D representation}
+\noindent\textbf{Objective.} Compare what depth, point maps, occupancy and Gaussian outputs encode.
+\begin{minipage}{\linewidth}
+\subsubsection*{4.1}
+Choose a representation for measuring visible distances, building a closed object mesh, and rendering a nearby novel view.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which representation is suitable for each task?
+\item What limitation or validation requirement accompanies each choice?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{4.2}
+A network predicts a depth z and a camera ray direction r for one pixel.
+\begin{enumerate}[label=(\alph*),nosep]
+\item How do the direction convention and the definition of depth determine the 3D point?
+\item Why can two plausible predicted hidden surfaces be consistent with the same visible image?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\textbf{Interactive experiment.}
+\begin{enumerate}[nosep]
+\item Choose a representation and inspect the reference pole, its hidden back, the empty space and the wall.
+\item Compare the visible-surface depth and point maps with the occupancy field and Gaussian primitives.
+\item Explain which information can be represented and what would require additional evidence or a prior.
+\end{enumerate}
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#representations}{Open the interactive experiment.}
+\clearpage
+\subsection*{5. Evaluate depth and geometry}
+\noindent\textbf{Objective.} Explain the effect of scale alignment and why averages can hide local depth failures.
+\begin{minipage}{\linewidth}
+\subsubsection*{5.1}
+Prediction A is exactly twice the reference depth at every pixel.
+Prediction B predicts the wall depth for every pixel and therefore misses the narrow foreground pole.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to A's error if a best-fit global scale is permitted?
+\item Why can B have a small whole-image error while missing an important object?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{5.2}
+A Gaussian reconstruction matches its training photographs well and yields a plausible held-out rendering.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What evidence does the held-out rendering provide?
+\item Does that alone validate a collision surface in hidden regions?
+\end{enumerate}
+\end{minipage}
+\par\medskip
+\noindent\textbf{Interactive experiment.}
+\begin{enumerate}[nosep]
+\item In comparison 1, inspect the original prediction and fit a global scale.
+Compare the before and after depth errors and explain what each score measures.
+\item In comparison 2, vary the predicted pole depth.
+Compare the pole-region MSE with the whole-image MSE when the pole disappears.
+\item Explain why a held-out view tests a different claim from an independent geometry measurement.
+\end{enumerate}
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#evaluation}{Open the interactive experiment.}
+\end{document}

@@ -13,3 +13,9 @@ npm-debug.log*
 # This buildless lab maintains its browser source in dist/.
 !tutorial-09-gaussian-splatting-nerf-lab/dist/
 !tutorial-09-gaussian-splatting-nerf-lab/dist/**
+
+# Tutorial 10 browser source and generated handouts.
+!tutorial-10-images-to-3d-lab/dist/
+!tutorial-10-images-to-3d-lab/dist/**
+tutorial-10-images-to-3d-lab/materials/source/.build/
+tutorial-10-images-to-3d-lab/out/

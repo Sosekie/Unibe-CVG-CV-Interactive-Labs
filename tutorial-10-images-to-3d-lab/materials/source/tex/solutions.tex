@@ -1,0 +1,250 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,enumitem,xurl,xcolor}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
+\hypersetup{pdfauthor={Luca Scharr},pdftitle={From Images to 3D}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist{leftmargin=*,itemsep=0.15em,topsep=0.15em}
+\emergencystretch=2em
+\begin{document}
+\begin{center}
+{\Large\bfseries Tutorial 10 - From Images to 3D - Worked Solutions}\\[2mm]
+Luca Scharr\\
+Computer Vision 2026\\
+University of Bern\\[1mm]
+Interactive lab: \href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/}{Open Tutorial 10 online}
+\end{center}
+Each question is repeated before its worked answers.
+\section*{Part 1. One image and more evidence}
+\subsection*{1. One image, many scenes}
+\begin{minipage}{\linewidth}
+\subsubsection*{1.1}
+A point $(X,Y,Z)$ projects to $x=fX/Z$ with a calibrated pinhole camera.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Multiply all three point coordinates by $k>0$.
+What happens to x?
+\item Does an unchanged image establish that the physical scene is unchanged?
+\end{enumerate}
+\noindent\textbf{Solution (a).} $x'=f(kX)/(kZ)=fX/Z=x$.
+The same argument holds for the vertical coordinate.
+
+\noindent\textbf{Solution (b).} No.
+The point is on the same viewing ray but its distance has changed.
+Images alone do not reveal absolute scale; independent size or distance information can resolve it.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{1.2}
+An object is twice as large and twice as far from the camera.
+The camera does not move.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to its projected size under perspective projection?
+\item Would a learned estimate of its size make the observation geometrically unique?
+\end{enumerate}
+\noindent\textbf{Solution (a).} The ratio of object size to distance stays fixed, so the projected size is unchanged under the stated scaling.
+
+\noindent\textbf{Solution (b).} No.
+A learned size prior can favour a plausible interpretation, but an unusual object can violate it.
+The input image still admits multiple 3D explanations.
+\end{minipage}
+\par\medskip
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#ambiguity}{Open the interactive experiment.}
+\subsection*{2. Combine a prior and a second view}
+\begin{minipage}{\linewidth}
+\subsubsection*{2.1}
+A calibrated camera has focal length f = 1.
+An object projects to image height h = 0.5, so $h=fH/Z$, where H is object height and Z is distance.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Calculate Z for H = 1.5 m and H = 3 m.
+Can this image alone distinguish them?
+\item Why could a model trained mostly on 1.5 m objects give a plausible but wrong metric estimate for a 3 m object?
+\end{enumerate}
+\noindent\textbf{Solution (a).} Rearranging gives $Z=fH/h$.
+The two candidate distances are 3 m and 6 m.
+Both produce the same image height, so that measurement alone does not distinguish them.
+
+\noindent\textbf{Solution (b).} A learned size preference can favour H = 1.5 m and therefore Z = 3 m, although the actual object may be 3 m tall at Z = 6 m.
+The prior favours a likely interpretation; it does not add geometric evidence of the true size.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.2}
+A toy model assigns probabilities to candidate object heights and uses the fixed image measurement h = 0.5 to obtain candidate distances.
+It then receives a disparity measurement from a second calibrated camera.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What determines the distance distribution before the second measurement?
+\item How should the second measurement change the candidate probabilities, and what if that measurement is noisy?
+\end{enumerate}
+\noindent\textbf{Solution (a).} Each candidate height H maps to $Z=fH/h$.
+The assigned size probabilities therefore determine the probabilities of these image-consistent distances.
+A broader size prior yields a broader range of distance hypotheses.
+
+\noindent\textbf{Solution (b).} Multiply each prior candidate probability by the likelihood of the measured disparity under that candidate, then normalize.
+A noisy measurement gives a broader likelihood and generally a less concentrated update; a biased or incorrect measurement can favour the wrong distance.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.3}
+Two parallel calibrated cameras with focal length f and baseline B observe a point with disparity $d=u_1-u_2$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Derive its depth Z in terms of $f,B,\text{ and }d$.
+\item Why does a small baseline make depth sensitive to matching error?
+\end{enumerate}
+\noindent\textbf{Solution (a).} For the camera pair, $u_1=fX/Z,\quad u_2=f(X-B)/Z$, so $d=fB/Z,\quad Z=fB/d$.
+
+\noindent\textbf{Solution (b).} For fixed depth, smaller B produces smaller disparity.
+Since $\frac{\mathrm d Z}{\mathrm d d}=-fB/d^2$, a fixed disparity error can cause a large depth error when disparity is small.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{2.4}
+A second camera rotates around the same optical centre as the first.
+A point is matched accurately across the images.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Does this rotation alone triangulate the distance of the point?
+\item What scale remains ambiguous if camera translation is estimated only from images?
+\end{enumerate}
+\noindent\textbf{Solution (a).} No.
+Both rays share an origin, so a point can lie at any positive distance along the common geometric ray, despite changing image coordinates.
+
+\noindent\textbf{Solution (b).} Without a known baseline or another metric reference, scaling all points and camera translations together preserves the image projections.
+Relative geometry can still be constrained.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsection*{Optional extension: Shortcut learning}
+A toy model predicts depth as $4+w_{\rm size}(1/h-2)+w_{\rm colour}c$, where h is image height and c = -1 for red or +1 for blue.
+The training set contains a red object at 2 m with h = 1 and a blue object at 6 m with h = 1/3.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Ignoring regularisation, what constraint must the weights satisfy to fit both training examples exactly?
+Give two different solutions.
+\item Now add a blue object at 2 m and a red object at 6 m.
+Which weights fit all four examples exactly, and why does that change generalisation to swapped colours?
+\end{enumerate}
+\noindent\textbf{Solution (a).} For the two original examples, both input features are -1 for the red object and +1 for the blue object.
+Both observations therefore give the same constraint: $w_{\rm size}+w_{\rm colour}=2$.
+For example, (2, 0) uses image size alone and (0, 2) uses colour alone; both fit the training set.
+
+\noindent\textbf{Solution (b).} The swapped examples add the independent constraint $w_{\rm size}-w_{\rm colour}=2$.
+Together the constraints give $w_{\rm size}=2,\quad w_{\rm colour}=0$.
+Colour no longer explains the training labels, so a fit can rely on the size feature instead.
+The interactive model uses a small weight penalty, so its fitted weights are close to, rather than exactly, these unregularised values.
+\end{minipage}
+\par\medskip
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#learning}{Open the interactive experiment.}
+\section*{Part 2. Fit a scene}
+\subsection*{3. Fit structure and motion}
+\begin{minipage}{\linewidth}
+\subsubsection*{3.1}
+In the experiment, cameras 1 and 2 are at X = 0 and X = 1 with focal length f = 1.
+Landmark A has synthetic reference coordinates $(X,Y,Z)=(-0.65,0.42,3.2)$.
+The initial estimated coordinates are (-0.42, 0.53, 2.4).
+Each camera projects a point to $(u,v)=((X-C)/Z,Y/Z)$, where C is the camera position.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Compute the observed and initial projected coordinates for A in each of the first two images, and compute the mean of the two squared 2D residuals.
+\item The fitting control also adjusts the other three points and camera 3.
+Why must these parameters be considered together in the full objective?
+\end{enumerate}
+\noindent\textbf{Solution (a).} Camera 1 observes (-0.203125, 0.131250) and initially projects A to (-0.175000, 0.220833), giving squared residual approximately 0.008816.
+Camera 2 observes (-0.515625, 0.131250) and initially projects A to (-0.591667, 0.220833), giving approximately 0.013808.
+Their mean is approximately 0.011312.
+The website metric averages over all visible landmarks, not only these two observations.
+
+\noindent\textbf{Solution (b).} Each 3D point projects into every image in which it is visible, and camera 3 affects the projections of all four points in its image.
+The full sum couples the shared scene and camera parameters across observations.
+This fixture fixes camera 1, camera 2, their 1 m baseline, focal length and orientations; a general bundle-adjustment problem can estimate more parameters.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{3.2}
+All four landmarks are visible in all three images, giving 12 two-dimensional observations.
+The experiment corrupts landmark C in camera 3 by adding 0.22 to its horizontal observation and subtracting 0.12 from its vertical observation.
+\begin{enumerate}[label=(\alph*),nosep]
+\item If the estimated geometry initially equals the true geometry, calculate the corrupted observation's squared 2D residual and the mean squared residual across all 12 observations.
+\item What can happen when the fitting algorithm tries to reduce this error, and how could one limit the influence of the wrong match?
+\end{enumerate}
+\noindent\textbf{Solution (a).} The residual at the corrupted observation is (-0.22, 0.12), whose squared norm is 0.22 squared plus 0.12 squared, or 0.0628.
+With the other 11 residuals equal to zero, the mean squared 2D residual is 0.0628/12, approximately 0.005233.
+
+\noindent\textbf{Solution (b).} The optimiser may move landmark C and shared camera 3 to fit the incorrect observation, thereby distorting geometry or worsening agreement in other views.
+Correspondence verification and robust estimation or a robust loss can reduce an outlier's influence.
+A low residual by itself does not verify the recovered geometry.
+\end{minipage}
+\par\medskip
+\subsection*{Optional SfM factorisation}
+Why does centering remove the image translations?
+Why does any invertible $3\times 3$ matrix leave the factorisation ambiguous?
+
+\noindent\textbf{Solution.} Subtracting the image centroid removes each view's translation and gives $D=MS$, so $\operatorname{rank}(D)\leq 3$.
+For any invertible $C$, $(MC)(C^{-1}S)=MS$, so the factors are not unique.
+Orthographic camera constraints are needed to reduce this affine ambiguity.
+The rank can be smaller in degenerate configurations.
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#sfm}{Open the interactive experiment.}
+\section*{Part 3. Representations and evaluation}
+\subsection*{4. Choose a 3D representation}
+\begin{minipage}{\linewidth}
+\subsubsection*{4.1}
+Choose a representation for measuring visible distances, building a closed object mesh, and rendering a nearby novel view.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which representation is suitable for each task?
+\item What limitation or validation requirement accompanies each choice?
+\end{enumerate}
+\noindent\textbf{Solution (a).} A calibrated metric depth or point map can support visible distance measurements; an occupancy field can be converted to a mesh; a Gaussian representation can render a nearby view.
+
+\noindent\textbf{Solution (b).} Depth misses occluded surfaces and depends on calibration and scale.
+Hidden occupancy needs evidence or a learned prior and geometric validation.
+A convincing Gaussian rendering does not itself guarantee a watertight or accurate collision surface.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{4.2}
+A network predicts a depth z and a camera ray direction r for one pixel.
+\begin{enumerate}[label=(\alph*),nosep]
+\item How do the direction convention and the definition of depth determine the 3D point?
+\item Why can two plausible predicted hidden surfaces be consistent with the same visible image?
+\end{enumerate}
+\noindent\textbf{Solution (a).} For camera centre c, $X=c+zr$ only if r is parameterized so its optical-axis component is one and z is axial depth.
+If r is unit length, the multiplier must instead be distance along the ray.
+
+\noindent\textbf{Solution (b).} Occluded geometry does not directly contribute to the visible image.
+Appearance and learned priors can favour a completion, but one view may not determine the hidden surface uniquely.
+\end{minipage}
+\par\medskip
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#representations}{Open the interactive experiment.}
+\subsection*{5. Evaluate depth and geometry}
+\begin{minipage}{\linewidth}
+\subsubsection*{5.1}
+Prediction A is exactly twice the reference depth at every pixel.
+Prediction B predicts the wall depth for every pixel and therefore misses the narrow foreground pole.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to A's error if a best-fit global scale is permitted?
+\item Why can B have a small whole-image error while missing an important object?
+\end{enumerate}
+\noindent\textbf{Solution (a).} Multiplying A by 0.5 exactly recovers the reference under this idealized example.
+Its metric error before alignment is not zero, so the chosen evaluation protocol matters.
+
+\noindent\textbf{Solution (b).} The pole occupies only 16 of 240 pixels.
+Its squared error is 16 square metres per pole pixel, but the 224 wall pixels have zero error, so the whole-image mean is approximately 1.067 square metres.
+Inspect the pole-region error as well as the average.
+\end{minipage}
+\par\medskip
+\begin{minipage}{\linewidth}
+\subsubsection*{5.2}
+A Gaussian reconstruction matches its training photographs well and yields a plausible held-out rendering.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What evidence does the held-out rendering provide?
+\item Does that alone validate a collision surface in hidden regions?
+\end{enumerate}
+\noindent\textbf{Solution (a).} It tests novel-view appearance for that camera and scene, beyond the training rays.
+It is stronger evidence for view synthesis than training fit alone, subject to test selection.
+
+\noindent\textbf{Solution (b).} No.
+Hidden surfaces and distances can be unconstrained even when images look plausible.
+Define a surface extraction procedure and compare against independent geometry or task-relevant measurements.
+\end{minipage}
+\par\medskip
+\noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#evaluation}{Open the interactive experiment.}
+\end{document}
