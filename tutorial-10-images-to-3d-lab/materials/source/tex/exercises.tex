@@ -28,6 +28,8 @@ Use the interactive experiments to check your predictions.
 \section*{Part 1. One image and more evidence}
 \subsection*{1. One image, many scenes}
 \noindent\textbf{Objective.} Derive projection ambiguity and distinguish the image from the physical scene.
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{1.1}
 A point $(X,Y,Z)$ projects to $x=fX/Z$ with a calibrated pinhole camera.
@@ -38,6 +40,8 @@ What happens to x?
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{1.2}
 An object is twice as large and twice as far from the camera.
@@ -57,6 +61,8 @@ The camera does not move.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#ambiguity}{Open the interactive experiment.}
 \subsection*{2. Combine a prior and a second view}
 \noindent\textbf{Objective.} Compare size assumptions and calibrated stereo measurements in the same camera coordinate system.
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.1}
 A calibrated camera has focal length f = 1.
@@ -68,6 +74,8 @@ Can this image alone distinguish them?
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.2}
 A toy model assigns probabilities to candidate object heights and uses the fixed image measurement h = 0.5 to obtain candidate distances.
@@ -78,6 +86,8 @@ It then receives a disparity measurement from a second calibrated camera.
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.3}
 Two parallel calibrated cameras with focal length f and baseline B observe a point with disparity $d=u_1-u_2$.
@@ -87,6 +97,8 @@ Two parallel calibrated cameras with focal length f and baseline B observe a poi
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.4}
 A second camera rotates around the same optical centre as the first.
@@ -105,6 +117,8 @@ Explain which 3D points can produce the first image.
 Compare its ray intersection with the prior-based estimate.
 \item Use an unusual object height and discuss when the prior and the second-view measurement disagree.
 \end{enumerate}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsection*{Optional extension: Shortcut learning}
 A toy model predicts depth as $4+w_{\rm size}(1/h-2)+w_{\rm colour}c$, where h is image height and c = -1 for red or +1 for blue.
@@ -121,6 +135,8 @@ Which weights fit all four examples exactly, and why does that change generalisa
 \section*{Part 2. Fit a scene}
 \subsection*{3. Fit structure and motion}
 \noindent\textbf{Objective.} Compute reprojection residuals and explain how joint fitting and incorrect correspondences affect reconstruction.
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{3.1}
 In the experiment, cameras 1 and 2 are at X = 0 and X = 1 with focal length f = 1.
@@ -134,6 +150,8 @@ Why must these parameters be considered together in the full objective?
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{3.2}
 All four landmarks are visible in all three images, giving 12 two-dimensional observations.
@@ -159,6 +177,8 @@ Why does any invertible $3\times 3$ matrix leave the factorisation ambiguous?
 \section*{Part 3. Representations and evaluation}
 \subsection*{4. Choose a 3D representation}
 \noindent\textbf{Objective.} Compare what depth, point maps, occupancy and Gaussian outputs encode.
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{4.1}
 Choose a representation for measuring visible distances, building a closed object mesh, and rendering a nearby novel view.
@@ -168,6 +188,8 @@ Choose a representation for measuring visible distances, building a closed objec
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{4.2}
 A network predicts a depth z and a camera ray direction r for one pixel.
@@ -184,9 +206,10 @@ A network predicts a depth z and a camera ray direction r for one pixel.
 \item Explain which information can be represented and what would require additional evidence or a prior.
 \end{enumerate}
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#representations}{Open the interactive experiment.}
-\clearpage
 \subsection*{5. Evaluate depth and geometry}
 \noindent\textbf{Objective.} Explain the effect of scale alignment and why averages can hide local depth failures.
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{5.1}
 Prediction A is exactly twice the reference depth at every pixel.
@@ -197,6 +220,8 @@ Prediction B predicts the wall depth for every pixel and therefore misses the na
 \end{enumerate}
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{5.2}
 A Gaussian reconstruction matches its training photographs well and yields a plausible held-out rendering.

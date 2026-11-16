@@ -96,13 +96,11 @@ Use the interactive experiments to check your predictions.
     for s in SECTIONS:
         if s['id'] in group_titles:
             body += r'\section*{' + group_titles[s['id']] + '}\n'
-        if not solution and s['id'] == 'evaluation':
-            body += r'\clearpage' + '\n'
         body += r'\subsection*{' + str(s['number']) + '. ' + escape(s['title']) + '}\n'
         if not solution:
             body += r'\noindent\textbf{Objective.} ' + rich(s['objective']) + '\n'
         for i,q in enumerate(s['questions'],1):
-            body += '\\begin{minipage}{\\linewidth}\n' + r'\subsubsection*{' + str(s['number']) + '.' + str(i) + '}\n' + question(q)
+            body += '\\par\n\\noindent\n\\begin{minipage}{\\linewidth}\n' + r'\subsubsection*{' + str(s['number']) + '.' + str(i) + '}\n' + question(q)
             if solution:
                 body += r'\noindent\textbf{Solution (a).} ' + rich(q['answer_a']) + '\n\n'
                 body += r'\noindent\textbf{Solution (b).} ' + rich(q['answer_b']) + '\n'
@@ -126,7 +124,7 @@ The rank can be smaller in degenerate configurations.
 '''
         if s.get('optional_question'):
             q=s['optional_question']
-            body += '\\begin{minipage}{\\linewidth}\n' + r'\subsection*{Optional extension: Shortcut learning}' + '\n' + question(q)
+            body += '\\par\n\\noindent\n\\begin{minipage}{\\linewidth}\n' + r'\subsection*{Optional extension: Shortcut learning}' + '\n' + question(q)
             if solution:
                 body += r'\noindent\textbf{Solution (a).} ' + rich(q['answer_a']) + '\n\n'
                 body += r'\noindent\textbf{Solution (b).} ' + rich(q['answer_b']) + '\n'

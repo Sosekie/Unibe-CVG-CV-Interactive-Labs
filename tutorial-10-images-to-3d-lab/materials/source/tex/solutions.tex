@@ -20,6 +20,8 @@ Interactive lab: \href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/t
 Each question is repeated before its worked answers.
 \section*{Part 1. One image and more evidence}
 \subsection*{1. One image, many scenes}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{1.1}
 A point $(X,Y,Z)$ projects to $x=fX/Z$ with a calibrated pinhole camera.
@@ -36,6 +38,8 @@ The point is on the same viewing ray but its distance has changed.
 Images alone do not reveal absolute scale; independent size or distance information can resolve it.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{1.2}
 An object is twice as large and twice as far from the camera.
@@ -53,6 +57,8 @@ The input image still admits multiple 3D explanations.
 \par\medskip
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#ambiguity}{Open the interactive experiment.}
 \subsection*{2. Combine a prior and a second view}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.1}
 A calibrated camera has focal length f = 1.
@@ -70,6 +76,8 @@ Both produce the same image height, so that measurement alone does not distingui
 The prior favours a likely interpretation; it does not add geometric evidence of the true size.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.2}
 A toy model assigns probabilities to candidate object heights and uses the fixed image measurement h = 0.5 to obtain candidate distances.
@@ -86,6 +94,8 @@ A broader size prior yields a broader range of distance hypotheses.
 A noisy measurement gives a broader likelihood and generally a less concentrated update; a biased or incorrect measurement can favour the wrong distance.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.3}
 Two parallel calibrated cameras with focal length f and baseline B observe a point with disparity $d=u_1-u_2$.
@@ -99,6 +109,8 @@ Two parallel calibrated cameras with focal length f and baseline B observe a poi
 Since $\frac{\mathrm d Z}{\mathrm d d}=-fB/d^2$, a fixed disparity error can cause a large depth error when disparity is small.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{2.4}
 A second camera rotates around the same optical centre as the first.
@@ -114,6 +126,8 @@ Both rays share an origin, so a point can lie at any positive distance along the
 Relative geometry can still be constrained.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsection*{Optional extension: Shortcut learning}
 A toy model predicts depth as $4+w_{\rm size}(1/h-2)+w_{\rm colour}c$, where h is image height and c = -1 for red or +1 for blue.
@@ -137,6 +151,8 @@ The interactive model uses a small weight penalty, so its fitted weights are clo
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#learning}{Open the interactive experiment.}
 \section*{Part 2. Fit a scene}
 \subsection*{3. Fit structure and motion}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{3.1}
 In the experiment, cameras 1 and 2 are at X = 0 and X = 1 with focal length f = 1.
@@ -158,6 +174,8 @@ The full sum couples the shared scene and camera parameters across observations.
 This fixture fixes camera 1, camera 2, their 1 m baseline, focal length and orientations; a general bundle-adjustment problem can estimate more parameters.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{3.2}
 All four landmarks are visible in all three images, giving 12 two-dimensional observations.
@@ -185,6 +203,8 @@ The rank can be smaller in degenerate configurations.
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#sfm}{Open the interactive experiment.}
 \section*{Part 3. Representations and evaluation}
 \subsection*{4. Choose a 3D representation}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{4.1}
 Choose a representation for measuring visible distances, building a closed object mesh, and rendering a nearby novel view.
@@ -199,6 +219,8 @@ Hidden occupancy needs evidence or a learned prior and geometric validation.
 A convincing Gaussian rendering does not itself guarantee a watertight or accurate collision surface.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{4.2}
 A network predicts a depth z and a camera ray direction r for one pixel.
@@ -215,6 +237,8 @@ Appearance and learned priors can favour a completion, but one view may not dete
 \par\medskip
 \noindent\href{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-10/#representations}{Open the interactive experiment.}
 \subsection*{5. Evaluate depth and geometry}
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{5.1}
 Prediction A is exactly twice the reference depth at every pixel.
@@ -231,6 +255,8 @@ Its squared error is 16 square metres per pole pixel, but the 224 wall pixels ha
 Inspect the pole-region error as well as the average.
 \end{minipage}
 \par\medskip
+\par
+\noindent
 \begin{minipage}{\linewidth}
 \subsubsection*{5.2}
 A Gaussian reconstruction matches its training photographs well and yields a plausible held-out rendering.

@@ -27,3 +27,13 @@ test('representation queries describe all four scene locations',()=>{
 test('scale alignment and region averages update independently',()=>{
   runInLab(`current=sections.find(s=>s.id==='evaluation');document.querySelector('#scale-slider').value='1';document.querySelector('#pole-slider').value='6';evaluation();if(!document.querySelector('#scale-mse').innerHTML.includes('33.867'))throw Error('initial MSE');if(!document.querySelector('#pole-calc').innerHTML.includes('16.000')||!document.querySelector('#whole-calc').innerHTML.includes('1.067'))throw Error('pole errors');document.querySelector('#scale-fit').onclick();if(!document.querySelector('#scale-mse').innerHTML.includes('0.000'))throw Error('fitted MSE');document.querySelector('#scale-reset').onclick();if(!document.querySelector('#scale-mse').innerHTML.includes('33.867'))throw Error('reset MSE');document.querySelector('#pole-correct').onclick();if(!document.querySelector('#whole-calc').innerHTML.includes('0.000'))throw Error('correct pole');`);
 });
+
+test('handout question blocks start in vertical mode',()=>{
+  for(const name of ['exercises','solutions']){
+    const tex=readFileSync(`materials/source/tex/${name}.tex`,'utf8');
+    const blocks=tex.match(/\\begin\{minipage\}\{\\linewidth\}/g)??[];
+    const separated=tex.match(/\\par\s+\\noindent\s+\\begin\{minipage\}\{\\linewidth\}/g)??[];
+    assert.ok(blocks.length>0,`${name}: no question blocks found`);
+    assert.equal(separated.length,blocks.length,`${name}: a question block could start inside a paragraph`);
+  }
+});
