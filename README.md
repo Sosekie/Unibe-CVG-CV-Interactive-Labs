@@ -18,6 +18,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normal integration, photometric stereo, reflectance map and nearby light |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | Gaussian fitting, splatting, reconstruction, neural fields |
 | Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | Single-view ambiguity, SfM, representations, evaluation |
+| Tutorial 11 | [From Images to Depth](tutorial-11-monocular-depth-lab/) | Monocular depth, Depth Anything V2, Depth Pro, MoGe-2 |
 
 `site/` contains the course website and `api/` the small server that stores votes and released answers.
 
@@ -31,6 +32,7 @@ To use the tutorials in your browser with nothing to install, open the [course w
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
 | Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
+| Tutorial 11 | [Tutorial PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11.pdf) | [Solution PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11_solution.pdf) |
 
 The solution PDFs are intended for use after the tutorial discussion.
 
@@ -85,6 +87,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | Normalenintegration, photometrisches Stereo, Reflektanzkarte und nahe Lichtquelle |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | Gauß-Funktionen, Rekonstruktion und neuronale Strahlungsfelder |
 | Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | Einzelbild, SfM, Repräsentationen, Auswertung |
+| Tutorial 11 | [From Images to Depth](tutorial-11-monocular-depth-lab/) | Monokulare Tiefenschätzung, Depth Anything V2, Depth Pro, MoGe-2 |
 
 `site/` enthält die Kurswebseite, `api/` den kleinen Server für Abstimmungen und veröffentlichte Antworten.
 
@@ -98,6 +101,7 @@ Um die Tutorials ohne Installation im Browser zu nutzen, öffne die [Kurswebseit
 | Tutorial 04 | [Tutorial-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Lösungs-PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
 | Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
+| Tutorial 11 | [Tutorial PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11.pdf) | [Solution PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11_solution.pdf) |
 
 Die Lösungs-PDFs sind für die Verwendung nach der Besprechung im Tutorial vorgesehen.
 
@@ -152,6 +156,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 04 | `tutorial-04-shading-photometric-stereo-lab` | 法线积分、光度立体、反射率图和近距离光源 |
 | Tutorial 09 | [Gaussian Splatting & NeRF](tutorial-09-gaussian-splatting-nerf-lab/) | 高斯拟合、重建和神经辐射场 |
 | Tutorial 10 | [From Images to 3D](tutorial-10-images-to-3d-lab/) | 单视图重建、运动恢复结构与评估 |
+| Tutorial 11 | [From Images to Depth](tutorial-11-monocular-depth-lab/) | 单目深度估计、Depth Anything V2、Depth Pro、MoGe-2 |
 
 `site/` 是课程网站，`api/` 是保存投票和答案发布状态的小型服务器。
 
@@ -165,6 +170,7 @@ Ein Konto ist nicht erforderlich. Abstimmungen und veröffentlichte Antworten ko
 | Tutorial 04 | [Tutorial PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04.pdf) | [Solution PDF](tutorial-04-shading-photometric-stereo-lab/materials/tutorial_04_solution.pdf) |
 | Tutorial 09 | [Tutorial PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09.pdf) | [Solution PDF](tutorial-09-gaussian-splatting-nerf-lab/materials/tutorial_09_solution.pdf) |
 | Tutorial 10 | [Tutorial PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10.pdf) | [Solution PDF](tutorial-10-images-to-3d-lab/materials/tutorial_10_solution.pdf) |
+| Tutorial 11 | [Tutorial PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11.pdf) | [Solution PDF](tutorial-11-monocular-depth-lab/materials/tutorial_11_solution.pdf) |
 
 解答 PDF 建议在课堂讨论结束后查看。
 

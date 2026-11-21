@@ -6,7 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci && npm --prefix tutorial-03-interest-points-fitting-registration-lab ci && npm --prefix tutorial-04-shading-photometric-stereo-lab ci && npm --prefix tutorial-09-gaussian-splatting-nerf-lab ci && npm --prefix tutorial-10-images-to-3d-lab ci",
+    "setup": "npm --prefix tutorial-01-pinhole-camera-lab ci && npm --prefix tutorial-02-optics-filters-edges-lab ci && npm --prefix tutorial-03-interest-points-fitting-registration-lab ci && npm --prefix tutorial-04-shading-photometric-stereo-lab ci && npm --prefix tutorial-09-gaussian-splatting-nerf-lab ci && npm --prefix tutorial-10-images-to-3d-lab ci && npm --prefix tutorial-11-monocular-depth-lab ci",
     "dev:01": "npm --prefix tutorial-01-pinhole-camera-lab run dev",
     "dev:02": "npm --prefix tutorial-02-optics-filters-edges-lab run dev",
     "dev:03": "npm --prefix tutorial-03-interest-points-fitting-registration-lab run dev",
@@ -16,6 +16,8 @@
     "test:gaussians": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab test",
     "dev:09": "npm --prefix tutorial-09-gaussian-splatting-nerf-lab run dev",
     "dev:10": "npm --prefix tutorial-10-images-to-3d-lab run dev",
-    "test:10": "npm --prefix tutorial-10-images-to-3d-lab test"
+    "test:10": "npm --prefix tutorial-10-images-to-3d-lab test",
+    "dev:11": "npm --prefix tutorial-11-monocular-depth-lab run dev",
+    "test:11": "npm --prefix tutorial-11-monocular-depth-lab test"
   }
 }

@@ -1,0 +1,305 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,enumitem,xurl,xcolor,needspace}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!55!black]{hyperref}
+\ifsolutions
+\hypersetup{pdfauthor={Luca Scharr},pdftitle={Tutorial 11 - From Images to Depth - Worked Solutions}}
+\else
+\hypersetup{pdfauthor={Luca Scharr},pdftitle={Tutorial 11 - From Images to Depth}}
+\fi
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist{leftmargin=*,itemsep=0.15em,topsep=0.15em}
+\emergencystretch=2em
+\newcommand{\laburl}{https://sosekie.github.io/Unibe-CVG-CV-Interactive-Labs/tutorial-11/}
+\newcommand{\lablink}[2]{\href{\laburl\##1}{#2}}
+\begin{document}
+\begin{center}
+{\Large\bfseries Tutorial 11 - From Images to Depth\ifsolutions\ - Worked Solutions\fi}\\[2mm]
+Luca Scharr\\
+Computer Vision 2026\\
+University of Bern\\[1mm]
+Interactive lab: \href{\laburl}{Open the monocular depth tutorial}
+\end{center}
+\ifsolutions
+Each question is repeated before its worked answers.
+\else
+\section*{Learning objectives}
+\begin{itemize}[nosep]
+\item Interpret monocular predictions in light of single-view ambiguity.
+\item Explain the training pipeline of Depth Anything V2 and assess evidence from its ablations.
+\item Relate Depth Pro's multiscale architecture and focal-length estimate to its output.
+\item Explain MoGe-2's point-map representation, scale prediction and training-data refinement.
+\end{itemize}
+Explain your reasoning and state your assumptions.
+Use the interactive tutorial to inspect examples and check your predictions.
+\fi
+\needspace{10\baselineskip}
+\section*{Part 1. Model playground}
+\subsection*{1. What do depth maps tell us?}
+\noindent\textbf{Interactive experiment.}
+Open \lablink{play}{Model playground}, choose an indoor photograph and predict where depth will be difficult to estimate.
+Reveal the predictions and compare them with the sensor reference.
+The Depth Anything V2 output is a relative inverse-depth score; the MoGe-2 output is a metric-depth estimate.
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{1.1}
+A calibrated pinhole camera observes a point $(X,Y,Z)$, whose horizontal image coordinate is $u=fX/Z$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item What happens to $u$ if the 3D coordinates are multiplied by a positive constant $k$?
+Why does this matter for metric depth from a single image?
+\item How can a trained model still produce a metric estimate, and why can that estimate be incorrect?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The projection is unchanged because $u'=f(kX)/(kZ)=fX/Z$.
+A single image does not by itself determine distance along the camera ray or the absolute scale of the scene.
+
+\noindent\textbf{Solution (b).}
+Training data can provide priors and metric supervision that help the model choose a plausible scale.
+Those learned regularities may not hold for the input scene, so a metric prediction is an estimate rather than a direct measurement.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{1.2}
+A relative model predicts inverse-depth scores $s_A=2$ and $s_B=5$ for two visible points.
+Larger scores indicate nearer points.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which point is predicted nearer?
+Is their distance in metres determined by these scores?
+\item The visualisations independently normalise relative scores for display.
+Why can equal colours in two maps not establish equal metric depth?
+What additional evidence would help evaluate the prediction?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+Point B is predicted nearer because its inverse-depth score is larger.
+The scores do not provide a calibrated distance in metres.
+
+\noindent\textbf{Solution (b).}
+A display colour depends on the normalisation and output convention, so the same shade can represent different values in different maps.
+Independent calibrated depth measurements or additional calibrated views can help assess the prediction.
+Sensor references can also be missing or unreliable, particularly on reflective surfaces.
+\fi
+\end{minipage}
+\par\medskip
+\needspace{10\baselineskip}
+\section*{Part 2. Depth Anything V2}
+\subsection*{2. Learning from synthetic and real images}
+\noindent\textbf{Interactive experiment.}
+Open \lablink{data}{Depth Anything V2} and follow the four training stages.
+The pipeline illustration and the displayed student prediction are not live training.
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{2.1}
+The method uses labelled synthetic images, a large teacher and unlabelled real images.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Describe how the teacher and student obtain their respective training targets.
+Why can the real photographs be used without sensor depth?
+\item What does the real-image stage address, and what limitation can the generated targets introduce?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The teacher is trained on synthetic RGB images paired with depth from rendered geometry.
+It predicts depth for real photographs, producing pseudo-labels that serve as targets for a student model.
+The real photographs do not require measured depth for this stage.
+
+\noindent\textbf{Solution (b).}
+Real images provide diverse appearances and help address the gap between synthetic and real image distributions.
+Pseudo-labels can contain systematic or local teacher errors, which may be transferred to the student.
+They are not independent ground-truth measurements.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{2.2}
+The tutorial reproduces the paper's DA-2K results for a ViT-S student: 89.8\% accuracy with synthetic labels only and 95.3\% with pseudo-labelled real images only.
+DA-2K assesses relative depth ordering on annotated point pairs.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Calculate the difference in accuracy in percentage points.
+What additional training did the teacher require in the second condition?
+\item Does this comparison establish that every pseudo-label is correct or that the model produces metric depth?
+Explain.
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The reported difference is $95.3-89.8=5.5$ percentage points.
+The teacher producing the pseudo-labels was trained on labelled synthetic images.
+
+\noindent\textbf{Solution (b).}
+No.
+The score aggregates relative-ordering results under the benchmark protocol, so it does not validate each pseudo-label.
+The relative model's scores are not calibrated metre values.
+Other datasets and criteria are needed to assess different failure modes and claims.
+\fi
+\end{minipage}
+\par\medskip
+\needspace{10\baselineskip}
+\section*{Part 3. Depth Pro}
+\subsection*{3. Context, detail and metric depth}
+\noindent\textbf{Interactive experiment.}
+Open \lablink{detail}{Depth Pro} and select a location on a fine structure in the bird-cage or cat image.
+Compare the aligned crops and follow the multiscale pipeline.
+The input and outputs are visualisations from the Depth Pro paper, while the feature maps in the pipeline diagram are schematic.
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{3.1}
+Depth Pro processes three image scales using 1, 9 and 25 image patches.
+The two finer scales use overlapping patches, and the shared patch encoder produces a $24\times24$ grid of feature locations per patch.
+\begin{enumerate}[label=(\alph*),nosep]
+\item How many patches are processed in total, and how many feature locations do these grids contain before merging?
+\item Why can local patches and larger-scale context be useful together?
+Why should overlapping regions not be counted as independent image evidence?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+There are $1+9+25=35$ patches and $35\cdot24\cdot24=20160$ feature locations before merging.
+This count is for the stated patch grids and excludes additional intermediate features and the separate image encoder.
+
+\noindent\textbf{Solution (b).}
+Fine patches retain local spatial detail, while a larger field of view can provide cues about scene layout and object identity.
+Overlapping patches contain some of the same pixels, so their features are not independent observations.
+The diagram illustrates the architecture but does not show the model's actual internal activations.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{3.2}
+Depth Pro computes metric depth using $D=f/(wC)$, where $f$ is focal length in pixels, $w$ is image width in pixels and $C$ is predicted canonical inverse depth.
+For this question, hold $w=1000$ and $C=0.5$ fixed.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Compute $D$ for $f=1000$ pixels and for $f=750$ pixels.
+\item What does a focal-length estimate contribute, and why does it not remove the fundamental single-image ambiguity?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+For $f=1000$, $D=1000/(1000\cdot0.5)=2$ m.
+For $f=750$, $D=750/(1000\cdot0.5)=1.5$ m under the stated fixed-output assumption.
+
+\noindent\textbf{Solution (b).}
+The focal length supplies a camera-dependent factor in the metric conversion and can be estimated when camera metadata are unavailable.
+Predicted focal length and inverse depth can both be wrong.
+They depend on learned information and do not make the scene uniquely determined by one image.
+Changing the input camera may also change the network output, so holding $C$ fixed is only an algebraic comparison.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{3.3}
+The tutorial reports Hypersim boundary F1 scores of 0.465 and 0.461 for two second-stage training-loss configurations in the Depth Pro paper.
+Higher boundary F1 is better.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Which setting has the higher reported score, and what is the absolute difference?
+\item Can this loss ablation establish that the multiscale patch architecture caused the difference?
+Explain.
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The configuration with first- and second-order derivative losses scores 0.465, compared with 0.461 without derivative losses.
+The difference is 0.004 F1.
+
+\noindent\textbf{Solution (b).}
+No.
+The comparison tests the stated training-loss configurations, not the effect of removing the multiscale architecture.
+An architectural ablation would be needed to isolate that design choice.
+The paper reports further datasets and metrics, so this result does not describe all performance.
+\fi
+\end{minipage}
+\par\medskip
+\needspace{10\baselineskip}
+\section*{Part 4. MoGe-2}
+\subsection*{4. Point maps, scale and supervision}
+\noindent\textbf{Interactive experiment.}
+Open \lablink{geometry}{MoGe-2 in 3D} and rotate the predicted point map.
+Compare it with the reference back-projection, then inspect the scale and annotation-refinement examples.
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{4.1}
+A depth map gives an axial depth $Z$ at pixel $(u,v)$ for a camera with intrinsics $(f_x,f_y,c_x,c_y)$.
+A point map supplies a 3D point at each represented image location.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Write the 3D camera-coordinate point obtained by back-projecting the pixel.
+\item Why does rotating a plausible point map not establish the geometry behind an occluder?
+Why should differences between reference and prediction not automatically be attributed to depth error alone?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The back-projected point is
+\[
+(X,Y,Z)=\left(\frac{(u-c_x)Z}{f_x},\frac{(v-c_y)Z}{f_y},Z\right).
+\]
+This assumes axial depth and the stated pinhole camera convention.
+
+\noindent\textbf{Solution (b).}
+The map represents points associated with visible image locations and does not independently observe hidden surfaces.
+The displayed reference is back-projected with fixed NYU camera intrinsics, while the MoGe-2 point map is predicted by the model.
+Differences can reflect depth, camera assumptions and other reconstruction errors, as well as imperfections in the sensor reference.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{4.2}
+MoGe-2 separates an affine-invariant point-map prediction from a global scale prediction.
+For a simplified illustration, a relative point is $(0.5,0.3,2.0)$ and a positive scale is $s=1.5$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item Multiply the point by $s$.
+What happens to its projection when it is scaled about the camera centre?
+\item Why might separate relative-geometry and scale branches be useful?
+What part of the full representation does this scaling-only illustration omit?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+The scaled point is $(0.75,0.45,3.0)$.
+Its projection remains unchanged because the ratios $X/Z$ and $Y/Z$ remain unchanged.
+
+\noindent\textbf{Solution (b).}
+Separate branches allow the model to learn relative geometry while estimating global metric scale using global image features.
+The separation is intended to reduce interference between these objectives, but neither prediction is guaranteed to be correct.
+The affine-invariant representation also involves a global alignment shift, which the scaling-only diagram omits.
+\fi
+\end{minipage}
+\par\medskip
+\par\noindent
+\begin{minipage}{\linewidth}
+\subsubsection*{4.3}
+Real training depth can be incomplete or misaligned near object boundaries.
+MoGe-2 filters suspect measurements and completes missing regions using guidance from a model trained on synthetic data.
+The tutorial reports metric point errors of 9.01\% and 9.20\%, and boundary F1 scores of 10.3 and 12.5, for raw and improved real-data configurations respectively.
+\begin{enumerate}[label=(\alph*),nosep]
+\item How can filtering and completion help with the example annotation?
+Why is the completed label not automatically independent ground truth?
+\item Compare the reported metric point error and boundary F1 for the two configurations.
+What can and cannot be concluded from these aggregate values?
+\end{enumerate}
+\ifsolutions
+\noindent\textbf{Solution (a).}
+Filtering can remove mismatched depth values, and completion can fill gaps using a synthetic-trained model's local geometry guidance.
+The resulting annotation depends on a prediction and can itself contain errors.
+The true profile in the schematic is assumed for illustration and is not generally available for real data.
+
+\noindent\textbf{Solution (b).}
+The improved-data configuration has a slightly higher metric point error, 9.20\% versus 9.01\%, and a higher boundary F1, 12.5 versus 10.3.
+Under the paper's evaluation, this suggests a boundary-quality gain with similar aggregate metric error.
+It does not establish that every completed pixel is correct or that the result transfers to every scene.
+The two metrics are aggregated over different sets of datasets.
+\fi
+\end{minipage}
+\par\medskip
+\section*{Papers}
+\begin{itemize}[nosep]
+\item Yang et al., \emph{Depth Anything V2}, NeurIPS 2024.
+\href{https://arxiv.org/abs/2406.09414}{Paper}
+\item Bochkovskii et al., \emph{Depth Pro: Sharp Monocular Metric Depth in Less Than a Second}, ICLR 2025.
+\href{https://arxiv.org/abs/2410.02073}{Paper}
+\item Wang et al., \emph{MoGe-2: Accurate Monocular Geometry with Metric Scale and Sharp Details}, NeurIPS 2025.
+\href{https://arxiv.org/abs/2507.02546}{Paper}
+\end{itemize}
+\end{document}
